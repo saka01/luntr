@@ -3,51 +3,86 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 export function InfoSection() {
   return (
-    <div className="bg-muted/30 py-16">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+    <div className="relative bg-gradient-to-b from-muted/20 via-muted/30 to-muted/20 py-20 overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-secondary/5" />
+      <div className="absolute top-0 left-1/4 w-64 h-64 bg-accent/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-1/4 w-48 h-48 bg-primary/5 rounded-full blur-3xl" />
+      
+      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
         {/* What is T2125 */}
-        <section id="what-is-t2125">
-          <h2 className="text-3xl font-bold mb-6 text-balance">What is the T2125 Form?</h2>
-          <p className="text-lg text-muted-foreground leading-relaxed text-pretty">
-            The T2125 Statement of Business or Professional Activities is a Canadian tax form used by self-employed
-            individuals, freelancers, and independent contractors to report business income and expenses. It calculates
-            your net business income, which is then used to determine your total taxable income and tax obligations
-            including CPP contributions.
-          </p>
+        <section id="what-is-t2125" className="animate-fade-in">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium mb-4">
+              <span className="w-1.5 h-1.5 bg-primary rounded-full" />
+              Tax Form Guide
+            </div>
+            <h2 className="text-4xl font-bold mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
+              What is the T2125 Form?
+            </h2>
+          </div>
+          <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-8 shadow-lg">
+            <p className="text-lg text-muted-foreground leading-relaxed text-pretty">
+              The T2125 Statement of Business or Professional Activities is a Canadian tax form used by self-employed
+              individuals, freelancers, and independent contractors to report business income and expenses. It calculates
+              your net business income, which is then used to determine your total taxable income and tax obligations
+              including CPP contributions.
+            </p>
+          </div>
         </section>
 
         {/* Common Deductions */}
-        <section>
-          <h2 className="text-3xl font-bold mb-6 text-balance">Common T2125 Deductions for Freelancers</h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Home Office Expenses</CardTitle>
+        <section className="animate-fade-in">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-secondary/10 text-secondary px-3 py-1 rounded-full text-sm font-medium mb-4">
+              <span className="w-1.5 h-1.5 bg-secondary rounded-full" />
+              Deduction Categories
+            </div>
+            <h2 className="text-4xl font-bold mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
+              Common T2125 Deductions for Freelancers
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm border border-border/50">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <div className="w-2 h-2 bg-primary rounded-full" />
+                  Home Office Expenses
+                </CardTitle>
               </CardHeader>
               <CardContent className="text-sm text-muted-foreground">
                 Deduct a portion of rent, utilities, internet, and property taxes based on the percentage of your home
                 used for business.
               </CardContent>
             </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Vehicle Expenses</CardTitle>
+            <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm border border-border/50">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <div className="w-2 h-2 bg-secondary rounded-full" />
+                  Vehicle Expenses
+                </CardTitle>
               </CardHeader>
               <CardContent className="text-sm text-muted-foreground">
                 Gas, insurance, maintenance, and lease payments can be deducted based on business use percentage.
               </CardContent>
             </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Software & Subscriptions</CardTitle>
+            <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm border border-border/50">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <div className="w-2 h-2 bg-accent rounded-full" />
+                  Software & Subscriptions
+                </CardTitle>
               </CardHeader>
               <CardContent className="text-sm text-muted-foreground">
                 Business software, cloud services, professional memberships, and online tools are fully deductible.
               </CardContent>
             </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Professional Development</CardTitle>
+            <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm border border-border/50">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <div className="w-2 h-2 bg-primary rounded-full" />
+                  Professional Development
+                </CardTitle>
               </CardHeader>
               <CardContent className="text-sm text-muted-foreground">
                 Courses, conferences, books, and training directly related to your business are deductible expenses.
@@ -57,26 +92,45 @@ export function InfoSection() {
         </section>
 
         {/* How It Works */}
-        <section id="how-it-works">
-          <h2 className="text-3xl font-bold mb-6 text-balance">How the T2125 Calculator Works</h2>
-          <div className="space-y-4 text-muted-foreground leading-relaxed">
-            <p className="text-pretty">
-              Our calculator uses the latest CRA tax rates and formulas to provide accurate estimates of your tax
-              obligations. It calculates federal and provincial taxes based on your province of residence, applies the
-              appropriate tax brackets, and computes CPP contributions for self-employed individuals.
-            </p>
-            <p className="text-pretty">
-              The calculator automatically applies CRA rules such as the 50% limit on meals and entertainment expenses,
-              business-use percentages for vehicle and home office deductions, and the basic personal amount tax credit.
-              Results update in real-time as you enter your information.
-            </p>
+        <section id="how-it-works" className="animate-fade-in">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-3 py-1 rounded-full text-sm font-medium mb-4">
+              <span className="w-1.5 h-1.5 bg-accent rounded-full" />
+              How It Works
+            </div>
+            <h2 className="text-4xl font-bold mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
+              How the T2125 Calculator Works
+            </h2>
+          </div>
+          <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-8 shadow-lg">
+            <div className="space-y-6 text-muted-foreground leading-relaxed">
+              <p className="text-pretty text-lg">
+                Our calculator uses the latest CRA tax rates and formulas to provide accurate estimates of your tax
+                obligations. It calculates federal and provincial taxes based on your province of residence, applies the
+                appropriate tax brackets, and computes CPP contributions for self-employed individuals.
+              </p>
+              <p className="text-pretty text-lg">
+                The calculator automatically applies CRA rules such as the 50% limit on meals and entertainment expenses,
+                business-use percentages for vehicle and home office deductions, and the basic personal amount tax credit.
+                Results update in real-time as you enter your information.
+              </p>
+            </div>
           </div>
         </section>
 
         {/* FAQ */}
-        <section id="faq">
-          <h2 className="text-3xl font-bold mb-6 text-balance">Frequently Asked Questions</h2>
-          <Accordion type="single" collapsible className="w-full">
+        <section id="faq" className="animate-fade-in">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium mb-4">
+              <span className="w-1.5 h-1.5 bg-primary rounded-full" />
+              FAQ
+            </div>
+            <h2 className="text-4xl font-bold mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
+              Frequently Asked Questions
+            </h2>
+          </div>
+          <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-8 shadow-lg">
+            <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">
               <AccordionTrigger className="text-left">Who needs to file a T2125 form?</AccordionTrigger>
               <AccordionContent className="text-muted-foreground leading-relaxed">
@@ -117,7 +171,8 @@ export function InfoSection() {
                 September 15, and December 15 each year.
               </AccordionContent>
             </AccordionItem>
-          </Accordion>
+            </Accordion>
+          </div>
         </section>
       </div>
     </div>

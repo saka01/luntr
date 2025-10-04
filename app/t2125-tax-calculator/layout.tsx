@@ -1,6 +1,8 @@
+import "@/styles/globals.css"
+
 const T2125TaxCalculatorLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div>
+    <div className="min-h-screen bg-background text-foreground">
       {children}
     </div>
   )

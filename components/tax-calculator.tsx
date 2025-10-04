@@ -58,18 +58,20 @@ export function TaxCalculator() {
         <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 text-balance">
           T2125 Tax Calculator for Canadian Freelancers
         </h1>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-pretty">
+        <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-pretty leading-relaxed">
           Calculate your self-employment taxes instantly. Get accurate estimates for federal tax, provincial tax, and
-          CPP contributions.
+          CPP contributions with our comprehensive calculator.
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-8 items-start">
+      <div className="grid lg:grid-cols-2 gap-12 items-start">
         <div className="order-2 lg:order-1">
-          <CalculatorForm taxData={taxData} setTaxData={setTaxData} />
+          <div className="animate-slide-in-left">
+            <CalculatorForm taxData={taxData} setTaxData={setTaxData} />
+          </div>
         </div>
         <div className="order-1 lg:order-2">
-          <div className="lg:sticky lg:top-24">
+          <div className="lg:sticky lg:top-24 animate-slide-in-right">
             <ResultsPanel taxData={taxData} />
           </div>
         </div>
