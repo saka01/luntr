@@ -5,8 +5,11 @@ import { MobileMenu } from "./mobile-menu";
 export const Header = () => {
 
   const menuItems = [
+    { name: "Guides", href: "/guides" },
     { name: "T2125 Tax Calculator", href: "/canada-t2125-tax-calculator" },
     { name: "Income Tax Calculator", href: "/canada-income-tax-calculator" },
+    { name: "Deduction Finder", href: "/deduction-finder" },
+    { name: "Firms", href: "/firms" },
   ]
 
   return (
