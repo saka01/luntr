@@ -14,10 +14,7 @@ export const MobileMenu = ({ className }: MobileMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const menuItems = [
-    { name: "About", href: "#about" },
-    { name: "Portfolio", href: "#portfolio" },
-    { name: "Insights", href: "#insights" },
-    { name: "Contact", href: "#contact" },
+    { name: "T2125 Tax Calculator", href: "/t2125-tax-calculator" },
   ];
 
   const handleLinkClick = () => {
@@ -70,7 +67,7 @@ export const MobileMenu = ({ className }: MobileMenuProps) => {
               </Link>
             ))}
 
-            <div className="mt-6">
+            {/* <div className="mt-6">
               <Link
                 href="/#sign-in"
                 onClick={handleLinkClick}
@@ -78,7 +75,7 @@ export const MobileMenu = ({ className }: MobileMenuProps) => {
               >
                 Sign In
               </Link>
-            </div>
+            </div> */}
           </nav>
         </Dialog.Content>
       </Dialog.Portal>

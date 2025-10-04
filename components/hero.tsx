@@ -12,7 +12,7 @@ export function Hero() {
       <GL hovering={hovering} />
 
       <div className="pb-16 mt-auto text-center relative">
-        <Pill className="mb-6">INVITE-ONLY BETA RELEASE</Pill>
+        <Pill className="mb-6">INVITE-ONLY RELEASE</Pill>
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-sentient">
           Built for the{" "}
           <i className="font-light">
@@ -22,7 +22,7 @@ export function Hero() {
         </h1>
        
         <p className="font-mono text-sm sm:text-base text-foreground/60 text-balance max-w-[440px] mx-auto mb-0 mt-8">
-          Deductly helps accountants uncover missed deductions for freelancers, sole proprietors, and creators through
+          Tallo helps accountants uncover missed deductions for freelancers, sole proprietors, and creators through
           intelligent automation + client self-review workflows.{" "}
         </p>
  <p className="italic font-thin my-7 text-primary opacity-80">
