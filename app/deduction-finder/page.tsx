@@ -94,12 +94,13 @@ export default function DeductionFinderPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-hidden">
-      <div className="h-screen flex flex-col">
+    <div className="relative overflow-hidden">
+      
+      <div className="relative z-10 screen-with-header flex flex-col">
         {/* Header */}
-        <div className="flex-shrink-0 p-6 border-b border-border">
+        <div className="flex-shrink-0 p-6 border-b border-border/50 bg-background/50 backdrop-blur-sm">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-3xl font-bold font-sentient mb-2">
+            <h1 className="text-3xl font-bold text-foreground mb-2">
               Tax Deduction Finder
             </h1>
             <p className="text-muted-foreground">
@@ -110,19 +111,19 @@ export default function DeductionFinderPage() {
 
         {/* Progress Bar */}
         {!isComplete && (
-          <div className="flex-shrink-0 px-6 py-4">
+          <div className="flex-shrink-0 px-6 py-4 bg-background/30 backdrop-blur-sm">
             <div className="max-w-4xl mx-auto">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-muted-foreground font-medium">
                   Step {currentStep + 1} of 5
                 </span>
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-muted-foreground font-medium">
                   {Math.round(((currentStep + 1) / 5) * 100)}% Complete
                 </span>
               </div>
               <div className="w-full bg-muted rounded-full h-2">
                 <div 
-                  className="bg-primary h-2 rounded-full transition-all duration-500 ease-out animate-pulse-glow"
+                  className="bg-gradient-to-r from-primary to-secondary h-2 rounded-full transition-all duration-500 ease-out shadow-lg"
                   style={{ width: `${((currentStep + 1) / 5) * 100}%` }}
                 />
               </div>

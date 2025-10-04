@@ -221,14 +221,14 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
   return (
     <div className="space-y-6">
       {/* Province Selection */}
-      <Card className="shadow-sm">
+      <Card className="shadow-lg bg-white/80 dark:bg-slate-800/80 border-slate-200/50 dark:border-slate-700/50 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="text-xl">Province / Territory</CardTitle>
-          <CardDescription>Select your province to calculate accurate tax rates</CardDescription>
+          <CardTitle className="text-xl text-slate-900 dark:text-white">Province / Territory</CardTitle>
+          <CardDescription className="text-slate-600 dark:text-slate-300">Select your province to calculate accurate tax rates</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-2">
-            <Label htmlFor="province">Province *</Label>
+            <Label htmlFor="province" className="text-slate-900 dark:text-white">Province *</Label>
             <Select value={taxData.province} onValueChange={(value) => updateField("province", value)}>
               <SelectTrigger id="province">
                 <SelectValue placeholder="Select province" />
@@ -254,15 +254,15 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
       </Card>
 
       {/* Employment Income */}
-      <Card className="shadow-sm">
+      <Card className="shadow-lg bg-white/80 dark:bg-slate-800/80 border-slate-200/50 dark:border-slate-700/50 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="text-xl">Employment Income</CardTitle>
-          <CardDescription>Income from employment (from T4 slip)</CardDescription>
+          <CardTitle className="text-xl text-slate-900 dark:text-white">Employment Income</CardTitle>
+          <CardDescription className="text-slate-600 dark:text-slate-300">Income from employment (from T4 slip)</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <Label htmlFor="employmentIncome">Employment Income *</Label>
+              <Label htmlFor="employmentIncome" className="text-slate-900 dark:text-white">Employment Income *</Label>
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -280,74 +280,79 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
               placeholder="$0"
               value={taxData.employmentIncome || ""}
               onChange={(e) => updateField("employmentIncome", Number.parseFloat(e.target.value) || 0)}
+              className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
             />
           </div>
         </CardContent>
       </Card>
 
       {/* Other Income */}
-      <Card className="shadow-sm">
+      <Card className="shadow-lg bg-white/80 dark:bg-slate-800/80 border-slate-200/50 dark:border-slate-700/50 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="text-xl">Other Income Sources</CardTitle>
-          <CardDescription>Additional sources of income</CardDescription>
+          <CardTitle className="text-xl text-slate-900 dark:text-white">Other Income Sources</CardTitle>
+          <CardDescription className="text-slate-600 dark:text-slate-300">Additional sources of income</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="otherIncome">Other Income</Label>
+            <Label htmlFor="otherIncome" className="text-slate-900 dark:text-white">Other Income</Label>
             <Input
               id="otherIncome"
               type="number"
               placeholder="$0"
               value={taxData.otherIncome || ""}
               onChange={(e) => updateField("otherIncome", Number.parseFloat(e.target.value) || 0)}
+              className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="4285 0">Capital Gains</Label>
+            <Label htmlFor="capitalGains" className="text-slate-900 dark:text-white">Capital Gains</Label>
             <Input
               id="capitalGains"
               type="number"
               placeholder="$0"
               value={taxData.capitalGains || ""}
               onChange={(e) => updateField("capitalGains", Number.parseFloat(e.target.value) || 0)}
+              className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="eligibleDividends">Eligible Dividends</Label>
+            <Label htmlFor="eligibleDividends" className="text-slate-900 dark:text-white">Eligible Dividends</Label>
             <Input
               id="eligibleDividends"
               type="number"
               placeholder="$0"
               value={taxData.eligibleDividends || ""}
               onChange={(e) => updateField("eligibleDividends", Number.parseFloat(e.target.value) || 0)}
+              className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="ineligibleDividends">Ineligible Dividends</Label>
+            <Label htmlFor="ineligibleDividends" className="text-slate-900 dark:text-white">Ineligible Dividends</Label>
             <Input
               id="ineligibleDividends"
               type="number"
               placeholder="$0"
               value={taxData.ineligibleDividends || ""}
               onChange={(e) => updateField("ineligibleDividends", Number.parseFloat(e.target.value) || 0)}
+              className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
             />
           </div>
         </CardContent>
       </Card>
 
       {/* RRSP & FHSA */}
-      <Card className="shadow-sm">
+      <Card className="shadow-lg bg-white/80 dark:bg-slate-800/80 border-slate-200/50 dark:border-slate-700/50 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="text-xl">RRSP & FHSA Contributions</CardTitle>
-          <CardDescription>Reduce your taxable income with registered savings</CardDescription>
+          <CardTitle className="text-xl text-slate-900 dark:text-white">RRSP & FHSA Contributions</CardTitle>
+          <CardDescription className="text-slate-600 dark:text-slate-300">Reduce your taxable income with registered savings</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <Label htmlFor="rrspContribution">RRSP Contribution</Label>
+              <Label htmlFor="rrspContribution" className="text-slate-900 dark:text-white">RRSP Contribution</Label>
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -365,12 +370,13 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
               placeholder="$0"
               value={taxData.rrspContribution || ""}
               onChange={(e) => updateField("rrspContribution", Number.parseFloat(e.target.value) || 0)}
+              className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
             />
           </div>
 
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <Label htmlFor="fhsaContribution">FHSA Contribution</Label>
+              <Label htmlFor="fhsaContribution" className="text-slate-900 dark:text-white">FHSA Contribution</Label>
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -388,26 +394,28 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
               placeholder="$0"
               value={taxData.fhsaContribution || ""}
               onChange={(e) => updateField("fhsaContribution", Number.parseFloat(e.target.value) || 0)}
+              className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
             />
           </div>
         </CardContent>
       </Card>
 
       {/* Taxes Paid */}
-      <Card className="shadow-sm">
+      <Card className="shadow-lg bg-white/80 dark:bg-slate-800/80 border-slate-200/50 dark:border-slate-700/50 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="text-xl">Taxes Already Paid</CardTitle>
-          <CardDescription>Income tax deducted at source</CardDescription>
+          <CardTitle className="text-xl text-slate-900 dark:text-white">Taxes Already Paid</CardTitle>
+          <CardDescription className="text-slate-600 dark:text-slate-300">Income tax deducted at source</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-2">
-            <Label htmlFor="taxesPaid">Income Tax Paid</Label>
+            <Label htmlFor="taxesPaid" className="text-slate-900 dark:text-white">Income Tax Paid</Label>
             <Input
               id="taxesPaid"
               type="number"
               placeholder="$0"
               value={taxData.taxesPaid || ""}
               onChange={(e) => updateField("taxesPaid", Number.parseFloat(e.target.value) || 0)}
+              className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
             />
           </div>
         </CardContent>
@@ -429,67 +437,67 @@ function IncomeTaxResults({ taxData }: { taxData: IncomeTaxData }) {
   }
 
   return (
-    <Card className="shadow-sm">
+    <Card className="shadow-lg bg-white/80 dark:bg-slate-800/80 border-slate-200/50 dark:border-slate-700/50 backdrop-blur-sm">
       <CardHeader>
-        <CardTitle className="text-xl">Tax Calculation Results</CardTitle>
-        <CardDescription>Your income tax calculation based on current inputs</CardDescription>
+        <CardTitle className="text-xl text-slate-900 dark:text-white">Tax Calculation Results</CardTitle>
+        <CardDescription className="text-slate-600 dark:text-slate-300">Your income tax calculation based on current inputs</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="space-y-3">
-          <div className="flex justify-between">
-            <span className="text-sm font-medium">Total Income:</span>
-            <span className="text-sm font-mono">{formatCurrency(results.totalIncome)}</span>
+          <div className="space-y-3">
+            <div className="flex justify-between">
+              <span className="text-sm font-medium text-slate-900 dark:text-white">Total Income:</span>
+              <span className="text-sm font-mono text-slate-900 dark:text-white">{formatCurrency(results.totalIncome)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm font-medium text-slate-900 dark:text-white">Total Deductions:</span>
+              <span className="text-sm font-mono text-slate-900 dark:text-white">{formatCurrency(results.totalDeductions)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm font-medium text-slate-900 dark:text-white">Taxable Income:</span>
+              <span className="text-sm font-mono text-slate-900 dark:text-white">{formatCurrency(results.taxableIncome)}</span>
+            </div>
           </div>
-          <div className="flex justify-between">
-            <span className="text-sm font-medium">Total Deductions:</span>
-            <span className="text-sm font-mono">{formatCurrency(results.totalDeductions)}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-sm font-medium">Taxable Income:</span>
-            <span className="text-sm font-mono">{formatCurrency(results.taxableIncome)}</span>
-          </div>
-        </div>
 
-        <div className="pt-3 border-t space-y-3">
+        <div className="pt-3 border-t border-slate-200 dark:border-slate-700 space-y-3">
           <div className="flex justify-between">
-            <span className="text-sm font-medium">Federal Tax:</span>
-            <span className="text-sm font-mono">{formatCurrency(results.federalTax)}</span>
+            <span className="text-sm font-medium text-slate-900 dark:text-white">Federal Tax:</span>
+            <span className="text-sm font-mono text-slate-900 dark:text-white">{formatCurrency(results.federalTax)}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-sm font-medium">Provincial Tax:</span>
-            <span className="text-sm font-mono">{formatCurrency(results.provincialTax)}</span>
+            <span className="text-sm font-medium text-slate-900 dark:text-white">Provincial Tax:</span>
+            <span className="text-sm font-mono text-slate-900 dark:text-white">{formatCurrency(results.provincialTax)}</span>
           </div>
           <div className="flex justify-between font-semibold">
-            <span>Total Tax:</span>
-            <span className="font-mono">{formatCurrency(results.totalTax)}</span>
+            <span className="text-slate-900 dark:text-white">Total Tax:</span>
+            <span className="font-mono text-slate-900 dark:text-white">{formatCurrency(results.totalTax)}</span>
           </div>
         </div>
 
-        <div className="pt-3 border-t space-y-3">
+        <div className="pt-3 border-t border-slate-200 dark:border-slate-700 space-y-3">
           <div className="flex justify-between">
-            <span className="text-sm font-medium">Taxes Paid:</span>
-            <span className="text-sm font-mono">{formatCurrency(results.taxesPaid)}</span>
+            <span className="text-sm font-medium text-slate-900 dark:text-white">Taxes Paid:</span>
+            <span className="text-sm font-mono text-slate-900 dark:text-white">{formatCurrency(results.taxesPaid)}</span>
           </div>
-          <div className={`flex justify-between font-semiboldt ${
-            results.taxesOwedOrRefund >= 0 ? 'text-red-600' : 'text-green-600'
+          <div className={`flex justify-between font-semibold ${
+            results.taxesOwedOrRefund >= 0 ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'
           }`}>
             <span>{results.taxesOwedOrRefund >= 0 ? 'Taxes Still Owed:' : 'Refund:'}</span>
             <span className="font-mono">{formatCurrency(Math.abs(results.taxesOwedOrRefund))}</span>
           </div>
         </div>
 
-        <div className="pt-3 border-t space-y-3">
+        <div className="pt-3 border-t border-slate-200 dark:border-slate-700 space-y-3">
           <div className="flex justify-between">
-            <span className="text-sm font-medium">After-Tax Income:</span>
-            <span className="text-sm font-mono">{formatCurrency(results.afterTaxIncome)}</span>
+            <span className="text-sm font-medium text-slate-900 dark:text-white">After-Tax Income:</span>
+            <span className="text-sm font-mono text-slate-900 dark:text-white">{formatCurrency(results.afterTaxIncome)}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-sm font-medium">Average Tax Rate:</span>
-            <span className="text-sm font-mono">{results.averageTaxRate.toFixed(1)}%</span>
+            <span className="text-sm font-medium text-slate-900 dark:text-white">Average Tax Rate:</span>
+            <span className="text-sm font-mono text-slate-900 dark:text-white">{results.averageTaxRate.toFixed(1)}%</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-sm font-medium">Marginal Tax Rate:</span>
-            <span className="text-sm font-mono">{results.marginalTaxRate.toFixed(1)}%</span>
+            <span className="text-sm font-medium text-slate-900 dark:text-white">Marginal Tax Rate:</span>
+            <span className="text-sm font-mono text-slate-900 dark:text-white">{results.marginalTaxRate.toFixed(1)}%</span>
           </div>
         </div>
       </CardContent>
@@ -513,10 +521,10 @@ export function IncomeTaxCalculator() {
   return (
     <div id="calculator" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 mt-12">
       <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 text-balance">
+        <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 text-balance">
           Canada Income Tax Calculator
         </h1>
-        <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-pretty leading-relaxed">
+        <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto text-pretty leading-relaxed">
           Calculate your income tax instantly. Get accurate estimates for federal tax, provincial tax, and see your total tax liability or refund.
         </p>
       </div>

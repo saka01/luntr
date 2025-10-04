@@ -5,7 +5,7 @@ import { Footer } from "@/components/footer"
 
 export default function Home() {
   return (
-    <div className="flex flex-col h-screen overflow-hidden">
+    <div className="flex flex-col screen-with-header overflow-hidden">
       <Hero />
       <Footer />
     </div>

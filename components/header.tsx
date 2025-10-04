@@ -13,8 +13,8 @@ export const Header = () => {
   ]
 
   return (
-    <div className="fixed z-50 pt-8 md:pt-14 top-0 left-0 w-full">
-      <header className="flex items-center justify-between container">
+    <div className="fixed z-50 top-0 left-0 w-full backdrop-blur-xs">
+      <header className="flex items-center justify-between container py-4 md:py-4">
         <Link href="/">
           <Logo className="w-[100px] md:w-[120px]" />
         </Link>
@@ -30,7 +30,6 @@ export const Header = () => {
           ))}
         </nav>
         <MobileMenu />
-       
       </header>
     </div>
   );

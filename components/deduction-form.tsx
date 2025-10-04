@@ -157,14 +157,14 @@ export function DeductionForm({ currentStep, onNext, onPrevious, formData }: Ded
             : 'opacity-100 transform translate-x-0 scale-100'
         }`}
       >
-        <Card className="p-8 bg-card border-border">
+        <Card className="p-8 bg-white/80 dark:bg-slate-800/80 border-slate-200/50 dark:border-slate-700/50 backdrop-blur-sm shadow-xl">
           <div className="space-y-6">
             {/* Question Header */}
             <div className="text-center space-y-4">
-              <h2 className="text-2xl font-bold font-sentient">
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
                 {currentQuestion.question}
               </h2>
-              <p className="text-muted-foreground text-lg">
+              <p className="text-slate-600 dark:text-slate-300 text-lg">
                 {currentQuestion.description}
               </p>
             </div>
@@ -175,23 +175,23 @@ export function DeductionForm({ currentStep, onNext, onPrevious, formData }: Ded
                 <button
                   key={option.value}
                   onClick={() => handleOptionSelect(option.value)}
-                  className={`w-full p-6 text-left rounded-lg border-2 transition-all duration-300 transform hover:scale-[1.02] ${
+                  className={`w-full p-6 text-left rounded-xl border-2 transition-all duration-300 transform hover:scale-[1.02] ${
                     selectedOption === option.value
-                      ? 'border-primary bg-primary/10 text-primary-foreground shadow-lg shadow-primary/20'
-                      : 'border-border hover:border-primary/50 hover:bg-muted/50 hover:shadow-md'
+                      ? 'border-blue-500 bg-gradient-to-r from-blue-50 to-emerald-50 dark:from-blue-900/20 dark:to-emerald-900/20 text-slate-900 dark:text-white shadow-lg shadow-blue-500/20'
+                      : 'border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:shadow-md bg-white dark:bg-slate-800'
                   }`}
                 >
                   <div className="flex items-center space-x-4">
                     <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
                       selectedOption === option.value
-                        ? 'border-primary bg-primary'
-                        : 'border-muted-foreground'
+                        ? 'border-blue-500 bg-blue-500'
+                        : 'border-slate-300 dark:border-slate-600'
                     }`}>
                       {selectedOption === option.value && (
-                        <div className="w-2 h-2 rounded-full bg-primary-foreground" />
+                        <div className="w-2 h-2 rounded-full bg-white" />
                       )}
                     </div>
-                    <span className="text-lg font-medium">{option.label}</span>
+                    <span className="text-lg font-medium text-slate-900 dark:text-white">{option.label}</span>
                   </div>
                 </button>
               ))}
@@ -202,8 +202,7 @@ export function DeductionForm({ currentStep, onNext, onPrevious, formData }: Ded
               <Button
                 onClick={handlePrevious}
                 disabled={currentStep === 0}
-                variant="default"
-                className="px-8"
+                className="px-8 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 bg-white dark:bg-slate-800"
               >
                 Previous
               </Button>
@@ -211,8 +210,7 @@ export function DeductionForm({ currentStep, onNext, onPrevious, formData }: Ded
               <Button
                 onClick={handleNext}
                 disabled={!selectedOption}
-                variant="default"
-                className="px-8"
+                className="px-8 bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 {currentStep === questions.length - 1 ? 'Find My Deductions' : 'Next'}
               </Button>
