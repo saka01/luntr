@@ -21,8 +21,8 @@ export function Hero() {
           new economy
         </h1>
        
-        <p className="font-mono text-sm sm:text-base text-foreground/60 text-balance max-w-[440px] mx-auto mb-0 mt-8">
-          Tallo helps accountants uncover missed deductions for freelancers, sole proprietors, and creators through
+        <p className="font-mono text-sm sm:text-base text-foreground/60 text-balance max-w-[540px] mx-auto mb-0 mt-8">
+          Tallo finds missed deductions for freelancers, sole proprietors, and creators with
           intelligent automation + client self-review workflows.{" "}
         </p>
  <p className="italic font-thin my-7 text-primary opacity-80">
