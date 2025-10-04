@@ -5,7 +5,8 @@ import { MobileMenu } from "./mobile-menu";
 export const Header = () => {
 
   const menuItems = [
-    { name: "T2125 Tax Calculator", href: "/t2125-tax-calculator" },
+    { name: "T2125 Tax Calculator", href: "/canada-t2125-tax-calculator" },
+    { name: "Income Tax Calculator", href: "/canada-income-tax-calculator" },
   ]
 
   return (

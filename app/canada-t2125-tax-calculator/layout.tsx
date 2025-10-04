@@ -21,7 +21,7 @@ export const metadata: Metadata = {
       title: "Tallo | T2125 Tax Calculator for Canadian Freelancers",
       description:
         "Calculate your self-employment taxes instantly. Get accurate estimates for federal tax, provincial tax, and CPP contributions with our comprehensive calculator.",
-      url: "https://tallo.ca/t2125-tax-calculator",
+      url: "https://tallo.ca/canada-t2125-tax-calculator",
       siteName: "Tallo",
       locale: "en_CA",
       type: "website",
