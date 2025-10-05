@@ -42,12 +42,12 @@ export function Hero() {
             </Button>
           </a>
           <a className="contents" href="mailto:alex@taxdeductly.ca">
-            <Button 
-              variant="variant" 
-              className="w-full sm:w-auto" 
-              onMouseEnter={() => setHovering(true)} 
-              onMouseLeave={() => setHovering(false)}
-            >
+              <Button 
+                variant="outline" 
+                className="w-full sm:w-auto" 
+                onMouseEnter={() => setHovering(true)} 
+                onMouseLeave={() => setHovering(false)}
+              >
               Join Waitlist
             </Button>
           </a>
