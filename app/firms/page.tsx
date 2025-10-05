@@ -1,6 +1,6 @@
 "use client"
 
-import { Hero } from "@/components/hero"
+import { Hero } from "./hero"
 import { Footer } from "@/components/footer"
 
 export default function Home() {
