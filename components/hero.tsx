@@ -12,7 +12,7 @@ export function Hero() {
       <GL hovering={true} />
 
       <div className="pb-1 mt-24 text-center relative">
-        <Pill className="mb-6">INVITE-ONLY RELEASE</Pill>
+        <Pill className="mb-6">INVITE-ONLY RELEASE 2025</Pill>
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-sentient">
         Stop losing
         {" "}
