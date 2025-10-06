@@ -20,11 +20,11 @@ export function Hero() {
         duration={5000}
           words={["Entrepreneurs", "Founders", "Solopreneurs", "Contractors", "Freelancers", "Creators"]}
         /> </p>
-        <h1 className="text-4xl sm:text-5xl md:text-6xl md:text-nowrap ">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl md:text-nowrap font-bold md:mt-4">
         Stop losing
         {" "}
-          <i>
-            thousands
+          <i className="italic font-thin">
+            thousand$
           </i>{" "}
           in taxes every year.
         </h1>
