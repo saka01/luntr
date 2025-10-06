@@ -190,7 +190,7 @@ export function CalculatorForm({ taxData, setTaxData }: Props) {
         <CardContent className="space-y-4">
           <Collapsible open={showDeductions} onOpenChange={setShowDeductions}>
             <CollapsibleTrigger asChild>
-              <Button variant="ghost" className="w-full justify-between p-0 h-auto font-normal">
+              <Button variant="ghost" className="w-full justify-between p-0 h-auto ">
                 <span className="text-sm text-muted-foreground">
                   {showDeductions ? "Hide" : "Show"} expense categories
                 </span>

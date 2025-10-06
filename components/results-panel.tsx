@@ -46,57 +46,57 @@ export function ResultsPanel({ taxData }: Props) {
       <CardContent className="pt-6 space-y-6">
         {/* Summary Section */}
         <div className="space-y-3">
-          <h3 className="font-semibold text-lg">Income Summary</h3>
+          <h3 className=" text-lg">Income Summary</h3>
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Total Income</span>
-              <span className="font-medium">{formatCurrency(results.totalIncome)}</span>
+              <span className="">{formatCurrency(results.totalIncome)}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Total Deductions</span>
-              <span className="font-medium text-accent">−{formatCurrency(results.totalDeductions)}</span>
+              <span className=" text-accent">−{formatCurrency(results.totalDeductions)}</span>
             </div>
             <div className="h-px bg-border my-2" />
             <div className="flex justify-between">
-              <span className="font-semibold">Taxable Income</span>
-              <span className="font-semibold">{formatCurrency(results.taxableIncome)}</span>
+              <span className="">Taxable Income</span>
+              <span className="">{formatCurrency(results.taxableIncome)}</span>
             </div>
           </div>
         </div>
 
         {/* Tax Breakdown */}
         <div className="space-y-3">
-          <h3 className="font-semibold text-lg">Tax Breakdown</h3>
+          <h3 className=" text-lg">Tax Breakdown</h3>
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Federal Tax</span>
-              <span className="font-medium">{formatCurrency(results.federalTax)}</span>
+              <span className="">{formatCurrency(results.federalTax)}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Provincial Tax</span>
-              <span className="font-medium">{formatCurrency(results.provincialTax)}</span>
+              <span className="">{formatCurrency(results.provincialTax)}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">CPP Contributions</span>
-              <span className="font-medium">{formatCurrency(results.cppContributions)}</span>
+              <span className="">{formatCurrency(results.cppContributions)}</span>
             </div>
             <div className="h-px bg-border my-2" />
             <div className="flex justify-between">
-              <span className="font-semibold">Total Tax Owing</span>
-              <span className="font-semibold text-lg">{formatCurrency(results.totalTax)}</span>
+              <span className="">Total Tax Owing</span>
+              <span className=" text-lg">{formatCurrency(results.totalTax)}</span>
             </div>
             {taxData.taxesPaid > 0 && (
               <>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Taxes Already Paid</span>
-                  <span className="font-medium">−{formatCurrency(taxData.taxesPaid)}</span>
+                  <span className="">−{formatCurrency(taxData.taxesPaid)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="font-semibold">
+                  <span className="">
                     Balance {results.totalTax - taxData.taxesPaid >= 0 ? "Owing" : "Refund"}
                   </span>
                   <span
-                    className={`font-semibold ${results.totalTax - taxData.taxesPaid >= 0 ? "text-destructive" : "text-accent"}`}
+                    className={` ${results.totalTax - taxData.taxesPaid >= 0 ? "text-destructive" : "text-accent"}`}
                   >
                     {formatCurrency(Math.abs(results.totalTax - taxData.taxesPaid))}
                   </span>
@@ -110,41 +110,41 @@ export function ResultsPanel({ taxData }: Props) {
         <div className="p-4 bg-accent/10 rounded-lg space-y-2">
           <div className="flex justify-between items-center">
             <span className="text-sm text-muted-foreground">After-Tax Income</span>
-            <span className="text-2xl font-bold text-accent">{formatCurrency(results.afterTaxIncome)}</span>
+            <span className="text-2xl  text-accent">{formatCurrency(results.afterTaxIncome)}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Average Tax Rate</span>
-            <span className="font-medium">{formatPercent(results.averageTaxRate)}</span>
+            <span className="">{formatPercent(results.averageTaxRate)}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Marginal Tax Rate</span>
-            <span className="font-medium">{formatPercent(results.marginalTaxRate)}</span>
+            <span className="">{formatPercent(results.marginalTaxRate)}</span>
           </div>
         </div>
 
         {/* T2125 Summary */}
         <div className="space-y-3">
-          <h3 className="font-semibold text-lg">T2125 Business Summary</h3>
+          <h3 className=" text-lg">T2125 Business Summary</h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-muted-foreground">Business Income</span>
-              <span className="font-medium">{formatCurrency(taxData.selfEmploymentIncome)}</span>
+              <span className="">{formatCurrency(taxData.selfEmploymentIncome)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Business Expenses</span>
-              <span className="font-medium">−{formatCurrency(results.businessExpenses)}</span>
+              <span className="">−{formatCurrency(results.businessExpenses)}</span>
             </div>
             <div className="h-px bg-border my-2" />
             <div className="flex justify-between">
-              <span className="font-semibold">Net Business Income</span>
-              <span className="font-semibold">{formatCurrency(results.netBusinessIncome)}</span>
+              <span className="">Net Business Income</span>
+              <span className="">{formatCurrency(results.netBusinessIncome)}</span>
             </div>
           </div>
         </div>
 
         {/* Promotional CTA Section */}
         <div className="space-y-3 pt-4 p-6 bg-purple-100 rounded-lg">
-          <h3 className="font-bold text-xl text-purple-950 leading-tight">
+          <h3 className=" text-xl text-purple-950 leading-tight">
             Find $450 - $2670* in business deductions           
           </h3>
           <p className="text-sm text-purple-900 leading-relaxed">
@@ -161,7 +161,7 @@ export function ResultsPanel({ taxData }: Props) {
 
         {/* Detailed Summary Explanation Section */}
         <div className="space-y-4 pt-4">
-          <h3 className="font-bold text-lg">Summary</h3>
+          <h3 className=" text-lg">Summary</h3>
           <p className="text-sm leading-relaxed text-foreground/90">
             If you make {formatCurrency(results.totalIncome)} a year living in {taxData.province}, you will be taxed{" "}
             {formatCurrency(results.totalTax)}. That means your net pay will be {formatCurrency(results.afterTaxIncome)}{" "}

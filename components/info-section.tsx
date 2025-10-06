@@ -13,11 +13,11 @@ export function InfoSection() {
         {/* What is T2125 */}
         <section id="what-is-t2125" className="animate-fade-in">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium mb-4">
+            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm  mb-4">
               <span className="w-1.5 h-1.5 bg-primary rounded-full" />
               Tax Form Guide
             </div>
-            <h2 className="text-4xl font-bold mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
+            <h2 className="text-4xl  mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
               What is the T2125 Form?
             </h2>
           </div>
@@ -34,11 +34,11 @@ export function InfoSection() {
         {/* Common Deductions */}
         <section className="animate-fade-in">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-secondary/10 text-secondary px-3 py-1 rounded-full text-sm font-medium mb-4">
+            <div className="inline-flex items-center gap-2 bg-secondary/10 text-secondary px-3 py-1 rounded-full text-sm  mb-4">
               <span className="w-1.5 h-1.5 bg-secondary rounded-full" />
               Deduction Categories
             </div>
-            <h2 className="text-4xl font-bold mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
+            <h2 className="text-4xl  mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
               Common T2125 Deductions for Freelancers
             </h2>
           </div>
@@ -94,11 +94,11 @@ export function InfoSection() {
         {/* How It Works */}
         <section id="how-it-works" className="animate-fade-in">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-3 py-1 rounded-full text-sm font-medium mb-4">
+            <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-3 py-1 rounded-full text-sm  mb-4">
               <span className="w-1.5 h-1.5 bg-accent rounded-full" />
               How It Works
             </div>
-            <h2 className="text-4xl font-bold mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
+            <h2 className="text-4xl  mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
               How the T2125 Calculator Works
             </h2>
           </div>
@@ -121,11 +121,11 @@ export function InfoSection() {
         {/* FAQ */}
         <section id="faq" className="animate-fade-in">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium mb-4">
+            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm  mb-4">
               <span className="w-1.5 h-1.5 bg-primary rounded-full" />
               FAQ
             </div>
-            <h2 className="text-4xl font-bold mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
+            <h2 className="text-4xl  mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
               Frequently Asked Questions
             </h2>
           </div>

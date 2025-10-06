@@ -25,9 +25,6 @@
   --input: #424242;
   --ring: #FFC700;
   --radius: 0.625rem;
-  --font-sans: var(--font-space-grotesk), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: var(--font-space-grotesk), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-serif: var(--font-space-grotesk), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --shadow-x: 0px;
   --shadow-y: 2px;
   --shadow-blur: 8px;
@@ -65,9 +62,6 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-space-grotesk), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: var(--font-space-grotesk), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-display: var(--font-space-grotesk), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -91,7 +85,6 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --font-serif: var(--font-space-grotesk), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --shadow-2xs: var(--shadow-x) var(--shadow-y)
     color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
   --shadow-xs: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-spread)
@@ -147,7 +140,6 @@
   }
   
   html {
-    font-family: var(--font-sans);
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     font-variant-numeric: tabular-nums;
     -webkit-font-smoothing: antialiased;
@@ -156,15 +148,12 @@
   
   body {
     @apply bg-background text-foreground;
-    font-family: var(--font-sans);
     line-height: 1.6;
     letter-spacing: -0.01em;
   }
   
   /* Typography hierarchy optimized for fintech */
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-sans);
-    font-weight: 600;
     line-height: 1.2;
     letter-spacing: -0.025em;
     color: var(--foreground);
@@ -172,42 +161,36 @@
   
   h1 {
     font-size: 2.5rem;
-    font-weight: 700;
     line-height: 1.1;
     letter-spacing: -0.03em;
   }
   
   h2 {
     font-size: 2rem;
-    font-weight: 600;
     line-height: 1.2;
     letter-spacing: -0.025em;
   }
   
   h3 {
     font-size: 1.5rem;
-    font-weight: 600;
     line-height: 1.3;
     letter-spacing: -0.02em;
   }
   
   h4 {
     font-size: 1.25rem;
-    font-weight: 600;
     line-height: 1.4;
     letter-spacing: -0.015em;
   }
   
   h5 {
     font-size: 1.125rem;
-    font-weight: 600;
     line-height: 1.4;
     letter-spacing: -0.01em;
   }
   
   h6 {
     font-size: 1rem;
-    font-weight: 600;
     line-height: 1.5;
     letter-spacing: -0.005em;
   }
@@ -229,22 +212,16 @@
   
   /* Button typography */
   button {
-    font-family: var(--font-sans);
-    font-weight: 500;
     letter-spacing: -0.01em;
   }
   
   /* Input typography */
   input, textarea, select {
-    font-family: var(--font-sans);
-    font-weight: 400;
     letter-spacing: -0.01em;
   }
   
   /* Code and monospace */
   code, pre {
-    font-family: var(--font-sans);
-    font-weight: 400;
     letter-spacing: 0;
   }
 }

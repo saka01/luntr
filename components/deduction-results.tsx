@@ -72,7 +72,7 @@ export function LeadCaptureForm({ deductions, onRestart }: LeadCaptureFormProps)
               </div>
               
               <div className="space-y-4">
-                <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
+                <h2 className="text-3xl  text-slate-900 dark:text-white">
                   Check Your Email!
                 </h2>
                 <p className="text-xl text-slate-600 dark:text-slate-300">
@@ -111,7 +111,7 @@ export function LeadCaptureForm({ deductions, onRestart }: LeadCaptureFormProps)
                   <CheckCircle className="w-8 h-8 text-blue-500" />
                 </div>
               </div>
-              <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
+              <h2 className="text-3xl  text-slate-900 dark:text-white">
                 Get Your Personalized Tax Report
               </h2>
               <p className="text-slate-600 dark:text-slate-300 text-lg max-w-2xl mx-auto">
@@ -121,7 +121,7 @@ export function LeadCaptureForm({ deductions, onRestart }: LeadCaptureFormProps)
               
               {deductions.length > 0 && (
                 <div className="bg-gradient-to-r from-blue-50 to-emerald-50 dark:from-blue-900/20 dark:to-emerald-900/20 border border-blue-200 dark:border-blue-700/50 rounded-lg p-4 max-w-2xl mx-auto">
-                  <p className="text-sm text-blue-600 dark:text-blue-300 font-medium">
+                  <p className="text-sm text-blue-600 dark:text-blue-300 ">
                     💡 <strong>Tax Season Tip:</strong> The average Canadian freelancer saves $2,400+ annually with proper deductions. 
                     Don't miss out on your potential savings!
                   </p>
@@ -133,7 +133,7 @@ export function LeadCaptureForm({ deductions, onRestart }: LeadCaptureFormProps)
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName" className="text-base font-medium text-slate-900 dark:text-white">
+                  <Label htmlFor="firstName" className="text-base  text-slate-900 dark:text-white">
                     First Name *
                   </Label>
                   <div className="relative group">
@@ -155,7 +155,7 @@ export function LeadCaptureForm({ deductions, onRestart }: LeadCaptureFormProps)
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-base font-medium text-slate-900 dark:text-white">
+                  <Label htmlFor="email" className="text-base  text-slate-900 dark:text-white">
                     Email Address *
                   </Label>
                   <div className="relative group">
@@ -182,7 +182,7 @@ export function LeadCaptureForm({ deductions, onRestart }: LeadCaptureFormProps)
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full h-16 text-lg font-semibold bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-lg disabled:hover:scale-100 disabled:hover:shadow-none"
+                  className="w-full h-16 text-lg  bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-lg disabled:hover:scale-100 disabled:hover:shadow-none"
                 >
                   {isSubmitting ? (
                     <div className="flex items-center space-x-2">

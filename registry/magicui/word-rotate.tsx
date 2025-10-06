@@ -43,7 +43,7 @@ export function WordRotate({
   }
 
   return (
-    <div className="overflow-hidden py-2">
+    <div className="overflow-hidden py-2 w-[500px]" style={{ textAlign: 'left' }}>
       <AnimatePresence mode="wait">
         <motion.h1 key={words[index]} className={cn(className)} {...motionProps}>
           {words[index]}

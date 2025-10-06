@@ -14,23 +14,24 @@ export function Hero() {
 
       <div className="pb-1 mt-24 text-center relative">
         <Pill className="mb-6">INVITE-ONLY RELEASE</Pill>
-        <WordRotate
-        className="as-span text-5xl sm:text-6xl md:text-7xl font-bold text-[#0AAFD0] italic"
-        duration={5000}
-          words={["Entrepreneurs", "Founders", "Solopreneurs", "Contractors", "Freelancers", "Creators"]}
-        />
-        <h1 className="font-sans text-5xl sm:text-6xl md:text-7xl font-bold">
+        <h1 className="text-5xl sm:text-6xl md:text-7xl ">
         Stop losing
         {" "}
-          <i className="font-light">
+          <i>
             thousands
           </i>{" "}
           in taxes every year.
         </h1>
+
+       <p className="text-5xl sm:text-6xl md:text-7xl  flex flex-row items-center justify-center gap-2 mx-auto"><span className="mr-2">For {" "}</span> <WordRotate
+        className="text-5xl sm:text-6xl md:text-7xl  text-[#0AAFD0] italic mr-2 max-w-[400px]"
+        duration={5000}
+          words={["Entrepreneurs", "Founders", "Solopreneurs", "Contractors", "Freelancers", "Creators"]}
+        /> </p>
        
-        <p className="font-sans text-sm sm:text-base text-foreground/60 text-balance max-w-[540px] mx-auto mb-0 mt-8">
+        <p className="text-sm sm:text-base text-foreground/60 text-balance max-w-[540px] mx-auto mb-0 mt-8">
         Tallo automatically finds CRA-eligible write-offs. <br/> No spreadsheets, no guesswork.        </p>
-        <p className="font-semibold my-7 text-primary opacity-80">
+        <p className="my-7 text-primary opacity-80">
           Backed by CPA | Built in Canada for Canadians 🇨🇦
         </p>
 

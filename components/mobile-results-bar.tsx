@@ -33,7 +33,7 @@ export function MobileResultsBar({ taxData, onViewResults, show, onClose }: Prop
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="text-xs text-muted-foreground">Estimated Tax</p>
-            <p className="text-lg font-bold">{formatCurrency(results.totalTax)}</p>
+            <p className="text-lg ">{formatCurrency(results.totalTax)}</p>
           </div>
           <Button onClick={onViewResults} className="bg-primary text-primary-foreground">
             View Results
@@ -49,43 +49,43 @@ export function MobileResultsBar({ taxData, onViewResults, show, onClose }: Prop
           </SheetHeader>
           <div className="mt-6 space-y-6">
             <div className="space-y-3">
-              <h3 className="font-semibold text-lg">Income Summary</h3>
+              <h3 className=" text-lg">Income Summary</h3>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Total Income</span>
-                  <span className="font-medium">{formatCurrency(results.totalIncome)}</span>
+                  <span className="">{formatCurrency(results.totalIncome)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Total Deductions</span>
-                  <span className="font-medium text-accent">−{formatCurrency(results.totalDeductions)}</span>
+                  <span className=" text-accent">−{formatCurrency(results.totalDeductions)}</span>
                 </div>
                 <div className="h-px bg-border my-2" />
                 <div className="flex justify-between">
-                  <span className="font-semibold">Taxable Income</span>
-                  <span className="font-semibold">{formatCurrency(results.taxableIncome)}</span>
+                  <span className="">Taxable Income</span>
+                  <span className="">{formatCurrency(results.taxableIncome)}</span>
                 </div>
               </div>
             </div>
 
             <div className="space-y-3">
-              <h3 className="font-semibold text-lg">Tax Breakdown</h3>
+              <h3 className=" text-lg">Tax Breakdown</h3>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Federal Tax</span>
-                  <span className="font-medium">{formatCurrency(results.federalTax)}</span>
+                  <span className="">{formatCurrency(results.federalTax)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Provincial Tax</span>
-                  <span className="font-medium">{formatCurrency(results.provincialTax)}</span>
+                  <span className="">{formatCurrency(results.provincialTax)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">CPP Contributions</span>
-                  <span className="font-medium">{formatCurrency(results.cppContributions)}</span>
+                  <span className="">{formatCurrency(results.cppContributions)}</span>
                 </div>
                 <div className="h-px bg-border my-2" />
                 <div className="flex justify-between">
-                  <span className="font-semibold">Total Tax Owing</span>
-                  <span className="font-semibold text-lg">{formatCurrency(results.totalTax)}</span>
+                  <span className="">Total Tax Owing</span>
+                  <span className=" text-lg">{formatCurrency(results.totalTax)}</span>
                 </div>
               </div>
             </div>
@@ -93,7 +93,7 @@ export function MobileResultsBar({ taxData, onViewResults, show, onClose }: Prop
             <div className="p-4 bg-accent/10 rounded-lg">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-muted-foreground">After-Tax Income</span>
-                <span className="text-2xl font-bold text-accent">{formatCurrency(results.afterTaxIncome)}</span>
+                <span className="text-2xl  text-accent">{formatCurrency(results.afterTaxIncome)}</span>
               </div>
             </div>
           </div>

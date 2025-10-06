@@ -42,12 +42,12 @@ export default function VehicleExpensesT2125() {
         <article className="max-w-4xl mx-auto">
           <header className="mb-12">
             <div className="flex items-center space-x-2 mb-4">
-              <span className="px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">
+              <span className="px-3 py-1 bg-green-100 text-green-800 text-sm  rounded-full">
                 Deductions
               </span>
               <span className="text-sm text-slate-500">8 min read</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+            <h1 className="text-4xl md:text-5xl  text-slate-900 mb-6">
               Vehicle Expenses and T2125: What You Can Deduct
             </h1>
             <p className="text-xl text-slate-600 leading-relaxed">
@@ -58,7 +58,7 @@ export default function VehicleExpensesT2125() {
 
           {/* Table of Contents */}
           <div className="bg-white rounded-xl p-6 mb-12 shadow-sm border border-slate-200">
-            <h2 className="text-xl font-bold text-slate-900 mb-4">Table of Contents</h2>
+            <h2 className="text-xl  text-slate-900 mb-4">Table of Contents</h2>
             <ul className="space-y-2 text-slate-600">
               <li><a href="#overview" className="hover:text-blue-600">Vehicle Expense Overview</a></li>
               <li><a href="#deduction-methods" className="hover:text-blue-600">Two Deduction Methods</a></li>
@@ -74,14 +74,14 @@ export default function VehicleExpensesT2125() {
           {/* Main Content */}
           <div className="prose prose-lg max-w-none">
             <section id="overview" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Vehicle Expense Overview</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Vehicle Expense Overview</h2>
               <p className="text-slate-600 mb-6 leading-relaxed">
                 Vehicle expenses can be one of your largest deductions as a freelancer, but they require careful 
                 tracking and calculation. The CRA allows you to deduct vehicle expenses related to your business activities.
               </p>
 
               <div className="bg-blue-50 border-l-4 border-blue-400 p-6 mb-6">
-                <h3 className="text-lg font-semibold text-blue-900 mb-2">Key Points About Vehicle Expenses:</h3>
+                <h3 className="text-lg  text-blue-900 mb-2">Key Points About Vehicle Expenses:</h3>
                 <ul className="text-blue-800 space-y-1">
                   <li>• You can only deduct the business portion of vehicle expenses</li>
                   <li>• Two methods available: detailed or simplified</li>
@@ -98,14 +98,14 @@ export default function VehicleExpensesT2125() {
             </section>
 
             <section id="deduction-methods" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Two Deduction Methods</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Two Deduction Methods</h2>
               <p className="text-slate-600 mb-6 leading-relaxed">
                 The CRA offers two methods for calculating vehicle expenses. You can choose the one that gives you the higher deduction:
               </p>
 
               <div className="grid md:grid-cols-2 gap-6 mb-8">
                 <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-3">Method 1: Detailed Method</h3>
+                  <h3 className="text-lg  text-slate-900 mb-3">Method 1: Detailed Method</h3>
                   <p className="text-slate-600 text-sm mb-4">
                     Track all actual vehicle expenses and multiply by business use percentage.
                   </p>
@@ -118,7 +118,7 @@ export default function VehicleExpensesT2125() {
                   </ul>
                 </div>
                 <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-3">Method 2: Simplified Method</h3>
+                  <h3 className="text-lg  text-slate-900 mb-3">Method 2: Simplified Method</h3>
                   <p className="text-slate-600 text-sm mb-4">
                     Use a fixed rate per business kilometer driven.
                   </p>
@@ -134,17 +134,17 @@ export default function VehicleExpensesT2125() {
             </section>
 
             <section id="detailed-method" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Detailed Method (Actual Expenses)</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Detailed Method (Actual Expenses)</h2>
               <p className="text-slate-600 mb-6 leading-relaxed">
                 The detailed method allows you to claim all actual vehicle expenses, but you must track business vs. personal use.
               </p>
 
               <div className="bg-white rounded-lg shadow-sm border border-slate-200 mb-6">
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-4">Deductible Vehicle Expenses:</h3>
+                  <h3 className="text-lg  text-slate-900 mb-4">Deductible Vehicle Expenses:</h3>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Operating Expenses</h4>
+                      <h4 className=" text-slate-800 mb-2">Operating Expenses</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Gas and oil</li>
                         <li>• Insurance</li>
@@ -155,7 +155,7 @@ export default function VehicleExpensesT2125() {
                       </ul>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Capital Expenses</h4>
+                      <h4 className=" text-slate-800 mb-2">Capital Expenses</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Depreciation (Capital Cost Allowance)</li>
                         <li>• Interest on vehicle loan</li>
@@ -168,7 +168,7 @@ export default function VehicleExpensesT2125() {
               </div>
 
               <div className="bg-green-50 border-l-4 border-green-400 p-6">
-                <h3 className="text-lg font-semibold text-green-900 mb-2">Calculation Example:</h3>
+                <h3 className="text-lg  text-green-900 mb-2">Calculation Example:</h3>
                 <p className="text-green-800 text-sm mb-3">
                   <strong>Sarah's vehicle expenses for 2024:</strong>
                 </p>
@@ -179,25 +179,25 @@ export default function VehicleExpensesT2125() {
                   <p>• Maintenance: $800</p>
                   <p>• Depreciation: $2,000</p>
                   <p>• Interest: $600</p>
-                  <p className="mt-2 font-semibold">Total: $7,600</p>
+                  <p className="mt-2 ">Total: $7,600</p>
                   <p className="mt-2 mb-2"><strong>Business Use: 60%</strong></p>
-                  <p className="font-semibold">Deduction: $7,600 × 60% = $4,560</p>
+                  <p className="">Deduction: $7,600 × 60% = $4,560</p>
                 </div>
               </div>
             </section>
 
             <section id="simplified-method" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Simplified Method (Per KM Rate)</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Simplified Method (Per KM Rate)</h2>
               <p className="text-slate-600 mb-6 leading-relaxed">
                 The simplified method uses a fixed rate per business kilometer, making it easier to calculate but potentially lower deductions.
               </p>
 
               <div className="bg-white rounded-lg shadow-sm border border-slate-200 mb-6">
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-4">2024 Simplified Method Rates</h3>
+                  <h3 className="text-lg  text-slate-900 mb-4">2024 Simplified Method Rates</h3>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Rate per Business KM</h4>
+                      <h4 className=" text-slate-800 mb-2">Rate per Business KM</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• 2024 rate: $0.70 per km</li>
                         <li>• Rate includes all operating costs</li>
@@ -206,7 +206,7 @@ export default function VehicleExpensesT2125() {
                       </ul>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">What's Included</h4>
+                      <h4 className=" text-slate-800 mb-2">What's Included</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Gas and oil</li>
                         <li>• Insurance</li>
@@ -220,30 +220,30 @@ export default function VehicleExpensesT2125() {
               </div>
 
               <div className="bg-blue-50 border-l-4 border-blue-400 p-6">
-                <h3 className="text-lg font-semibold text-blue-900 mb-2">Calculation Example:</h3>
+                <h3 className="text-lg  text-blue-900 mb-2">Calculation Example:</h3>
                 <p className="text-blue-800 text-sm mb-3">
                   <strong>Mike drove 5,000 business kilometers in 2024</strong>
                 </p>
                 <div className="bg-white p-4 rounded text-sm">
                   <p>• Business kilometers: 5,000</p>
                   <p>• Rate per km: $0.70</p>
-                  <p className="font-semibold">Deduction: 5,000 × $0.70 = $3,500</p>
+                  <p className="">Deduction: 5,000 × $0.70 = $3,500</p>
                 </div>
               </div>
             </section>
 
             <section id="record-keeping" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Record Keeping Requirements</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Record Keeping Requirements</h2>
               <p className="text-slate-600 mb-6 leading-relaxed">
                 Proper record keeping is essential for vehicle expense deductions. The CRA can request these records during an audit.
               </p>
 
               <div className="bg-white rounded-lg shadow-sm border border-slate-200 mb-6">
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-4">Required Documentation:</h3>
+                  <h3 className="text-lg  text-slate-900 mb-4">Required Documentation:</h3>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">For Detailed Method</h4>
+                      <h4 className=" text-slate-800 mb-2">For Detailed Method</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Receipts for all vehicle expenses</li>
                         <li>• Mileage log with dates and purposes</li>
@@ -254,7 +254,7 @@ export default function VehicleExpensesT2125() {
                       </ul>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">For Simplified Method</h4>
+                      <h4 className=" text-slate-800 mb-2">For Simplified Method</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Detailed mileage log</li>
                         <li>• Dates of business trips</li>
@@ -269,7 +269,7 @@ export default function VehicleExpensesT2125() {
               </div>
 
               <div className="bg-yellow-50 border-l-4 border-yellow-400 p-6">
-                <h3 className="text-lg font-semibold text-yellow-900 mb-2">Mileage Log Requirements:</h3>
+                <h3 className="text-lg  text-yellow-900 mb-2">Mileage Log Requirements:</h3>
                 <p className="text-yellow-800 text-sm">
                   Your mileage log should include: date, destination, purpose, starting odometer reading, 
                   ending odometer reading, total kilometers, and business use percentage. Keep this log 
@@ -279,17 +279,17 @@ export default function VehicleExpensesT2125() {
             </section>
 
             <section id="examples" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Real-World Examples</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Real-World Examples</h2>
               
               <div className="space-y-6">
                 <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
-                  <h3 className="text-xl font-semibold text-slate-900 mb-4">Example 1: Photographer</h3>
+                  <h3 className="text-xl  text-slate-900 mb-4">Example 1: Photographer</h3>
                   <p className="text-slate-600 mb-3">
                     <strong>Lisa drives to client locations for photo shoots</strong>
                   </p>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Detailed Method:</h4>
+                      <h4 className=" text-slate-800 mb-2">Detailed Method:</h4>
                       <div className="text-sm text-slate-600 space-y-1">
                         <p>• Total expenses: $8,000</p>
                         <p>• Business use: 70%</p>
@@ -297,7 +297,7 @@ export default function VehicleExpensesT2125() {
                       </div>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Simplified Method:</h4>
+                      <h4 className=" text-slate-800 mb-2">Simplified Method:</h4>
                       <div className="text-sm text-slate-600 space-y-1">
                         <p>• Business km: 8,000</p>
                         <p>• Rate: $0.70/km</p>
@@ -306,18 +306,18 @@ export default function VehicleExpensesT2125() {
                     </div>
                   </div>
                   <div className="mt-4 p-4 bg-slate-50 rounded">
-                    <p className="font-semibold text-slate-900">Both methods give the same result: $5,600</p>
+                    <p className=" text-slate-900">Both methods give the same result: $5,600</p>
                   </div>
                 </div>
 
                 <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
-                  <h3 className="text-xl font-semibold text-slate-900 mb-4">Example 2: Consultant</h3>
+                  <h3 className="text-xl  text-slate-900 mb-4">Example 2: Consultant</h3>
                   <p className="text-slate-600 mb-3">
                     <strong>David drives to client meetings and conferences</strong>
                   </p>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Detailed Method:</h4>
+                      <h4 className=" text-slate-800 mb-2">Detailed Method:</h4>
                       <div className="text-sm text-slate-600 space-y-1">
                         <p>• Total expenses: $12,000</p>
                         <p>• Business use: 40%</p>
@@ -325,7 +325,7 @@ export default function VehicleExpensesT2125() {
                       </div>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Simplified Method:</h4>
+                      <h4 className=" text-slate-800 mb-2">Simplified Method:</h4>
                       <div className="text-sm text-slate-600 space-y-1">
                         <p>• Business km: 6,000</p>
                         <p>• Rate: $0.70/km</p>
@@ -334,18 +334,18 @@ export default function VehicleExpensesT2125() {
                     </div>
                   </div>
                   <div className="mt-4 p-4 bg-slate-50 rounded">
-                    <p className="font-semibold text-slate-900">Choose detailed method: $4,800 (higher)</p>
+                    <p className=" text-slate-900">Choose detailed method: $4,800 (higher)</p>
                   </div>
                 </div>
               </div>
             </section>
 
             <section id="common-mistakes" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Common Mistakes to Avoid</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Common Mistakes to Avoid</h2>
               
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="bg-red-50 border-l-4 border-red-400 p-6">
-                  <h3 className="text-lg font-semibold text-red-900 mb-3">❌ Common Mistakes</h3>
+                  <h3 className="text-lg  text-red-900 mb-3">❌ Common Mistakes</h3>
                   <ul className="space-y-2 text-red-800 text-sm">
                     <li>• Claiming 100% of vehicle expenses</li>
                     <li>• Not keeping a mileage log</li>
@@ -356,7 +356,7 @@ export default function VehicleExpensesT2125() {
                   </ul>
                 </div>
                 <div className="bg-green-50 border-l-4 border-green-400 p-6">
-                  <h3 className="text-lg font-semibold text-green-900 mb-3">✅ Best Practices</h3>
+                  <h3 className="text-lg  text-green-900 mb-3">✅ Best Practices</h3>
                   <ul className="space-y-2 text-green-800 text-sm">
                     <li>• Keep detailed mileage logs</li>
                     <li>• Calculate business use percentage accurately</li>
@@ -370,11 +370,11 @@ export default function VehicleExpensesT2125() {
             </section>
 
             <section id="tips" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Tips for Maximizing Deductions</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Tips for Maximizing Deductions</h2>
               
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="bg-blue-50 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold text-blue-900 mb-4">💡 Maximization Tips</h3>
+                  <h3 className="text-lg  text-blue-900 mb-4">💡 Maximization Tips</h3>
                   <ul className="space-y-2 text-blue-800 text-sm">
                     <li>• Use a mileage tracking app</li>
                     <li>• Keep detailed records throughout the year</li>
@@ -386,7 +386,7 @@ export default function VehicleExpensesT2125() {
                   </ul>
                 </div>
                 <div className="bg-green-50 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold text-green-900 mb-4">📊 Planning Strategies</h3>
+                  <h3 className="text-lg  text-green-900 mb-4">📊 Planning Strategies</h3>
                   <ul className="space-y-2 text-green-800 text-sm">
                     <li>• Plan business trips strategically</li>
                     <li>• Consider the tax impact of vehicle purchases</li>
@@ -401,20 +401,20 @@ export default function VehicleExpensesT2125() {
             </section>
 
             <div className="bg-white rounded-xl p-8 shadow-lg border border-slate-200">
-              <h3 className="text-2xl font-bold text-slate-900 mb-4 text-center">Calculate Your Vehicle Deductions</h3>
+              <h3 className="text-2xl  text-slate-900 mb-4 text-center">Calculate Your Vehicle Deductions</h3>
               <p className="text-slate-600 text-center mb-6">
                 Use our free T2125 calculator to estimate your vehicle deductions and overall tax situation.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/canada-t2125-tax-calculator"
-                  className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-center"
+                  className="bg-blue-600 text-white px-8 py-3 rounded-lg  hover:bg-blue-700 transition-colors text-center"
                 >
                   T2125 Calculator
                 </Link>
                 <Link
                   href="/guides"
-                  className="bg-slate-100 text-slate-700 px-8 py-3 rounded-lg font-semibold hover:bg-slate-200 transition-colors text-center"
+                  className="bg-slate-100 text-slate-700 px-8 py-3 rounded-lg  hover:bg-slate-200 transition-colors text-center"
                 >
                   Browse More Guides
                 </Link>

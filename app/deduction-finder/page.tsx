@@ -102,7 +102,7 @@ export default function DeductionFinderPage() {
         {/* Main Calculator Section */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 mt-6">
           <div className="text-center my-6">
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3 text-balance">
+            <h1 className="text-3xl md:text-4xl  text-foreground mb-3 text-balance">
               Canadian Tax Deduction Finder
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-pretty leading-relaxed">
@@ -116,10 +116,10 @@ export default function DeductionFinderPage() {
             <div className="flex-shrink-0 px-6 py-3 mb-4">
               <div className="max-w-4xl mx-auto">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-muted-foreground font-medium">
+                  <span className="text-sm text-muted-foreground ">
                     Step {currentStep + 1} of 5
                   </span>
-                  <span className="text-sm text-muted-foreground font-medium">
+                  <span className="text-sm text-muted-foreground ">
                     {Math.round(((currentStep + 1) / 5) * 100)}% Complete
                   </span>
                 </div>
@@ -159,11 +159,11 @@ export default function DeductionFinderPage() {
             {/* What are Tax Deductions */}
             <section id="what-are-deductions" className="animate-fade-in">
               <div className="text-center mb-8">
-                <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium mb-4">
+                <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm  mb-4">
                   <span className="w-1.5 h-1.5 bg-primary rounded-full" />
                   Tax Education
                 </div>
-                <h2 className="text-4xl font-bold mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
+                <h2 className="text-4xl  mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
                   What are Tax Deductions for Canadian Freelancers?
                 </h2>
               </div>
@@ -179,11 +179,11 @@ export default function DeductionFinderPage() {
             {/* Common Deduction Categories */}
             <section className="animate-fade-in">
               <div className="text-center mb-12">
-                <div className="inline-flex items-center gap-2 bg-secondary/10 text-secondary px-3 py-1 rounded-full text-sm font-medium mb-4">
+                <div className="inline-flex items-center gap-2 bg-secondary/10 text-secondary px-3 py-1 rounded-full text-sm  mb-4">
                   <span className="w-1.5 h-1.5 bg-secondary rounded-full" />
                   Deduction Categories
                 </div>
-                <h2 className="text-4xl font-bold mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
+                <h2 className="text-4xl  mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
                   Top Tax Deductions for Canadian Freelancers
                 </h2>
               </div>
@@ -260,11 +260,11 @@ export default function DeductionFinderPage() {
             {/* How to Claim Deductions */}
             <section id="how-to-claim" className="animate-fade-in">
               <div className="text-center mb-12">
-                <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-3 py-1 rounded-full text-sm font-medium mb-4">
+                <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-3 py-1 rounded-full text-sm  mb-4">
                   <span className="w-1.5 h-1.5 bg-accent rounded-full" />
                   How It Works
                 </div>
-                <h2 className="text-4xl font-bold mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
+                <h2 className="text-4xl  mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
                   How to Claim Your Tax Deductions
                 </h2>
               </div>
@@ -286,11 +286,11 @@ export default function DeductionFinderPage() {
             {/* FAQ */}
             <section id="faq" className="animate-fade-in">
               <div className="text-center mb-12">
-                <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium mb-4">
+                <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm  mb-4">
                   <span className="w-1.5 h-1.5 bg-primary rounded-full" />
                   FAQ
                 </div>
-                <h2 className="text-4xl font-bold mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
+                <h2 className="text-4xl  mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
                   Frequently Asked Questions
                 </h2>
               </div>

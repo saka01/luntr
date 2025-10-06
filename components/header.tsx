@@ -21,7 +21,7 @@ export const Header = () => {
         <nav className="flex max-lg:hidden absolute left-1/2 -translate-x-1/2 items-center justify-center gap-x-10">
           {menuItems.map((item) => (
             <Link
-              className="text-sm text-nowrap font-bold uppercase inline-block font-sans text-foreground/60 hover:text-foreground/100 duration-150 transition-colors ease-out"
+              className="text-sm text-nowrap  uppercase inline-block  text-foreground/60 hover:text-foreground/100 duration-150 transition-colors ease-out"
               href={item.href}
               key={item.name}
             >

@@ -13,18 +13,18 @@ export function Hero() {
 
       <div className="pb-1 mt-auto text-center relative">
         <Pill className="mb-6">INVITE-ONLY RELEASE</Pill>
-        <h1 className="text-5xl sm:text-6xl md:text-7xl font-sentient">
+        <h1 className="text-5xl sm:text-6xl md:text-7xl">
           Built for the{" "}
-          <i className="font-light">
+          <i>
             <s>gig</s>
           </i>{" "}
           new economy
         </h1>
        
-        <p className="font-sans text-sm sm:text-base text-foreground/60 text-balance max-w-[540px] mx-auto mb-0 mt-8">
+        <p className="text-sm sm:text-base text-foreground/60 text-balance max-w-[540px] mx-auto mb-0 mt-8">
         Tallo finds missed deductions for Canadian freelancers, sole proprietors, and creators—using intelligent automation and simple self-review workflows.
         </p>
-        <p className="italic font-thin my-7 text-primary opacity-80">
+        <p className="italic my-7 text-primary opacity-80">
           Backed by CPA  • Built in Canada for Canadians 🇨🇦
         </p>
 

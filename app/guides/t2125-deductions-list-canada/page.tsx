@@ -42,12 +42,12 @@ export default function T2125DeductionsList() {
         <article className="max-w-4xl mx-auto">
           <header className="mb-12">
             <div className="flex items-center space-x-2 mb-4">
-              <span className="px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">
+              <span className="px-3 py-1 bg-green-100 text-green-800 text-sm  rounded-full">
                 Deductions
               </span>
               <span className="text-sm text-slate-500">8 min read</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+            <h1 className="text-4xl md:text-5xl  text-slate-900 mb-6">
               List of Common T2125 Deductions (With Examples)
             </h1>
             <p className="text-xl text-slate-600 leading-relaxed">
@@ -58,7 +58,7 @@ export default function T2125DeductionsList() {
 
           {/* Table of Contents */}
           <div className="bg-white rounded-xl p-6 mb-12 shadow-sm border border-slate-200">
-            <h2 className="text-xl font-bold text-slate-900 mb-4">Table of Contents</h2>
+            <h2 className="text-xl  text-slate-900 mb-4">Table of Contents</h2>
             <ul className="space-y-2 text-slate-600">
               <li><a href="#office-supplies" className="hover:text-blue-600">Office Supplies & Equipment</a></li>
               <li><a href="#home-office" className="hover:text-blue-600">Home Office Expenses</a></li>
@@ -78,7 +78,7 @@ export default function T2125DeductionsList() {
           {/* Main Content */}
           <div className="prose prose-lg max-w-none">
             <section id="office-supplies" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Office Supplies & Equipment</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Office Supplies & Equipment</h2>
               <p className="text-slate-600 mb-6 leading-relaxed">
                 These are the most common and straightforward deductions for freelancers. They include items you use 
                 exclusively for your business operations.
@@ -86,10 +86,10 @@ export default function T2125DeductionsList() {
 
               <div className="bg-white rounded-lg shadow-sm border border-slate-200 mb-6">
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-4">Deductible Office Supplies:</h3>
+                  <h3 className="text-lg  text-slate-900 mb-4">Deductible Office Supplies:</h3>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Basic Supplies</h4>
+                      <h4 className=" text-slate-800 mb-2">Basic Supplies</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Paper, pens, pencils, notebooks</li>
                         <li>• Staplers, paper clips, folders</li>
@@ -99,7 +99,7 @@ export default function T2125DeductionsList() {
                       </ul>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Equipment</h4>
+                      <h4 className=" text-slate-800 mb-2">Equipment</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Computers, laptops, tablets</li>
                         <li>• Printers, scanners, fax machines</li>
@@ -113,7 +113,7 @@ export default function T2125DeductionsList() {
               </div>
 
               <div className="bg-blue-50 border-l-4 border-blue-400 p-6 mb-6">
-                <h3 className="text-lg font-semibold text-blue-900 mb-2">Real Example:</h3>
+                <h3 className="text-lg  text-blue-900 mb-2">Real Example:</h3>
                 <p className="text-blue-800 text-sm">
                   <strong>Sarah, a freelance graphic designer:</strong> "I bought a new MacBook Pro for $2,500, 
                   Adobe Creative Suite subscription for $600/year, and various design software licenses for $300. 
@@ -123,7 +123,7 @@ export default function T2125DeductionsList() {
               </div>
 
               <div className="bg-yellow-50 border-l-4 border-yellow-400 p-6">
-                <h3 className="text-lg font-semibold text-yellow-900 mb-2">Important Notes:</h3>
+                <h3 className="text-lg  text-yellow-900 mb-2">Important Notes:</h3>
                 <ul className="text-yellow-800 text-sm space-y-1">
                   <li>• Equipment over $500 may need to be depreciated (Capital Cost Allowance)</li>
                   <li>• Must be used 100% for business purposes</li>
@@ -133,7 +133,7 @@ export default function T2125DeductionsList() {
             </section>
 
             <section id="home-office" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Home Office Expenses</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Home Office Expenses</h2>
               <p className="text-slate-600 mb-6 leading-relaxed">
                 If you work from home, you can deduct a portion of your home expenses based on the percentage 
                 of your home used for business purposes.
@@ -141,10 +141,10 @@ export default function T2125DeductionsList() {
 
               <div className="bg-white rounded-lg shadow-sm border border-slate-200 mb-6">
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-4">Deductible Home Office Expenses:</h3>
+                  <h3 className="text-lg  text-slate-900 mb-4">Deductible Home Office Expenses:</h3>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Direct Expenses (100% deductible)</h4>
+                      <h4 className=" text-slate-800 mb-2">Direct Expenses (100% deductible)</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Home office furniture and equipment</li>
                         <li>• Business phone line</li>
@@ -154,7 +154,7 @@ export default function T2125DeductionsList() {
                       </ul>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Indirect Expenses (percentage deductible)</h4>
+                      <h4 className=" text-slate-800 mb-2">Indirect Expenses (percentage deductible)</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Rent or mortgage interest</li>
                         <li>• Property taxes</li>
@@ -168,7 +168,7 @@ export default function T2125DeductionsList() {
               </div>
 
               <div className="bg-green-50 border-l-4 border-green-400 p-6 mb-6">
-                <h3 className="text-lg font-semibold text-green-900 mb-2">Calculation Example:</h3>
+                <h3 className="text-lg  text-green-900 mb-2">Calculation Example:</h3>
                 <p className="text-green-800 text-sm mb-3">
                   <strong>Mike, a freelance consultant:</strong> His home office is 100 sq ft in a 1,000 sq ft home (10% business use).
                 </p>
@@ -178,23 +178,23 @@ export default function T2125DeductionsList() {
                   <p>• Utilities: $3,600 × 10% = $360</p>
                   <p>• Internet: $1,200 × 100% = $1,200 (used exclusively for business)</p>
                   <p>• Office furniture: $800 × 100% = $800</p>
-                  <p className="mt-2 font-semibold">Total home office deduction: $4,760</p>
+                  <p className="mt-2 ">Total home office deduction: $4,760</p>
                 </div>
               </div>
             </section>
 
             <section id="professional-development" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Professional Development</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Professional Development</h2>
               <p className="text-slate-600 mb-6 leading-relaxed">
                 Education and training that maintains or improves your professional skills are fully deductible.
               </p>
 
               <div className="bg-white rounded-lg shadow-sm border border-slate-200 mb-6">
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-4">Deductible Professional Development:</h3>
+                  <h3 className="text-lg  text-slate-900 mb-4">Deductible Professional Development:</h3>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Courses & Training</h4>
+                      <h4 className=" text-slate-800 mb-2">Courses & Training</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Online courses and certifications</li>
                         <li>• Professional workshops and seminars</li>
@@ -204,7 +204,7 @@ export default function T2125DeductionsList() {
                       </ul>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Educational Materials</h4>
+                      <h4 className=" text-slate-800 mb-2">Educational Materials</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Professional books and e-books</li>
                         <li>• Industry magazines and subscriptions</li>
@@ -218,7 +218,7 @@ export default function T2125DeductionsList() {
               </div>
 
               <div className="bg-blue-50 border-l-4 border-blue-400 p-6 mb-6">
-                <h3 className="text-lg font-semibold text-blue-900 mb-2">Real Example:</h3>
+                <h3 className="text-lg  text-blue-900 mb-2">Real Example:</h3>
                 <p className="text-blue-800 text-sm">
                   <strong>David, a freelance web developer:</strong> "I took a React.js course for $500, 
                   attended a web development conference for $800 (including travel), bought programming books for $200, 
@@ -228,17 +228,17 @@ export default function T2125DeductionsList() {
             </section>
 
             <section id="vehicle-expenses" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Vehicle & Transportation</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Vehicle & Transportation</h2>
               <p className="text-slate-600 mb-6 leading-relaxed">
                 Vehicle expenses can be one of your largest deductions, but they require careful tracking and calculation.
               </p>
 
               <div className="bg-white rounded-lg shadow-sm border border-slate-200 mb-6">
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-4">Vehicle Expense Options:</h3>
+                  <h3 className="text-lg  text-slate-900 mb-4">Vehicle Expense Options:</h3>
                   <div className="space-y-4">
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Method 1: Detailed Method (Actual Expenses)</h4>
+                      <h4 className=" text-slate-800 mb-2">Method 1: Detailed Method (Actual Expenses)</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Gas and oil</li>
                         <li>• Insurance</li>
@@ -251,7 +251,7 @@ export default function T2125DeductionsList() {
                       <p className="text-xs text-slate-500 mt-2">Multiply by business use percentage</p>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Method 2: Simplified Method (Per KM Rate)</h4>
+                      <h4 className=" text-slate-800 mb-2">Method 2: Simplified Method (Per KM Rate)</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• 2024 rate: $0.70 per business kilometer</li>
                         <li>• Track business kilometers only</li>
@@ -264,7 +264,7 @@ export default function T2125DeductionsList() {
               </div>
 
               <div className="bg-green-50 border-l-4 border-green-400 p-6 mb-6">
-                <h3 className="text-lg font-semibold text-green-900 mb-2">Calculation Example:</h3>
+                <h3 className="text-lg  text-green-900 mb-2">Calculation Example:</h3>
                 <p className="text-green-800 text-sm mb-3">
                   <strong>Lisa, a freelance photographer:</strong> Drove 5,000 business km in 2024.
                 </p>
@@ -275,23 +275,23 @@ export default function T2125DeductionsList() {
                   <p>• Total vehicle expenses: $8,000</p>
                   <p>• Business use: 60%</p>
                   <p>• Deduction: $8,000 × 60% = $4,800</p>
-                  <p className="mt-2 font-semibold">Choose the higher amount: $4,800</p>
+                  <p className="mt-2 ">Choose the higher amount: $4,800</p>
                 </div>
               </div>
             </section>
 
             <section id="professional-services" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Professional Services</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Professional Services</h2>
               <p className="text-slate-600 mb-6 leading-relaxed">
                 Fees paid to professionals for business-related services are fully deductible.
               </p>
 
               <div className="bg-white rounded-lg shadow-sm border border-slate-200 mb-6">
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-4">Deductible Professional Services:</h3>
+                  <h3 className="text-lg  text-slate-900 mb-4">Deductible Professional Services:</h3>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Legal & Financial</h4>
+                      <h4 className=" text-slate-800 mb-2">Legal & Financial</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Legal fees for business contracts</li>
                         <li>• Accounting and bookkeeping services</li>
@@ -301,7 +301,7 @@ export default function T2125DeductionsList() {
                       </ul>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Business Services</h4>
+                      <h4 className=" text-slate-800 mb-2">Business Services</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Business coaching and consulting</li>
                         <li>• Marketing and PR services</li>
@@ -316,17 +316,17 @@ export default function T2125DeductionsList() {
             </section>
 
             <section id="marketing" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Marketing & Advertising</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Marketing & Advertising</h2>
               <p className="text-slate-600 mb-6 leading-relaxed">
                 All costs associated with promoting your business are deductible.
               </p>
 
               <div className="bg-white rounded-lg shadow-sm border border-slate-200 mb-6">
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-4">Deductible Marketing Expenses:</h3>
+                  <h3 className="text-lg  text-slate-900 mb-4">Deductible Marketing Expenses:</h3>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Digital Marketing</h4>
+                      <h4 className=" text-slate-800 mb-2">Digital Marketing</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Website design and maintenance</li>
                         <li>• Social media advertising</li>
@@ -336,7 +336,7 @@ export default function T2125DeductionsList() {
                       </ul>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Traditional Marketing</h4>
+                      <h4 className=" text-slate-800 mb-2">Traditional Marketing</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Business cards and brochures</li>
                         <li>• Print advertising</li>
@@ -351,17 +351,17 @@ export default function T2125DeductionsList() {
             </section>
 
             <section id="technology" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Technology & Software</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Technology & Software</h2>
               <p className="text-slate-600 mb-6 leading-relaxed">
                 Technology is essential for most freelancers, and most tech expenses are deductible.
               </p>
 
               <div className="bg-white rounded-lg shadow-sm border border-slate-200 mb-6">
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-4">Deductible Technology Expenses:</h3>
+                  <h3 className="text-lg  text-slate-900 mb-4">Deductible Technology Expenses:</h3>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Software & Subscriptions</h4>
+                      <h4 className=" text-slate-800 mb-2">Software & Subscriptions</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Business software licenses</li>
                         <li>• Cloud storage services</li>
@@ -371,7 +371,7 @@ export default function T2125DeductionsList() {
                       </ul>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Hardware & Equipment</h4>
+                      <h4 className=" text-slate-800 mb-2">Hardware & Equipment</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Computers and laptops</li>
                         <li>• Monitors and peripherals</li>
@@ -386,14 +386,14 @@ export default function T2125DeductionsList() {
             </section>
 
             <section id="travel" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Business Travel</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Business Travel</h2>
               <p className="text-slate-600 mb-6 leading-relaxed">
                 Travel expenses for business purposes are deductible, but personal portions are not.
               </p>
 
               <div className="bg-white rounded-lg shadow-sm border border-slate-200 mb-6">
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-4">Deductible Travel Expenses:</h3>
+                  <h3 className="text-lg  text-slate-900 mb-4">Deductible Travel Expenses:</h3>
                   <ul className="space-y-2 text-slate-600 text-sm">
                     <li>• Airfare, train, or bus tickets for business trips</li>
                     <li>• Hotel accommodations for business travel</li>
@@ -406,7 +406,7 @@ export default function T2125DeductionsList() {
               </div>
 
               <div className="bg-yellow-50 border-l-4 border-yellow-400 p-6">
-                <h3 className="text-lg font-semibold text-yellow-900 mb-2">Important Note:</h3>
+                <h3 className="text-lg  text-yellow-900 mb-2">Important Note:</h3>
                 <p className="text-yellow-800 text-sm">
                   If you combine business and personal travel, you can only deduct the business portion. 
                   Keep detailed records of business vs. personal activities during your trip.
@@ -415,17 +415,17 @@ export default function T2125DeductionsList() {
             </section>
 
             <section id="meals-entertainment" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Meals & Entertainment</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Meals & Entertainment</h2>
               <p className="text-slate-600 mb-6 leading-relaxed">
                 Business meals and entertainment expenses have specific rules and limitations.
               </p>
 
               <div className="bg-white rounded-lg shadow-sm border border-slate-200 mb-6">
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-4">Meals & Entertainment Rules:</h3>
+                  <h3 className="text-lg  text-slate-900 mb-4">Meals & Entertainment Rules:</h3>
                   <div className="space-y-4">
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Business Meals (50% deductible)</h4>
+                      <h4 className=" text-slate-800 mb-2">Business Meals (50% deductible)</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Meals with clients or prospects</li>
                         <li>• Meals during business travel</li>
@@ -434,7 +434,7 @@ export default function T2125DeductionsList() {
                       </ul>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Entertainment (50% deductible)</h4>
+                      <h4 className=" text-slate-800 mb-2">Entertainment (50% deductible)</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Client entertainment (sports events, shows)</li>
                         <li>• Business-related social events</li>
@@ -447,17 +447,17 @@ export default function T2125DeductionsList() {
             </section>
 
             <section id="insurance" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Insurance & Legal</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Insurance & Legal</h2>
               <p className="text-slate-600 mb-6 leading-relaxed">
                 Business-related insurance and legal expenses are deductible.
               </p>
 
               <div className="bg-white rounded-lg shadow-sm border border-slate-200 mb-6">
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-4">Deductible Insurance & Legal:</h3>
+                  <h3 className="text-lg  text-slate-900 mb-4">Deductible Insurance & Legal:</h3>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Insurance</h4>
+                      <h4 className=" text-slate-800 mb-2">Insurance</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Professional liability insurance</li>
                         <li>• Business equipment insurance</li>
@@ -467,7 +467,7 @@ export default function T2125DeductionsList() {
                       </ul>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Legal & Compliance</h4>
+                      <h4 className=" text-slate-800 mb-2">Legal & Compliance</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Business registration fees</li>
                         <li>• Trademark and copyright fees</li>
@@ -482,17 +482,17 @@ export default function T2125DeductionsList() {
             </section>
 
             <section id="other-deductions" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Other Deductions</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Other Deductions</h2>
               <p className="text-slate-600 mb-6 leading-relaxed">
                 Additional expenses that may be deductible depending on your business type.
               </p>
 
               <div className="bg-white rounded-lg shadow-sm border border-slate-200 mb-6">
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-4">Other Deductible Expenses:</h3>
+                  <h3 className="text-lg  text-slate-900 mb-4">Other Deductible Expenses:</h3>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">General Business</h4>
+                      <h4 className=" text-slate-800 mb-2">General Business</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Bank fees and service charges</li>
                         <li>• Business phone and internet</li>
@@ -502,7 +502,7 @@ export default function T2125DeductionsList() {
                       </ul>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Industry-Specific</h4>
+                      <h4 className=" text-slate-800 mb-2">Industry-Specific</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Industry-specific tools and equipment</li>
                         <li>• Professional uniforms and work clothes</li>
@@ -517,14 +517,14 @@ export default function T2125DeductionsList() {
             </section>
 
             <section id="deduction-rules" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Important Deduction Rules</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Important Deduction Rules</h2>
               <p className="text-slate-600 mb-6 leading-relaxed">
                 Understanding the rules and requirements for claiming deductions will help you stay compliant and maximize your savings.
               </p>
 
               <div className="space-y-6">
                 <div className="bg-red-50 border-l-4 border-red-400 p-6">
-                  <h3 className="text-lg font-semibold text-red-900 mb-3">❌ What You CANNOT Deduct</h3>
+                  <h3 className="text-lg  text-red-900 mb-3">❌ What You CANNOT Deduct</h3>
                   <ul className="space-y-2 text-red-800 text-sm">
                     <li>• Personal living expenses (rent, groceries, personal clothing)</li>
                     <li>• Personal portion of mixed-use expenses</li>
@@ -537,7 +537,7 @@ export default function T2125DeductionsList() {
                 </div>
 
                 <div className="bg-green-50 border-l-4 border-green-400 p-6">
-                  <h3 className="text-lg font-semibold text-green-900 mb-3">✅ Key Rules to Follow</h3>
+                  <h3 className="text-lg  text-green-900 mb-3">✅ Key Rules to Follow</h3>
                   <ul className="space-y-2 text-green-800 text-sm">
                     <li>• Keep receipts and documentation for all expenses</li>
                     <li>• Expenses must be reasonable and necessary for business</li>
@@ -549,7 +549,7 @@ export default function T2125DeductionsList() {
                 </div>
 
                 <div className="bg-blue-50 border-l-4 border-blue-400 p-6">
-                  <h3 className="text-lg font-semibold text-blue-900 mb-3">📋 Record Keeping Requirements</h3>
+                  <h3 className="text-lg  text-blue-900 mb-3">📋 Record Keeping Requirements</h3>
                   <ul className="space-y-2 text-blue-800 text-sm">
                     <li>• Keep all receipts and invoices for 6 years</li>
                     <li>• Maintain a detailed expense log with dates and purposes</li>
@@ -563,20 +563,20 @@ export default function T2125DeductionsList() {
             </section>
 
             <div className="bg-white rounded-xl p-8 shadow-lg border border-slate-200">
-              <h3 className="text-2xl font-bold text-slate-900 mb-4 text-center">Ready to Calculate Your Deductions?</h3>
+              <h3 className="text-2xl  text-slate-900 mb-4 text-center">Ready to Calculate Your Deductions?</h3>
               <p className="text-slate-600 text-center mb-6">
                 Use our free T2125 calculator to get an instant estimate of your self-employment taxes and discover deductions you might be missing.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/canada-t2125-tax-calculator"
-                  className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-center"
+                  className="bg-blue-600 text-white px-8 py-3 rounded-lg  hover:bg-blue-700 transition-colors text-center"
                 >
                   Try T2125 Calculator
                 </Link>
                 <Link
                   href="/guides"
-                  className="bg-slate-100 text-slate-700 px-8 py-3 rounded-lg font-semibold hover:bg-slate-200 transition-colors text-center"
+                  className="bg-slate-100 text-slate-700 px-8 py-3 rounded-lg  hover:bg-slate-200 transition-colors text-center"
                 >
                   Browse More Guides
                 </Link>

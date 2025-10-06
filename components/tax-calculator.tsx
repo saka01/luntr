@@ -55,7 +55,7 @@ export function TaxCalculator() {
   return (
     <div id="calculator" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 mt-12">
       <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 text-balance">
+        <h1 className="text-4xl md:text-5xl  text-foreground mb-4 text-balance">
           T2125 Tax Calculator for Canadian Freelancers
         </h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-pretty leading-relaxed">

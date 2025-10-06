@@ -161,7 +161,7 @@ export function DeductionForm({ currentStep, onNext, onPrevious, formData }: Ded
           <div className="space-y-6">
             {/* Question Header */}
             <div className="text-center space-y-4">
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+              <h2 className="text-2xl  text-slate-900 dark:text-white">
                 {currentQuestion.question}
               </h2>
               <p className="text-slate-600 dark:text-slate-300 text-lg">
@@ -191,7 +191,7 @@ export function DeductionForm({ currentStep, onNext, onPrevious, formData }: Ded
                         <div className="w-2 h-2 rounded-full bg-white" />
                       )}
                     </div>
-                    <span className="text-lg font-medium text-slate-900 dark:text-white">{option.label}</span>
+                    <span className="text-lg  text-slate-900 dark:text-white">{option.label}</span>
                   </div>
                 </button>
               ))}

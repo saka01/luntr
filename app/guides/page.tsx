@@ -119,7 +119,7 @@ export default function GuidesPage() {
       <div className="container mx-auto px-4 py-16">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+          <h1 className="text-4xl md:text-5xl  text-slate-900 mb-6">
             Tax Guides for Canadian Freelancers
           </h1>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto">
@@ -129,7 +129,7 @@ export default function GuidesPage() {
 
         {/* Featured Guides */}
         <div className="mb-16">
-          <h2 className="text-2xl font-bold text-slate-900 mb-8">Featured Guides</h2>
+          <h2 className="text-2xl  text-slate-900 mb-8">Featured Guides</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {guides
               .filter((guide) => guide.featured)
@@ -141,12 +141,12 @@ export default function GuidesPage() {
                 >
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">
+                      <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm  rounded-full">
                         {guide.category}
                       </span>
                       <span className="text-sm text-slate-500">{guide.readTime}</span>
                     </div>
-                    <h3 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors mb-3">
+                    <h3 className="text-xl  text-slate-900 group-hover:text-blue-600 transition-colors mb-3">
                       {guide.title}
                     </h3>
                     <p className="text-slate-600 leading-relaxed">{guide.description}</p>
@@ -158,7 +158,7 @@ export default function GuidesPage() {
 
         {/* All Guides */}
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 mb-8">All Guides</h2>
+          <h2 className="text-2xl  text-slate-900 mb-8">All Guides</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {guides.map((guide) => (
               <Link
@@ -168,12 +168,12 @@ export default function GuidesPage() {
               >
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="px-2 py-1 bg-slate-100 text-slate-700 text-xs font-medium rounded">
+                    <span className="px-2 py-1 bg-slate-100 text-slate-700 text-xs  rounded">
                       {guide.category}
                     </span>
                     <span className="text-xs text-slate-500">{guide.readTime}</span>
                   </div>
-                  <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors mb-2">
+                  <h3 className="text-lg  text-slate-900 group-hover:text-blue-600 transition-colors mb-2">
                     {guide.title}
                   </h3>
                   <p className="text-slate-600 text-sm leading-relaxed">{guide.description}</p>
@@ -185,20 +185,20 @@ export default function GuidesPage() {
 
         {/* CTA Section */}
         <div className="mt-16 bg-blue-600 rounded-2xl p-8 text-center text-white">
-          <h2 className="text-2xl font-bold mb-4">Ready to Calculate Your Taxes?</h2>
+          <h2 className="text-2xl  mb-4">Ready to Calculate Your Taxes?</h2>
           <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
             Use our free T2125 calculator to get an instant estimate of your self-employment taxes and discover deductions you might be missing.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/canada-t2125-tax-calculator"
-              className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
+              className="bg-white text-blue-600 px-6 py-3 rounded-lg  hover:bg-blue-50 transition-colors"
             >
               Try T2125 Calculator
             </Link>
             <Link
               href="/canada-income-tax-calculator"
-              className="bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors"
+              className="bg-blue-700 text-white px-6 py-3 rounded-lg  hover:bg-blue-800 transition-colors"
             >
               Income Tax Calculator
             </Link>

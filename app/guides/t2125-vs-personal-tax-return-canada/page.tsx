@@ -42,12 +42,12 @@ export default function T2125VsRegularTaxReturn() {
         <article className="max-w-4xl mx-auto">
           <header className="mb-12">
             <div className="flex items-center space-x-2 mb-4">
-              <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">
+              <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm  rounded-full">
                 Forms & Filing
               </span>
               <span className="text-sm text-slate-500">6 min read</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+            <h1 className="text-4xl md:text-5xl  text-slate-900 mb-6">
               T2125 vs Regular Tax Return: What's the Difference?
             </h1>
             <p className="text-xl text-slate-600 leading-relaxed">
@@ -58,7 +58,7 @@ export default function T2125VsRegularTaxReturn() {
 
           {/* Table of Contents */}
           <div className="bg-white rounded-xl p-6 mb-12 shadow-sm border border-slate-200">
-            <h2 className="text-xl font-bold text-slate-900 mb-4">Table of Contents</h2>
+            <h2 className="text-xl  text-slate-900 mb-4">Table of Contents</h2>
             <ul className="space-y-2 text-slate-600">
               <li><a href="#overview" className="hover:text-blue-600">Overview of Both Filing Methods</a></li>
               <li><a href="#key-differences" className="hover:text-blue-600">Key Differences Between T2125 and Regular Returns</a></li>
@@ -73,7 +73,7 @@ export default function T2125VsRegularTaxReturn() {
           {/* Main Content */}
           <div className="prose prose-lg max-w-none">
             <section id="overview" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Overview of Both Filing Methods</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Overview of Both Filing Methods</h2>
               <p className="text-slate-600 mb-6 leading-relaxed">
                 Canadian taxpayers have two main ways to report their income: as an employee with a regular tax return, 
                 or as self-employed with a T2125 form. Understanding the differences is crucial for proper tax planning.
@@ -81,7 +81,7 @@ export default function T2125VsRegularTaxReturn() {
 
               <div className="grid md:grid-cols-2 gap-6 mb-8">
                 <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-3">Regular Tax Return (T1)</h3>
+                  <h3 className="text-lg  text-slate-900 mb-3">Regular Tax Return (T1)</h3>
                   <p className="text-slate-600 text-sm mb-4">
                     Used by employees who receive T4 slips from their employers.
                   </p>
@@ -94,7 +94,7 @@ export default function T2125VsRegularTaxReturn() {
                   </ul>
                 </div>
                 <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-3">T2125 Self-Employment</h3>
+                  <h3 className="text-lg  text-slate-900 mb-3">T2125 Self-Employment</h3>
                   <p className="text-slate-600 text-sm mb-4">
                     Used by freelancers, contractors, and business owners.
                   </p>
@@ -110,55 +110,55 @@ export default function T2125VsRegularTaxReturn() {
             </section>
 
             <section id="key-differences" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Key Differences Between T2125 and Regular Returns</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Key Differences Between T2125 and Regular Returns</h2>
               
               <div className="overflow-x-auto mb-8">
                 <table className="w-full bg-white rounded-lg shadow-sm border border-slate-200">
                   <thead className="bg-slate-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-sm font-semibold text-slate-900">Aspect</th>
-                      <th className="px-6 py-3 text-left text-sm font-semibold text-slate-900">Regular Tax Return (T1)</th>
-                      <th className="px-6 py-3 text-left text-sm font-semibold text-slate-900">T2125 Self-Employment</th>
+                      <th className="px-6 py-3 text-left text-sm  text-slate-900">Aspect</th>
+                      <th className="px-6 py-3 text-left text-sm  text-slate-900">Regular Tax Return (T1)</th>
+                      <th className="px-6 py-3 text-left text-sm  text-slate-900">T2125 Self-Employment</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-200">
                     <tr>
-                      <td className="px-6 py-4 text-sm font-medium text-slate-900">Income Source</td>
+                      <td className="px-6 py-4 text-sm  text-slate-900">Income Source</td>
                       <td className="px-6 py-4 text-sm text-slate-600">T4 slips from employer</td>
                       <td className="px-6 py-4 text-sm text-slate-600">Self-reported business income</td>
                     </tr>
                     <tr>
-                      <td className="px-6 py-4 text-sm font-medium text-slate-900">Tax Withholding</td>
+                      <td className="px-6 py-4 text-sm  text-slate-900">Tax Withholding</td>
                       <td className="px-6 py-4 text-sm text-slate-600">Automatic deductions by employer</td>
                       <td className="px-6 py-4 text-sm text-slate-600">No automatic deductions</td>
                     </tr>
                     <tr>
-                      <td className="px-6 py-4 text-sm font-medium text-slate-900">CPP Contributions</td>
+                      <td className="px-6 py-4 text-sm  text-slate-900">CPP Contributions</td>
                       <td className="px-6 py-4 text-sm text-slate-600">Employee portion only (5.95%)</td>
                       <td className="px-6 py-4 text-sm text-slate-600">Both portions (9.9%)</td>
                     </tr>
                     <tr>
-                      <td className="px-6 py-4 text-sm font-medium text-slate-900">EI Premiums</td>
+                      <td className="px-6 py-4 text-sm  text-slate-900">EI Premiums</td>
                       <td className="px-6 py-4 text-sm text-slate-600">Automatic (1.66%)</td>
                       <td className="px-6 py-4 text-sm text-slate-600">Optional (1.66%)</td>
                     </tr>
                     <tr>
-                      <td className="px-6 py-4 text-sm font-medium text-slate-900">Deductions</td>
+                      <td className="px-6 py-4 text-sm  text-slate-900">Deductions</td>
                       <td className="px-6 py-4 text-sm text-slate-600">Limited personal deductions</td>
                       <td className="px-6 py-4 text-sm text-slate-600">Extensive business deductions</td>
                     </tr>
                     <tr>
-                      <td className="px-6 py-4 text-sm font-medium text-slate-900">Record Keeping</td>
+                      <td className="px-6 py-4 text-sm  text-slate-900">Record Keeping</td>
                       <td className="px-6 py-4 text-sm text-slate-600">Minimal (keep T4 slips)</td>
                       <td className="px-6 py-4 text-sm text-slate-600">Extensive (all business records)</td>
                     </tr>
                     <tr>
-                      <td className="px-6 py-4 text-sm font-medium text-slate-900">Filing Complexity</td>
+                      <td className="px-6 py-4 text-sm  text-slate-900">Filing Complexity</td>
                       <td className="px-6 py-4 text-sm text-slate-600">Simple</td>
                       <td className="px-6 py-4 text-sm text-slate-600">Complex</td>
                     </tr>
                     <tr>
-                      <td className="px-6 py-4 text-sm font-medium text-slate-900">Quarterly Payments</td>
+                      <td className="px-6 py-4 text-sm  text-slate-900">Quarterly Payments</td>
                       <td className="px-6 py-4 text-sm text-slate-600">Not required</td>
                       <td className="px-6 py-4 text-sm text-slate-600">May be required</td>
                     </tr>
@@ -168,11 +168,11 @@ export default function T2125VsRegularTaxReturn() {
             </section>
 
             <section id="when-to-use" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">When to Use Each Filing Method</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">When to Use Each Filing Method</h2>
               
               <div className="grid md:grid-cols-2 gap-6 mb-8">
                 <div className="bg-green-50 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold text-green-900 mb-4">Use Regular Tax Return (T1) When:</h3>
+                  <h3 className="text-lg  text-green-900 mb-4">Use Regular Tax Return (T1) When:</h3>
                   <ul className="space-y-2 text-green-800 text-sm">
                     <li>• You receive T4 slips from an employer</li>
                     <li>• You work as an employee (not contractor)</li>
@@ -183,7 +183,7 @@ export default function T2125VsRegularTaxReturn() {
                   </ul>
                 </div>
                 <div className="bg-blue-50 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold text-blue-900 mb-4">Use T2125 When:</h3>
+                  <h3 className="text-lg  text-blue-900 mb-4">Use T2125 When:</h3>
                   <ul className="space-y-2 text-blue-800 text-sm">
                     <li>• You're a freelancer or contractor</li>
                     <li>• You own a business (sole proprietorship)</li>
@@ -196,7 +196,7 @@ export default function T2125VsRegularTaxReturn() {
               </div>
 
               <div className="bg-yellow-50 border-l-4 border-yellow-400 p-6">
-                <h3 className="text-lg font-semibold text-yellow-900 mb-2">Important Note:</h3>
+                <h3 className="text-lg  text-yellow-900 mb-2">Important Note:</h3>
                 <p className="text-yellow-800 text-sm">
                   You can file both types in the same year if you have both employment income (T4) and self-employment income. 
                   The T2125 form is attached to your regular T1 return.
@@ -205,14 +205,14 @@ export default function T2125VsRegularTaxReturn() {
             </section>
 
             <section id="tax-implications" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Tax Implications and Calculations</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Tax Implications and Calculations</h2>
               
               <div className="space-y-6">
                 <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
-                  <h3 className="text-xl font-semibold text-slate-900 mb-4">Regular Tax Return (T1)</h3>
+                  <h3 className="text-xl  text-slate-900 mb-4">Regular Tax Return (T1)</h3>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Advantages</h4>
+                      <h4 className=" text-slate-800 mb-2">Advantages</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Automatic tax withholding</li>
                         <li>• Employer pays half of CPP</li>
@@ -222,7 +222,7 @@ export default function T2125VsRegularTaxReturn() {
                       </ul>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Disadvantages</h4>
+                      <h4 className=" text-slate-800 mb-2">Disadvantages</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Limited deduction opportunities</li>
                         <li>• Less control over tax timing</li>
@@ -235,10 +235,10 @@ export default function T2125VsRegularTaxReturn() {
                 </div>
 
                 <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
-                  <h3 className="text-xl font-semibold text-slate-900 mb-4">T2125 Self-Employment</h3>
+                  <h3 className="text-xl  text-slate-900 mb-4">T2125 Self-Employment</h3>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Advantages</h4>
+                      <h4 className=" text-slate-800 mb-2">Advantages</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• Extensive business deductions</li>
                         <li>• Control over tax timing</li>
@@ -248,7 +248,7 @@ export default function T2125VsRegularTaxReturn() {
                       </ul>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2">Disadvantages</h4>
+                      <h4 className=" text-slate-800 mb-2">Disadvantages</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
                         <li>• No automatic tax withholding</li>
                         <li>• Pay both portions of CPP</li>
@@ -263,11 +263,11 @@ export default function T2125VsRegularTaxReturn() {
             </section>
 
             <section id="deductions" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Deduction Opportunities</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Deduction Opportunities</h2>
               
               <div className="space-y-6">
                 <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
-                  <h3 className="text-xl font-semibold text-slate-900 mb-4">Regular Tax Return Deductions</h3>
+                  <h3 className="text-xl  text-slate-900 mb-4">Regular Tax Return Deductions</h3>
                   <p className="text-slate-600 mb-4">Limited to personal deductions such as:</p>
                   <ul className="space-y-1 text-slate-600 text-sm">
                     <li>• RRSP contributions</li>
@@ -281,7 +281,7 @@ export default function T2125VsRegularTaxReturn() {
                 </div>
 
                 <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
-                  <h3 className="text-xl font-semibold text-slate-900 mb-4">T2125 Business Deductions</h3>
+                  <h3 className="text-xl  text-slate-900 mb-4">T2125 Business Deductions</h3>
                   <p className="text-slate-600 mb-4">Extensive business deductions including:</p>
                   <ul className="space-y-1 text-slate-600 text-sm">
                     <li>• All regular personal deductions PLUS</li>
@@ -300,7 +300,7 @@ export default function T2125VsRegularTaxReturn() {
               </div>
 
               <div className="bg-green-50 border-l-4 border-green-400 p-6">
-                <h3 className="text-lg font-semibold text-green-900 mb-2">Tax Savings Example:</h3>
+                <h3 className="text-lg  text-green-900 mb-2">Tax Savings Example:</h3>
                 <p className="text-green-800 text-sm mb-3">
                   <strong>Sarah earns $60,000 as an employee vs. $60,000 as a freelancer:</strong>
                 </p>
@@ -313,25 +313,25 @@ export default function T2125VsRegularTaxReturn() {
                   <p>• Business deductions: $15,000</p>
                   <p>• Taxable income: $45,000</p>
                   <p>• Income tax: ~$8,500</p>
-                  <p className="mt-2 font-semibold">Tax savings: ~$3,500</p>
+                  <p className="mt-2 ">Tax savings: ~$3,500</p>
                 </div>
               </div>
             </section>
 
             <section id="compliance" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Compliance and Record Keeping</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Compliance and Record Keeping</h2>
               
               <div className="grid md:grid-cols-2 gap-6 mb-8">
                 <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-4">Regular Tax Return</h3>
-                  <h4 className="font-semibold text-slate-800 mb-2">Record Keeping Requirements:</h4>
+                  <h3 className="text-lg  text-slate-900 mb-4">Regular Tax Return</h3>
+                  <h4 className=" text-slate-800 mb-2">Record Keeping Requirements:</h4>
                   <ul className="space-y-1 text-slate-600 text-sm">
                     <li>• Keep T4 slips for 6 years</li>
                     <li>• Keep receipts for personal deductions</li>
                     <li>• Minimal documentation needed</li>
                     <li>• Employer handles most compliance</li>
                   </ul>
-                  <h4 className="font-semibold text-slate-800 mb-2 mt-4">Filing Requirements:</h4>
+                  <h4 className=" text-slate-800 mb-2 mt-4">Filing Requirements:</h4>
                   <ul className="space-y-1 text-slate-600 text-sm">
                     <li>• File by April 30</li>
                     <li>• No quarterly payments</li>
@@ -340,8 +340,8 @@ export default function T2125VsRegularTaxReturn() {
                   </ul>
                 </div>
                 <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-4">T2125 Self-Employment</h3>
-                  <h4 className="font-semibold text-slate-800 mb-2">Record Keeping Requirements:</h4>
+                  <h3 className="text-lg  text-slate-900 mb-4">T2125 Self-Employment</h3>
+                  <h4 className=" text-slate-800 mb-2">Record Keeping Requirements:</h4>
                   <ul className="space-y-1 text-slate-600 text-sm">
                     <li>• Keep all business receipts for 6 years</li>
                     <li>• Maintain detailed expense logs</li>
@@ -350,7 +350,7 @@ export default function T2125VsRegularTaxReturn() {
                     <li>• Keep mileage logs for vehicles</li>
                     <li>• Maintain separate business accounts</li>
                   </ul>
-                  <h4 className="font-semibold text-slate-800 mb-2 mt-4">Filing Requirements:</h4>
+                  <h4 className=" text-slate-800 mb-2 mt-4">Filing Requirements:</h4>
                   <ul className="space-y-1 text-slate-600 text-sm">
                     <li>• File by June 15 (if self-employed only)</li>
                     <li>• May need quarterly installments</li>
@@ -362,7 +362,7 @@ export default function T2125VsRegularTaxReturn() {
             </section>
 
             <section id="transitioning" className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">Transitioning Between Employment Types</h2>
+              <h2 className="text-3xl  text-slate-900 mb-6">Transitioning Between Employment Types</h2>
               
               <p className="text-slate-600 mb-6 leading-relaxed">
                 Many Canadians transition from employment to self-employment or work both simultaneously. 
@@ -371,7 +371,7 @@ export default function T2125VsRegularTaxReturn() {
 
               <div className="space-y-6">
                 <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
-                  <h3 className="text-xl font-semibold text-slate-900 mb-4">Working Both (Employee + Self-Employed)</h3>
+                  <h3 className="text-xl  text-slate-900 mb-4">Working Both (Employee + Self-Employed)</h3>
                   <ul className="space-y-2 text-slate-600 text-sm">
                     <li>• File both T4 income and T2125 in the same year</li>
                     <li>• T2125 is attached to your regular T1 return</li>
@@ -382,7 +382,7 @@ export default function T2125VsRegularTaxReturn() {
                 </div>
 
                 <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
-                  <h3 className="text-xl font-semibold text-slate-900 mb-4">Transitioning from Employee to Self-Employed</h3>
+                  <h3 className="text-xl  text-slate-900 mb-4">Transitioning from Employee to Self-Employed</h3>
                   <ul className="space-y-2 text-slate-600 text-sm">
                     <li>• Start tracking business expenses immediately</li>
                     <li>• Set up separate business bank accounts</li>
@@ -394,7 +394,7 @@ export default function T2125VsRegularTaxReturn() {
                 </div>
 
                 <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
-                  <h3 className="text-xl font-semibold text-slate-900 mb-4">Transitioning from Self-Employed to Employee</h3>
+                  <h3 className="text-xl  text-slate-900 mb-4">Transitioning from Self-Employed to Employee</h3>
                   <ul className="space-y-2 text-slate-600 text-sm">
                     <li>• Keep business records for 6 years</li>
                     <li>• May have business losses to carry forward</li>
@@ -407,26 +407,26 @@ export default function T2125VsRegularTaxReturn() {
             </section>
 
             <div className="bg-white rounded-xl p-8 shadow-lg border border-slate-200">
-              <h3 className="text-2xl font-bold text-slate-900 mb-4 text-center">Need Help Deciding?</h3>
+              <h3 className="text-2xl  text-slate-900 mb-4 text-center">Need Help Deciding?</h3>
               <p className="text-slate-600 text-center mb-6">
                 Use our calculators to compare your tax situation and discover which filing method works best for you.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/canada-t2125-tax-calculator"
-                  className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-center"
+                  className="bg-blue-600 text-white px-8 py-3 rounded-lg  hover:bg-blue-700 transition-colors text-center"
                 >
                   T2125 Calculator
                 </Link>
                 <Link
                   href="/canada-income-tax-calculator"
-                  className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors text-center"
+                  className="bg-green-600 text-white px-8 py-3 rounded-lg  hover:bg-green-700 transition-colors text-center"
                 >
                   Income Tax Calculator
                 </Link>
                 <Link
                   href="/guides"
-                  className="bg-slate-100 text-slate-700 px-8 py-3 rounded-lg font-semibold hover:bg-slate-200 transition-colors text-center"
+                  className="bg-slate-100 text-slate-700 px-8 py-3 rounded-lg  hover:bg-slate-200 transition-colors text-center"
                 >
                   Browse More Guides
                 </Link>
