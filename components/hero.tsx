@@ -12,9 +12,15 @@ export function Hero() {
     <div className="flex flex-col flex-1 justify-between overflow-hidden">
       <GL hovering={true} />
 
-      <div className="pb-1 mt-24 text-center relative">
+      <div className="pb-1 mt-24 text-center relative mx-8">
         <Pill className="mb-6">INVITE-ONLY RELEASE</Pill>
-        <h1 className="text-5xl sm:text-6xl md:text-7xl ">
+
+       <p className="text-4xl sm:text-5xl md:text-6xl  flex flex-row items-center justify-center md:gap-2 mx-auto md:text-nowrap"><span className="mr-2 hidden md:block w-fit">👋 Hey, {" "}</span> <WordRotate
+        className="text-4xl sm:text-5xl md:text-6xl  text-[#0AAFD0] italic mr-2 max-w-[400px]"
+        duration={5000}
+          words={["Entrepreneurs", "Founders", "Solopreneurs", "Contractors", "Freelancers", "Creators"]}
+        /> </p>
+        <h1 className="text-4xl sm:text-5xl md:text-6xl md:text-nowrap ">
         Stop losing
         {" "}
           <i>
@@ -23,14 +29,9 @@ export function Hero() {
           in taxes every year.
         </h1>
 
-       <p className="text-5xl sm:text-6xl md:text-7xl  flex flex-row items-center justify-center gap-2 mx-auto"><span className="mr-2">For {" "}</span> <WordRotate
-        className="text-5xl sm:text-6xl md:text-7xl  text-[#0AAFD0] italic mr-2 max-w-[400px]"
-        duration={5000}
-          words={["Entrepreneurs", "Founders", "Solopreneurs", "Contractors", "Freelancers", "Creators"]}
-        /> </p>
        
-        <p className="text-sm sm:text-base text-foreground/60 text-balance max-w-[540px] mx-auto mb-0 mt-8">
-        Tallo automatically finds CRA-eligible write-offs. <br/> No spreadsheets, no guesswork.        </p>
+        <p className="text-base sm:text-lg text-foreground/60 text-balance max-w-[540px] mx-auto mb-0 mt-8">
+        I am Tallo, and I automatically find CRA-eligible write-offs. <br/> No spreadsheets, no guesswork.        </p>
         <p className="my-7 text-primary opacity-80">
           Backed by CPA | Built in Canada for Canadians 🇨🇦
         </p>
