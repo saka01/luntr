@@ -446,58 +446,58 @@ function IncomeTaxResults({ taxData }: { taxData: IncomeTaxData }) {
           <div className="space-y-3">
             <div className="flex justify-between">
               <span className="text-sm font-medium text-slate-900 dark:text-white">Total Income:</span>
-              <span className="text-sm font-mono text-slate-900 dark:text-white">{formatCurrency(results.totalIncome)}</span>
+              <span className="text-sm font-sans text-slate-900 dark:text-white">{formatCurrency(results.totalIncome)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-sm font-medium text-slate-900 dark:text-white">Total Deductions:</span>
-              <span className="text-sm font-mono text-slate-900 dark:text-white">{formatCurrency(results.totalDeductions)}</span>
+              <span className="text-sm font-sans text-slate-900 dark:text-white">{formatCurrency(results.totalDeductions)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-sm font-medium text-slate-900 dark:text-white">Taxable Income:</span>
-              <span className="text-sm font-mono text-slate-900 dark:text-white">{formatCurrency(results.taxableIncome)}</span>
+              <span className="text-sm font-sans text-slate-900 dark:text-white">{formatCurrency(results.taxableIncome)}</span>
             </div>
           </div>
 
         <div className="pt-3 border-t border-slate-200 dark:border-slate-700 space-y-3">
           <div className="flex justify-between">
             <span className="text-sm font-medium text-slate-900 dark:text-white">Federal Tax:</span>
-            <span className="text-sm font-mono text-slate-900 dark:text-white">{formatCurrency(results.federalTax)}</span>
+            <span className="text-sm font-sans text-slate-900 dark:text-white">{formatCurrency(results.federalTax)}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-sm font-medium text-slate-900 dark:text-white">Provincial Tax:</span>
-            <span className="text-sm font-mono text-slate-900 dark:text-white">{formatCurrency(results.provincialTax)}</span>
+            <span className="text-sm font-sans text-slate-900 dark:text-white">{formatCurrency(results.provincialTax)}</span>
           </div>
           <div className="flex justify-between font-semibold">
             <span className="text-slate-900 dark:text-white">Total Tax:</span>
-            <span className="font-mono text-slate-900 dark:text-white">{formatCurrency(results.totalTax)}</span>
+            <span className="font-sans text-slate-900 dark:text-white">{formatCurrency(results.totalTax)}</span>
           </div>
         </div>
 
         <div className="pt-3 border-t border-slate-200 dark:border-slate-700 space-y-3">
           <div className="flex justify-between">
             <span className="text-sm font-medium text-slate-900 dark:text-white">Taxes Paid:</span>
-            <span className="text-sm font-mono text-slate-900 dark:text-white">{formatCurrency(results.taxesPaid)}</span>
+            <span className="text-sm font-sans text-slate-900 dark:text-white">{formatCurrency(results.taxesPaid)}</span>
           </div>
           <div className={`flex justify-between font-semibold ${
             results.taxesOwedOrRefund >= 0 ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'
           }`}>
             <span>{results.taxesOwedOrRefund >= 0 ? 'Taxes Still Owed:' : 'Refund:'}</span>
-            <span className="font-mono">{formatCurrency(Math.abs(results.taxesOwedOrRefund))}</span>
+            <span className="font-sans">{formatCurrency(Math.abs(results.taxesOwedOrRefund))}</span>
           </div>
         </div>
 
         <div className="pt-3 border-t border-slate-200 dark:border-slate-700 space-y-3">
           <div className="flex justify-between">
             <span className="text-sm font-medium text-slate-900 dark:text-white">After-Tax Income:</span>
-            <span className="text-sm font-mono text-slate-900 dark:text-white">{formatCurrency(results.afterTaxIncome)}</span>
+            <span className="text-sm font-sans text-slate-900 dark:text-white">{formatCurrency(results.afterTaxIncome)}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-sm font-medium text-slate-900 dark:text-white">Average Tax Rate:</span>
-            <span className="text-sm font-mono text-slate-900 dark:text-white">{results.averageTaxRate.toFixed(1)}%</span>
+            <span className="text-sm font-sans text-slate-900 dark:text-white">{results.averageTaxRate.toFixed(1)}%</span>
           </div>
           <div className="flex justify-between">
             <span className="text-sm font-medium text-slate-900 dark:text-white">Marginal Tax Rate:</span>
-            <span className="text-sm font-mono text-slate-900 dark:text-white">{results.marginalTaxRate.toFixed(1)}%</span>
+            <span className="text-sm font-sans text-slate-900 dark:text-white">{results.marginalTaxRate.toFixed(1)}%</span>
           </div>
         </div>
       </CardContent>
