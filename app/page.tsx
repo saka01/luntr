@@ -29,9 +29,9 @@ export default function Home() {
       <Hero />
 
       {/* Features Section */}
-      <div id="features">
+      {/* <div id="features">
         <Features />
-      </div>
+      </div> */}
 
       {/* Pricing Section */}
       <div id="pricing">

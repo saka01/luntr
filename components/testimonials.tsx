@@ -2,57 +2,57 @@ import { Marquee } from "@/components/magicui/marquee"
 
 const testimonials = [
   {
-    name: "Arjun Mehta",
-    username: "@arjdev",
-    body: "v0 has completely changed the way I build UIs. Generate, copy-paste, done. No more design stress.",
+    name: "Sarah Chen",
+    username: "@sarahfreelance",
+    body: "Tallo saved me $3,200 in taxes last year by catching deductions I never knew existed. The AI categorization is incredible.",
     img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
   },
   {
-    name: "Sara Lin",
-    username: "@sara.codes",
-    body: "Honestly shocked at how smooth the v0 generated components are out of the box. Just works perfectly.",
+    name: "Marcus Johnson",
+    username: "@marcusconsulting",
+    body: "Finally, a tool that makes T2125 forms actually manageable. The CRA-compliant reports saved me hours of work.",
     img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=face",
   },
   {
-    name: "Devon Carter",
-    username: "@devninja",
-    body: "Our team launched a client site in 2 days using v0 components. Saved so much development time.",
+    name: "Priya Patel",
+    username: "@priyadesigns",
+    body: "As a graphic designer, I was missing so many business expenses. Tallo's AI found $1,800 in deductions I overlooked.",
     img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
   },
   {
-    name: "Priya Shah",
-    username: "@priyacodes",
-    body: "Generated a few components in v0 and everything blended perfectly with our codebase. Massive W.",
+    name: "David Kim",
+    username: "@davidtech",
+    body: "The receipt management feature is a game-changer. No more shoebox full of receipts - everything's organized and CRA-ready.",
     img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
   },
   {
-    name: "Leo Martin",
-    username: "@leobuilds",
-    body: "Found a beautiful hero section in v0, tweaked the prompt, and shipped in 15 minutes. Game changer.",
+    name: "Lisa Rodriguez",
+    username: "@lisacreative",
+    body: "I was terrified of doing my own taxes as a freelancer. Tallo made it so simple and saved me $2,500 in accountant fees.",
     img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
   },
   {
-    name: "Chloe Winters",
-    username: "@chloewinters",
-    body: "v0 helped us prototype multiple landing pages without writing CSS once. Pure magic.",
+    name: "Alex Thompson",
+    username: "@alexwrites",
+    body: "The GST/HST tracking feature is brilliant. I never knew I could claim input tax credits on so many business expenses.",
     img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop&crop=face",
   },
   {
-    name: "Ayaan Malik",
-    username: "@ayaan_dev",
-    body: "As a solo founder, v0 lets me move fast without sacrificing design quality. Essential tool.",
+    name: "Jennifer Liu",
+    username: "@jennifermarketing",
+    body: "Tallo's educational explanations helped me understand Canadian tax rules better than my accountant. Worth every penny.",
     img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
   },
   {
-    name: "Monica Reeves",
-    username: "@monicareeves",
-    body: "Can't believe how polished the v0 generated components look. Clients are impressed every time.",
+    name: "Michael Brown",
+    username: "@michaeldev",
+    body: "The TurboTax export feature is seamless. I went from spending days on taxes to just a few hours. Incredible tool.",
     img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face",
   },
   {
-    name: "James Roy",
-    username: "@jamesrdev",
-    body: "v0 is a lifesaver when deadlines are tight. Generate a component, tweak, and deploy instantly.",
+    name: "Emma Wilson",
+    username: "@emmaconsulting",
+    body: "Finally found all my home office deductions with Tallo. The AI caught expenses I didn't even think were deductible.",
     img: "https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=150&h=150&fit=crop&crop=face",
   },
 ]
@@ -109,7 +109,7 @@ export function TestimonialsSection() {
           </h2>
 
           <p className="mt-5 relative z-10 text-center text-lg text-zinc-500">
-            From intuitive design to powerful features, our app has become an essential tool for users around the world.
+            Tallo helps Canadian freelancers save on taxes and easily maximize deductions.
           </p>
         </div>
 

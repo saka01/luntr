@@ -1,6 +1,7 @@
 "use client"
 import { motion, AnimatePresence } from "framer-motion"
 import { useState, useEffect } from "react"
+import { Logo } from "@/components/logo"
 
 export function StickyFooter() {
   const [isAtBottom, setIsAtBottom] = useState(false)
@@ -53,64 +54,63 @@ export function StickyFooter() {
                 <li
                   className="hover:underline cursor-pointer transition-colors"
                   style={{ color: "#121113" }}
-                  onMouseEnter={(e) => (e.target.style.color = "rgba(18, 17, 19, 0.8)")}
-                  onMouseLeave={(e) => (e.target.style.color = "#121113")}
+                  onMouseEnter={(e) => ((e.target as HTMLElement).style.color = "rgba(18, 17, 19, 0.8)")}
+                  onMouseLeave={(e) => ((e.target as HTMLElement).style.color = "#121113")}
                 >
-                  Home
+                  <a href="/">Home</a>
                 </li>
                 <li
                   className="hover:underline cursor-pointer transition-colors"
                   style={{ color: "#121113" }}
-                  onMouseEnter={(e) => (e.target.style.color = "rgba(18, 17, 19, 0.8)")}
-                  onMouseLeave={(e) => (e.target.style.color = "#121113")}
+                  onMouseEnter={(e) => ((e.target as HTMLElement).style.color = "rgba(18, 17, 19, 0.8)")}
+                  onMouseLeave={(e) => ((e.target as HTMLElement).style.color = "#121113")}
                 >
-                  Docs
+                  <a href="/guides">Tax Guides</a>
                 </li>
                 <li
                   className="hover:underline cursor-pointer transition-colors"
                   style={{ color: "#121113" }}
-                  onMouseEnter={(e) => (e.target.style.color = "rgba(18, 17, 19, 0.8)")}
-                  onMouseLeave={(e) => (e.target.style.color = "#121113")}
+                  onMouseEnter={(e) => ((e.target as HTMLElement).style.color = "rgba(18, 17, 19, 0.8)")}
+                  onMouseLeave={(e) => ((e.target as HTMLElement).style.color = "#121113")}
                 >
-                  Components
+                  <a href="/deduction-finder">Deduction Finder</a>
                 </li>
               </ul>
               <ul className="space-y-2">
                 <li
                   className="hover:underline cursor-pointer transition-colors"
                   style={{ color: "#121113" }}
-                  onMouseEnter={(e) => (e.target.style.color = "rgba(18, 17, 19, 0.8)")}
-                  onMouseLeave={(e) => (e.target.style.color = "#121113")}
+                  onMouseEnter={(e) => ((e.target as HTMLElement).style.color = "rgba(18, 17, 19, 0.8)")}
+                  onMouseLeave={(e) => ((e.target as HTMLElement).style.color = "#121113")}
                 >
-                  Github
+                  <a href="/signup">Get Started</a>
                 </li>
+                {/* <li
+                  className="hover:underline cursor-pointer transition-colors"
+                  style={{ color: "#121113" }}
+                  onMouseEnter={(e) => ((e.target as HTMLElement).style.color = "rgba(18, 17, 19, 0.8)")}
+                  onMouseLeave={(e) => ((e.target as HTMLElement).style.color = "#121113")}
+                >
+                  <a href="/login">Login</a>
+                </li> */}
                 <li
                   className="hover:underline cursor-pointer transition-colors"
                   style={{ color: "#121113" }}
-                  onMouseEnter={(e) => (e.target.style.color = "rgba(18, 17, 19, 0.8)")}
-                  onMouseLeave={(e) => (e.target.style.color = "#121113")}
+                  onMouseEnter={(e) => ((e.target as HTMLElement).style.color = "rgba(18, 17, 19, 0.8)")}
+                  onMouseLeave={(e) => ((e.target as HTMLElement).style.color = "#121113")}
                 >
-                  Twitter
-                </li>
-                <li
-                  className="hover:underline cursor-pointer transition-colors"
-                  style={{ color: "#121113" }}
-                  onMouseEnter={(e) => (e.target.style.color = "rgba(18, 17, 19, 0.8)")}
-                  onMouseLeave={(e) => (e.target.style.color = "#121113")}
-                >
-                  Discord
+                  <a href="/firms">For Firms</a>
                 </li>
               </ul>
             </motion.div>
-            <motion.h2
-              className="absolute bottom-0 left-0 translate-y-1/3 sm:text-[192px] text-[80px] font-bold select-none"
-              style={{ color: "#121113" }}
-              initial={{ opacity: 0, x: -100 }}
+            <motion.div
+              className="absolute bottom-0 left-0 translate-y-1/3"
+              initial={{ opacity: 0, x: 0 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              v0
-            </motion.h2>
+              {/* <Logo className="sm:w-[192px] " /> */}
+            </motion.div>
           </div>
         </motion.div>
       )}

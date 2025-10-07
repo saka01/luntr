@@ -235,7 +235,7 @@ export const Header = () => {
           </a>
         </div>
 
-        <div className="flex items-center gap-4">
+        {/* <div className="flex items-center gap-4">
           <a
             href="/login"
             className="font-medium transition-colors hover:text-foreground text-muted-foreground text-sm cursor-pointer"
@@ -249,7 +249,7 @@ export const Header = () => {
           >
             Sign Up
           </a>
-        </div>
+        </div> */}
       </header>
 
       {/* Mobile Header */}
@@ -363,7 +363,7 @@ export const Header = () => {
               >
                 FAQ
               </button>
-              <div className="border-t border-border/50 pt-4 mt-4 flex flex-col space-y-3">
+              {/* <div className="border-t border-border/50 pt-4 mt-4 flex flex-col space-y-3">
                 <a
                   href="/login"
                   className="px-4 py-3 text-lg font-bold text-center bg-gradient-to-b from-primary to-primary/80 text-primary-foreground rounded-lg shadow-lg hover:-translate-y-0.5 transition-all duration-200"
@@ -376,7 +376,7 @@ export const Header = () => {
                 >
                   Sign Up
                 </a>
-              </div>
+              </div> */}
             </nav>
           </div>
         </div>
