@@ -25,7 +25,7 @@ export function FAQSection() {
     {
       question: "Can I export my data to TurboTax or other tax software?",
       answer:
-        "Absolutely! Tallo integrates seamlessly with TurboTax and WealthSimple Tax. You can export your organized expense data directly to these platforms, saving you hours of manual data entry during tax season.",
+        "Absolutely! Tallo integrates seamlessly with TurboTax. You can export your organized expense data directly to these platforms, saving you hours of manual data entry during tax season.",
     },
     {
       question: "What types of business expenses can Tallo track?",

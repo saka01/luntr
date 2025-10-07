@@ -27,7 +27,7 @@ const pricingPlans = [
       "Connect multiple accounts (banks + credit cards)",
       "Receipt management and CRA-compliant documentation",
       "T2125-organized reports",
-      "TurboTax/WealthSimple Tax export",
+      "TurboTax export",
       "GST/HST and Input Tax Credit tracking",
       "Educational deduction explanations",
     ],
