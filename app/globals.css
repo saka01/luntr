@@ -4,61 +4,77 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Dark theme for main site - keeping original black/white aesthetic */
-  --background: #0D0F11;
-  --foreground: #ffffff;
-  --card: #000000;
-  --card-foreground: #ffffff;
-  --popover: #000000;
-  --popover-foreground: #ffffff;
-  --primary: #0AAFD0;
+  /* Modern fintech color scheme inspired by Wealthsimple and Stripe */
+  --background: #ffffff;
+  --foreground: #1a1a1a;
+  --card: #ffffff;
+  --card-foreground: #1a1a1a;
+  --popover: #ffffff;
+  --popover-foreground: #1a1a1a;
+  --primary: #00afe1;
   --primary-foreground: #ffffff;
-  --secondary: #FFC700;
-  --secondary-foreground: #ffffff;
-  --muted: #424242;
-  --muted-foreground: #ffffff;
-  --accent: #FFC700;
-  --accent-foreground: #ffffff;
-  --destructive: #ff4444;
+  --secondary: #f8f9fa;
+  --secondary-foreground: #1a1a1a;
+  --muted: #f1f3f4;
+  --muted-foreground: #6b7280;
+  --accent: #fccc4c;
+  --accent-foreground: #1a1a1a;
+  --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #424242;
-  --input: #424242;
-  --ring: #FFC700;
-  --radius: 0.625rem;
+  --border: #e5e7eb;
+  --input: #f9fafb;
+  --ring: #00afe1;
+  --radius: 0.5rem;
   --shadow-x: 0px;
-  --shadow-y: 2px;
-  --shadow-blur: 8px;
+  --shadow-y: 1px;
+  --shadow-blur: 3px;
   --shadow-spread: 0px;
-  --shadow-opacity: 0.06;
+  --shadow-opacity: 0.1;
   --shadow-color: #000000;
+  
+  /* Additional fintech-specific colors */
+  --success: #10b981;
+  --success-foreground: #ffffff;
+  --warning: #f59e0b;
+  --warning-foreground: #ffffff;
+  --info: #3b82f6;
+  --info-foreground: #ffffff;
 }
 
 .dark {
-  --background: oklch(0.15 0.01 85);
-  --foreground: oklch(0.95 0.01 85);
-  --card: oklch(0.2 0.01 85);
-  --card-foreground: oklch(0.95 0.01 85);
-  --popover: oklch(0.2 0.01 85);
-  --popover-foreground: oklch(0.95 0.01 85);
-  --primary: oklch(0.75 0.08 200);
-  --primary-foreground: oklch(0.15 0.01 85);
-  --secondary: oklch(0.65 0.08 200);
-  --secondary-foreground: oklch(0.95 0.01 85);
-  --muted: oklch(0.3 0.01 85);
-  --muted-foreground: oklch(0.7 0.01 85);
-  --accent: oklch(0.65 0.08 200);
-  --accent-foreground: oklch(0.95 0.01 85);
-  --destructive: oklch(0.65 0.18 25);
-  --destructive-foreground: oklch(0.95 0.01 85);
-  --border: oklch(0.35 0.01 85);
-  --input: oklch(0.35 0.01 85);
-  --ring: oklch(0.65 0.08 200);
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --card: #1e293b;
+  --card-foreground: #f8fafc;
+  --popover: #1e293b;
+  --popover-foreground: #f8fafc;
+  --primary: #00afe1;
+  --primary-foreground: #ffffff;
+  --secondary: #334155;
+  --secondary-foreground: #f8fafc;
+  --muted: #475569;
+  --muted-foreground: #94a3b8;
+  --accent: #fccc4c;
+  --accent-foreground: #0f172a;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #334155;
+  --input: #334155;
+  --ring: #00afe1;
   --shadow-x: 0px;
-  --shadow-y: 2px;
-  --shadow-blur: 8px;
+  --shadow-y: 4px;
+  --shadow-blur: 6px;
   --shadow-spread: 0px;
-  --shadow-opacity: 0.12;
+  --shadow-opacity: 0.15;
   --shadow-color: #000000;
+  
+  /* Additional fintech-specific colors for dark mode */
+  --success: #10b981;
+  --success-foreground: #ffffff;
+  --warning: #f59e0b;
+  --warning-foreground: #ffffff;
+  --info: #3b82f6;
+  --info-foreground: #ffffff; 
 }
 
 @theme inline {
@@ -81,6 +97,12 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -263,10 +285,10 @@
 
   @keyframes pulse-glow {
     0%, 100% {
-      box-shadow: 0 0 0 0 rgba(255, 199, 0, 0.4);
+      box-shadow: 0 0 0 0 rgba(0, 175, 225, 0.4);
     }
     50% {
-      box-shadow: 0 0 0 8px rgba(255, 199, 0, 0);
+      box-shadow: 0 0 0 8px rgba(0, 175, 225, 0);
     }
   }
 
@@ -283,21 +305,52 @@
   }
 
 
-  .animate-pulse-glow {
-    animation: pulse-glow 2s infinite;
+  /* Fintech-specific utility classes */
+  .gradient-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--success) 100%);
   }
-
+  
+  .gradient-accent {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--warning) 100%);
+  }
+  
+  .text-gradient-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--success) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .text-gradient-accent {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--warning) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .shadow-financial {
+    box-shadow: 0 4px 6px -1px rgba(0, 175, 225, 0.1), 0 2px 4px -1px rgba(0, 175, 225, 0.06);
+  }
+  
+  .shadow-financial-lg {
+    box-shadow: 0 10px 15px -3px rgba(0, 175, 225, 0.1), 0 4px 6px -2px rgba(0, 175, 225, 0.05);
+  }
+  
+  .border-financial {
+    border-color: rgba(0, 175, 225, 0.2);
+  }
+  
+  .bg-financial-subtle {
+    background-color: rgba(0, 175, 225, 0.05);
+  }
+  
+  .hover-lift {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
 }
 
-#webgl {
-  top: 0;
-  left: 0;
-  position: fixed;
-  height: 100dvh;
-  width: 100%;
-}
-
-#webgl canvas {
-  width: 100%;
-  height: 100%;
-}

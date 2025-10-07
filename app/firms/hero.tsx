@@ -1,6 +1,5 @@
 "use client"
 
-import { GL } from "@/components/gl"
 import { Pill } from "@/components/pill"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
@@ -9,8 +8,6 @@ export function Hero() {
   const [hovering, setHovering] = useState(false)
   return (
     <div className="flex flex-col flex-1 justify-between overflow-hidden">
-      <GL hovering={hovering} />
-
       <div className="pb-1 mt-auto text-center relative">
         <Pill className="mb-6">INVITE-ONLY RELEASE</Pill>
         <h1 className="text-5xl sm:text-6xl md:text-7xl">
