@@ -122,7 +122,7 @@ export const Header = () => {
             
             {isFreeToolsOpen && (
               <div
-                className="absolute top-full left-0 mt-2 w-80 bg-background/95 backdrop-blur-md border border-border/50 rounded-xl shadow-2xl p-4 z-50"
+                className="absolute top-full left-0 mt-4 w-80 bg-background/95 backdrop-blur-md border border-border/50 rounded-xl shadow-2xl p-4 z-50"
                 onMouseEnter={handleFreeToolsMouseEnter}
                 onMouseLeave={handleFreeToolsMouseLeave}
               >
@@ -253,12 +253,12 @@ export const Header = () => {
       </header>
 
       {/* Mobile Header */}
-      <header className="sticky top-0 z-[9999] mx-4 flex w-auto flex-row items-center justify-between rounded-full bg-background/80 backdrop-blur-sm border border-border/50 shadow-lg md:hidden px-4 py-3">
+      <header className="sticky top-4 z-[9999] mx-4 flex w-auto flex-row items-center justify-between rounded-full bg-background/80 backdrop-blur-sm border border-border/50 shadow-lg md:hidden px-4 py-3">
         <a
-          className="flex items-center justify-center gap-2"
+          className="flex items-center justify-center gap-2 w-24"
           href="/"
         >
-          <Logo className="text-foreground size-10 w-10" />
+          <Logo className="text-foreground" />
         </a>
 
         <button

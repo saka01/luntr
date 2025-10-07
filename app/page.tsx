@@ -16,7 +16,7 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="min-h-screen w-full relative bg-black -mt-20 pt-20">
+    <div className="relative min-h-screen w-full bg-black -mt-20 pt-20">
       {/* Pearl Mist Background with Top Glow */}
       <div
         className="absolute inset-0 z-0"
@@ -29,9 +29,9 @@ export default function Home() {
       <Hero />
 
       {/* Features Section */}
-      {/* <div id="features">
+      <div id="features">
         <Features />
-      </div> */}
+      </div>
 
       {/* Pricing Section */}
       <div id="pricing">

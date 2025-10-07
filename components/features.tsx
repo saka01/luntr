@@ -85,10 +85,10 @@ export default function Features() {
                 style={{ transition: "all 0s ease-in-out" }}
               >
                 <div className="flex flex-col gap-4">
-                  <h3 className="text-2xl leading-none font-semibold tracking-tight">CLI & Manual Support</h3>
+                  <h3 className="text-2xl leading-none font-semibold tracking-tight">Auto-Identify Deductions</h3>
                   <div className="text-md text-muted-foreground flex flex-col gap-2 text-sm">
                     <p className="max-w-[460px]">
-                      Integrate your landing page directly in the product while using your favorite tools.
+                      AI scans your transactions and finds every tax write-off you're entitled to
                     </p>
                   </div>
                 </div>
@@ -273,11 +273,10 @@ export default function Features() {
                 style={{ transition: "all 0s ease-in-out" }}
               >
                 <div className="flex flex-col gap-4">
-                  <h3 className="text-2xl leading-none font-semibold tracking-tight">Globally Usable</h3>
+                  <h3 className="text-2xl leading-none font-semibold tracking-tight">Know What's Deductible</h3>
                   <div className="text-md text-muted-foreground flex flex-col gap-2 text-sm">
                     <p className="max-w-[460px]">
-                      Blocks are available everywhere but ours are the best. Use them in your favorite framework or even
-                      in plain HTML.
+                      Get plain-English explanations of CRA rules—no tax expertise required
                     </p>
                   </div>
                 </div>
@@ -330,10 +329,10 @@ export default function Features() {
                 style={{ transition: "all 0s ease-in-out" }}
               >
                 <div className="flex flex-col gap-4">
-                  <h3 className="text-2xl leading-none font-semibold tracking-tight">Smart Components</h3>
+                  <h3 className="text-2xl leading-none font-semibold tracking-tight">Stay Audit-Ready</h3>
                   <div className="text-md text-muted-foreground flex flex-col gap-2 text-sm">
                     <p className="max-w-[460px]">
-                      Intelligent components that adapt to your needs with built-in animations and interactions.
+                      Automatic reminders for required documentation so you're always CRA-compliant
                     </p>
                   </div>
                 </div>
@@ -426,10 +425,10 @@ export default function Features() {
                 style={{ transition: "all 0s ease-in-out" }}
               >
                 <div className="flex flex-col gap-4">
-                  <h3 className="text-2xl leading-none font-semibold tracking-tight">Dynamic Layouts</h3>
+                  <h3 className="text-2xl leading-none font-semibold tracking-tight">Export for Filing</h3>
                   <div className="text-md text-muted-foreground flex flex-col gap-2 text-sm">
                     <p className="max-w-[460px]">
-                      Responsive layouts that transform and adapt seamlessly across all device sizes.
+                      T2125-ready reports that work with TurboTax or hand to your accountant
                     </p>
                   </div>
                 </div>
