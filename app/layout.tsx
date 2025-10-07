@@ -53,7 +53,7 @@ html {
 }
         `}</style>
       </head>
-      <body className="dark">
+      <body className="">
         <Header />
         {children}
       </body>
