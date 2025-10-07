@@ -273,7 +273,7 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
                 placeholder="$0"
                 value={taxData.employmentIncome || ""}
                 onChange={(e) => updateField("employmentIncome", Number.parseFloat(e.target.value) || 0)}
-                className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400"
+                className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
               />
             </div>
             <div className="space-y-2">
@@ -284,7 +284,7 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
                 placeholder="$0"
                 value={taxData.selfEmploymentIncome || ""}
                 onChange={(e) => updateField("selfEmploymentIncome", Number.parseFloat(e.target.value) || 0)}
-                className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400"
+                className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
               />
             </div>
 
@@ -296,7 +296,7 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
                 placeholder="$0"
                 value={taxData.otherIncome || ""}
                 onChange={(e) => updateField("otherIncome", Number.parseFloat(e.target.value) || 0)}
-                className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400"
+                className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
               />
             </div>
           </div>
@@ -310,7 +310,7 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
                 placeholder="$0"
                 value={taxData.capitalGains || ""}
                 onChange={(e) => updateField("capitalGains", Number.parseFloat(e.target.value) || 0)}
-                className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400"
+                className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
               />
             </div>
 
@@ -322,7 +322,7 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
                 placeholder="$0"
                 value={taxData.eligibleDividends || ""}
                 onChange={(e) => updateField("eligibleDividends", Number.parseFloat(e.target.value) || 0)}
-                className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400"
+                className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
               />
             </div>
           </div>
@@ -335,7 +335,7 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
               placeholder="$0"
               value={taxData.ineligibleDividends || ""}
               onChange={(e) => updateField("ineligibleDividends", Number.parseFloat(e.target.value) || 0)}
-              className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400"
+              className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
             />
           </div>
         </CardContent>
@@ -369,7 +369,7 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
                 placeholder="$0"
                 value={taxData.rrspContribution || ""}
                 onChange={(e) => updateField("rrspContribution", Number.parseFloat(e.target.value) || 0)}
-                className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400"
+                className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
               />
             </div>
 
@@ -393,7 +393,7 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
                 placeholder="$0"
                 value={taxData.fhsaContribution || ""}
                 onChange={(e) => updateField("fhsaContribution", Number.parseFloat(e.target.value) || 0)}
-                className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400"
+                className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
               />
             </div>
           </div>
@@ -406,7 +406,7 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
               placeholder="$0"
               value={taxData.taxesPaid || ""}
               onChange={(e) => updateField("taxesPaid", Number.parseFloat(e.target.value) || 0)}
-              className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400"
+              className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
             />
           </div>
         </CardContent>
