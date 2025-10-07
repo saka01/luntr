@@ -253,7 +253,7 @@ export const Header = () => {
       </header>
 
       {/* Mobile Header */}
-      <header className="sticky top-4 z-[9999] mx-4 flex w-auto flex-row items-center justify-between rounded-full bg-background/80 backdrop-blur-sm border border-border/50 shadow-lg md:hidden px-4 py-3">
+      <header className="sticky top-0 z-[9999] mx-4 flex w-auto flex-row items-center justify-between rounded-full bg-background/80 backdrop-blur-sm border border-border/50 shadow-lg md:hidden px-4 py-3">
         <a
           className="flex items-center justify-center gap-2"
           href="/"

@@ -100,7 +100,7 @@ export default function DeductionFinderPage() {
       
       <main className="relative z-10">
         {/* Main Calculator Section */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 mt-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="text-center my-6">
             <h1 className="text-3xl md:text-4xl  text-foreground mb-3 text-balance">
               Canadian Tax Deduction Finder
