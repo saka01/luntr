@@ -129,14 +129,19 @@ export const Header = () => {
                 <div className="space-y-4">
                   {/* Tax Calculator */}
                   <div className="group">
-                    <a href="/canada-income-tax-calculator" className="flex items-center gap-3 p-3 rounded-lg hover:bg-background/50 transition-colors cursor-pointer">
-                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                    <a
+                      href="/canada-income-tax-calculator"
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/10 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/60"
+                      style={{ cursor: "pointer" }}
+                      tabIndex={0}
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center group-hover:ring-2 group-hover:ring-blue-400 group-focus:ring-2 group-focus:ring-blue-400 transition">
                         <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                         </svg>
                       </div>
                       <div>
-                        <h3 className="font-semibold text-foreground">Tax Calculator</h3>
+                        <h3 className="font-semibold text-foreground group-hover:text-primary group-focus:text-primary transition-colors">Tax Calculator</h3>
                         <p className="text-sm text-muted-foreground">Calculate your income tax</p>
                       </div>
                     </a>
@@ -144,14 +149,19 @@ export const Header = () => {
                   
                   {/* T2125 Calculator */}
                   <div className="group">
-                    <a href="/canada-t2125-tax-calculator" className="flex items-center gap-3 p-3 rounded-lg hover:bg-background/50 transition-colors cursor-pointer">
-                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center">
+                    <a
+                      href="/canada-t2125-tax-calculator"
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-primary/10 transition-colors cursor-pointer focus:outline-none"
+                      style={{ cursor: "pointer" }}
+                      tabIndex={0}
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center group-hover:ring-2 group-hover:ring-green-400 group-focus:ring-2 group-focus:ring-green-400 transition">
                         <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                       </div>
                       <div>
-                        <h3 className="font-semibold text-foreground">T2125 Calculator</h3>
+                        <h3 className="font-semibold text-foreground group-hover:text-green-500 group-focus:text-green-500 transition-colors">T2125 Calculator</h3>
                         <p className="text-sm text-muted-foreground">Self-employment tax form</p>
                       </div>
                     </a>
@@ -159,14 +169,19 @@ export const Header = () => {
                   
                   {/* Deduction Finder */}
                   <div className="group">
-                    <a href="/deduction-finder" className="flex items-center gap-3 p-3 rounded-lg hover:bg-background/50 transition-colors cursor-pointer">
-                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
+                    <a
+                      href="/deduction-finder"
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-primary/10 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/60"
+                      style={{ cursor: "pointer" }}
+                      tabIndex={0}
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center group-hover:ring-2 group-hover:ring-orange-400 group-focus:ring-2 group-focus:ring-orange-400 transition">
                         <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                       </div>
                       <div>
-                        <h3 className="font-semibold text-foreground">Deduction Finder</h3>
+                        <h3 className="font-semibold text-foreground group-hover:text-orange-500 group-focus:text-orange-500 transition-colors">Deduction Finder</h3>
                         <p className="text-sm text-muted-foreground">Find tax deductions</p>
                       </div>
                     </a>
