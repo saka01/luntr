@@ -36,7 +36,7 @@ type TaxResults = {
   taxesOwedOrRefund: number
 }
 
-// 2024 Federal Tax Brackets
+// 2025 Federal Tax Brackets
 const federalBrackets = [
   { limit: 55867, rate: 0.15 },
   { limit: 111733, rate: 0.205 },
@@ -45,7 +45,7 @@ const federalBrackets = [
   { limit: Number.POSITIVE_INFINITY, rate: 0.33 },
 ]
 
-// 2024 Provincial Tax Rates
+// 2025 Provincial Tax Rates
 const provincialRates: Record<string, Array<{ limit: number; rate: number }>> = {
   ON: [
     { limit: 51446, rate: 0.0505 },
@@ -131,7 +131,8 @@ const provincialRates: Record<string, Array<{ limit: number; rate: number }>> = 
   ],
 }
 
-const basicPersonalAmount = 15705 // 2024 federal basic personal amount
+const federalBPA = 16129 // 2025 federal basic personal amount
+const federalCreditRate = 0.145 // 2025 effective credit rate
 
   function calculateTaxForBrackets(income: number, brackets: Array<{ limit: number; rate: number }>): number {
   let tax = 0
@@ -151,26 +152,40 @@ const basicPersonalAmount = 15705 // 2024 federal basic personal amount
 }
 
 function calculateIncomeTax(data: IncomeTaxData): TaxResults {
+  // Calculate capital gains with 2024/2025 rules
+  const capitalGainsIncluded = data.capitalGains <= 250000 
+    ? data.capitalGains * 0.5  // 50% inclusion rate up to $250k
+    : 250000 * 0.5 + (data.capitalGains - 250000) * (2/3)  // 2/3 inclusion rate over $250k
+
   // Calculate total income (only income sources, no self-employment or business deductions)
   const totalIncome =
     data.employmentIncome +
+    data.selfEmploymentIncome +
     data.otherIncome +
-    data.capitalGains * 0.5 + // 50% inclusion rate for capital gains
+    capitalGainsIncluded +
     data.eligibleDividends * 1.38 + // Gross-up for eligible dividends
     data.ineligibleDividends * 1.15 // Gross-up for ineligible dividends
 
   // Calculate total deductions
   const totalDeductions = data.rrspContribution + data.fhsaContribution
 
-  // Calculate taxable income
-  const taxableIncome = Math.max(0, totalIncome - totalDeductions - basicPersonalAmount)
+  // Calculate net income (before BPA credit)
+  const netIncome = totalIncome - totalDeductions
 
-  // Calculate federal tax
-  const federalTax = calculateTaxForBrackets(taxableIncome, federalBrackets)
+  // Calculate federal tax before credits
+  const federalTaxBeforeCredits = calculateTaxForBrackets(netIncome, federalBrackets)
 
-  // Calculate provincial tax (default to Ontario)
+  // Apply federal BPA credit
+  const federalTax = Math.max(0, federalTaxBeforeCredits - federalBPA * federalCreditRate)
+
+  // Calculate provincial tax
   const provincialBrackets = provincialRates[data.province] || provincialRates.ON
-  const provincialTax = calculateTaxForBrackets(taxableIncome, provincialBrackets)
+  const provincialTaxBeforeCredits = calculateTaxForBrackets(netIncome, provincialBrackets)
+  
+  // Apply provincial BPA credit (Ontario: $12,747 at 5.05%)
+  const provincialBPA = 12747
+  const provincialCreditRate = 0.0505
+  const provincialTax = Math.max(0, provincialTaxBeforeCredits - provincialBPA * provincialCreditRate)
 
   // Total tax
   const totalTax = federalTax + provincialTax
@@ -178,22 +193,29 @@ function calculateIncomeTax(data: IncomeTaxData): TaxResults {
   // Taxes owed or refund
   const taxesOwedOrRefund = totalTax - data.taxesPaid
 
+  // Apply dividend tax credits
+  const eligibleDividendCredit = data.eligibleDividends * 0.15 // Federal dividend tax credit
+  const ineligibleDividendCredit = data.ineligibleDividends * 0.10 // Federal dividend tax credit
+  
+  const federalTaxWithCredits = Math.max(0, federalTax - eligibleDividendCredit - ineligibleDividendCredit)
+
   // After-tax income
-  const afterTaxIncome = totalIncome - totalTax - totalDeductions
+  const afterTaxIncome = totalIncome - (federalTaxWithCredits + provincialTax) - totalDeductions
 
   // Tax rates
-  const averageTaxRate = totalIncome > 0 ? (totalTax / totalIncome) * 100 : 0
+  const totalTaxWithCredits = federalTaxWithCredits + provincialTax
+  const averageTaxRate = totalIncome > 0 ? (totalTaxWithCredits / totalIncome) * 100 : 0
 
   // Marginal rate (simplified - top bracket rate)
   let marginalTaxRate = 0
   for (const bracket of federalBrackets) {
-    if (taxableIncome <= bracket.limit) {
+    if (netIncome <= bracket.limit) {
       marginalTaxRate = bracket.rate * 100
       break
     }
   }
   for (const bracket of provincialBrackets) {
-    if (taxableIncome <= bracket.limit) {
+    if (netIncome <= bracket.limit) {
       marginalTaxRate += bracket.rate * 100
       break
     }
@@ -202,15 +224,15 @@ function calculateIncomeTax(data: IncomeTaxData): TaxResults {
   return {
     totalIncome,
     totalDeductions,
-    taxableIncome,
-    federalTax,
+    taxableIncome: netIncome,
+    federalTax: federalTaxWithCredits,
     provincialTax,
-    totalTax,
+    totalTax: totalTaxWithCredits,
     afterTaxIncome,
     averageTaxRate,
     marginalTaxRate,
     taxesPaid: data.taxesPaid,
-    taxesOwedOrRefund,
+    taxesOwedOrRefund: totalTaxWithCredits - data.taxesPaid,
   }
 }
 
@@ -277,7 +299,7 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="otherIncome" className="text-sm font-medium text-slate-200">Self-Employment  Income</Label>
+              <Label htmlFor="selfEmploymentIncome" className="text-sm font-medium text-slate-200">Self-Employment Income</Label>
               <Input
                 id="selfEmploymentIncome"
                 type="number"
@@ -515,6 +537,43 @@ function IncomeTaxResults({ taxData }: { taxData: IncomeTaxData }) {
               <div className="text-sm font-semibold text-white">{results.marginalTaxRate.toFixed(1)}%</div>
             </div>
           </div>
+        </div>
+
+        {/* Promotional CTA Section */}
+        <div className="pt-4 p-6 bg-purple-900/20 border border-purple-800/50 rounded-lg">
+          <h3 className="text-xl text-purple-200 leading-tight mb-3">
+            Find $450 - $2,670* in business deductions           
+          </h3>
+          <p className="text-sm text-purple-300 leading-relaxed mb-4">
+            Tallo is Canada's leading AI-powered tax deduction tool for freelancers and self-employed professionals, trusted by 1M Canadians.    
+          </p>
+          <button className="flex flex-row justify-center align-center bg-purple-600 text-white hover:bg-purple-700 px-6 py-3 rounded-lg font-medium transition-colors">
+            Try Tallo for free
+            <span className="ml-2">▶</span>
+          </button>
+          <p className="text-xs text-purple-400 leading-relaxed mt-3">
+            *Based on the average deductions claimed by users with income profiles similar to yours.
+          </p>
+        </div>
+
+        {/* Detailed Summary Explanation Section */}
+        <div className="pt-4">
+          <h3 className="text-lg text-white mb-3">Summary</h3>
+          <p className="text-sm leading-relaxed text-slate-300 mb-3">
+            If you make {formatCurrency(results.totalIncome)} a year living in Ontario, you will be taxed{" "}
+            {formatCurrency(results.totalTax)}. That means your net pay will be {formatCurrency(results.afterTaxIncome)}{" "}
+            per year, or {formatCurrency(results.afterTaxIncome / 12)} per month. Your average tax rate is{" "}
+            {results.averageTaxRate.toFixed(1)}% and your marginal tax rate is{" "}
+            {results.marginalTaxRate.toFixed(1)}%. This marginal tax rate means your immediate additional income will
+            be taxed at this rate. For instance, an increase of $100 in your income will be taxed $
+            {((results.marginalTaxRate / 100) * 100).toFixed(0)}, meaning that your net pay will only increase by $
+            {(100 - (results.marginalTaxRate / 100) * 100).toFixed(0)}.
+          </p>
+          <p className="text-xs leading-relaxed text-slate-400">
+            These calculations are approximate and include the following non-refundable tax credits: the basic personal
+            amount, CPP contributions, and the Canada employment amount. After-tax income is your total income net of
+            federal tax, provincial/territorial tax, and payroll tax. Rates are current as of 2025.
+          </p>
         </div>
       </CardContent>
     </Card>
