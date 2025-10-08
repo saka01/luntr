@@ -300,46 +300,46 @@ export const Header = () => {
                 <div className="ml-4 space-y-2">
                   <a
                     href="/canada-income-tax-calculator"
-                    className="flex items-center gap-3 px-4 py-3 text-base text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-background/50"
+                    className="flex items-center gap-3 px-4 py-3 text-base text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50 group"
                   >
-                    <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-6 h-6 flex items-center justify-center">
+                      <svg className="w-4 h-4 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                       </svg>
                     </div>
                     <div>
                       <div className="font-medium">Tax Calculator</div>
-                      <div className="text-sm text-muted-foreground/70">Calculate your income tax</div>
+                      <div className="text-sm text-muted-foreground group-hover:text-foreground/80">Calculate your income tax</div>
                     </div>
                   </a>
                   
                   <a
                     href="/canada-t2125-tax-calculator"
-                    className="flex items-center gap-3 px-4 py-3 text-base text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-background/50"
+                    className="flex items-center gap-3 px-4 py-3 text-base text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50 group"
                   >
-                    <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center">
-                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-6 h-6 flex items-center justify-center">
+                      <svg className="w-4 h-4 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
                     </div>
                     <div>
                       <div className="font-medium">T2125 Calculator</div>
-                      <div className="text-sm text-muted-foreground/70">Self-employment tax form</div>
+                      <div className="text-sm text-muted-foreground group-hover:text-foreground/80">Self-employment tax form</div>
                     </div>
                   </a>
                   
                   <a
                     href="/deduction-finder"
-                    className="flex items-center gap-3 px-4 py-3 text-base text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-background/50"
+                    className="flex items-center gap-3 px-4 py-3 text-base text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50 group"
                   >
-                    <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
-                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-6 h-6 flex items-center justify-center">
+                      <svg className="w-4 h-4 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                       </svg>
                     </div>
                     <div>
                       <div className="font-medium">Deduction Finder</div>
-                      <div className="text-sm text-muted-foreground/70">Find tax deductions</div>
+                      <div className="text-sm text-muted-foreground group-hover:text-foreground/80">Find tax deductions</div>
                     </div>
                   </a>
                 </div>
