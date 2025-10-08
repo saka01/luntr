@@ -82,7 +82,7 @@ export const Header = () => {
         </a>
 
         <div className="absolute inset-0 hidden flex-1 flex-row items-center justify-center space-x-2 text-sm font-medium text-muted-foreground transition duration-200 hover:text-foreground md:flex md:space-x-2">
-          <a
+          {/* <a
             className="relative px-4 py-2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
             onClick={(e) => {
               e.preventDefault()
@@ -100,7 +100,7 @@ export const Header = () => {
             }}
           >
             <span className="relative z-20">Features</span>
-          </a>
+          </a> */}
           
           {/* Free Tools Dropdown */}
           <div className="relative">
@@ -285,12 +285,12 @@ export const Header = () => {
         <div className="fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm md:hidden">
           <div className="absolute top-20 left-4 right-4 bg-background/95 backdrop-blur-md border border-border/50 rounded-2xl shadow-2xl p-6">
             <nav className="flex flex-col space-y-4">
-              <button
+              {/* <button
                 onClick={() => handleMobileNavClick("features")}
                 className="text-left px-4 py-3 text-lg font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-background/50"
               >
                 Features
-              </button>
+              </button> */}
               
               {/* Free Tools Mobile Dropdown */}
               <div className="space-y-2">
