@@ -12,6 +12,7 @@
   --popover-foreground: #121113; /* Updated popover foreground to match */
   --primary: oklch(0.6716 0.1368 48.513);
   --primary-foreground: oklch(1.0 0 0);
+  /* --secondary: oklch(0.536 0.0398 196.028); */
   --secondary: oklch(0.536 0.0398 196.028);
   --secondary-foreground: oklch(1.0 0 0);
   --muted: oklch(0.967 0.0029 264.5419);
