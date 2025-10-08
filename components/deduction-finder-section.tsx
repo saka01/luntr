@@ -9,9 +9,9 @@ export function DeductionFinderSection() {
   const isInView = useInView(ref, { once: true, amount: 0.3 })
 
   return (
-    <section className="relative py-16 sm:py-24">
+    <section className="relative">
       <div className="container mx-auto px-4">
-        <div className="border border-secondary rounded-2xl mx-auto max-w-4xl px-6 py-12 sm:px-12 sm:py-16">
+        <div className="mx-auto max-w-4xl px-6 py-12 sm:px-12 sm:py-16">
           <motion.div
             ref={ref}
             initial={{ opacity: 0, y: 30 }}
@@ -25,11 +25,11 @@ export function DeductionFinderSection() {
             {/* Content */}
             <div className="relative z-10">
               <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl lg:text-4xl mb-4 sm:mb-6">
-                Not sure what you're missing?
+              You're <span className="text-white font-thin italic">overpaying</span> <span className="text-secondary bg-secondary/10 italic rounded-full">$400</span> – <span className="text-secondary bg-secondary/10 italic rounded-full">$3,100+</span> {" "} in taxes!
               </h2>
               
               <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto px-4 sm:px-0">
-                Try our free <strong className="text-primary">Deduction Finder</strong>. Just answer a few questions and discover which CRA deductions apply to your business.
+              Quickly find the CRA deductions you’re missing with our <strong className="text-secondary">Free Deduction Finder</strong>.
               </p>
 
               {/* CTA Button */}
