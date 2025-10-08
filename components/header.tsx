@@ -258,7 +258,7 @@ export const Header = () => {
           className="flex items-center justify-center gap-2 w-24"
           href="/"
         >
-          <Logo className="text-foreground" />
+          <Logo className="text-white" />
         </a>
 
         <button

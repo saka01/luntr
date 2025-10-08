@@ -55,7 +55,7 @@ export default function Hero() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mx-auto mb-12 max-w-2xl text-lg text-muted-foreground"
             >
-              Tallo automatically finds CRA-eligible write-offs from your transactions. No tax expertise required.
+              Tallo automatically finds CRA-eligible write-offs from your transactions. <br />No tax expertise required.
             </motion.p>
 
             <motion.div
