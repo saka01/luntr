@@ -7,6 +7,7 @@ import { NewReleasePromo } from "@/components/new-release-promo"
 import { FAQSection } from "@/components/faq-section"
 import { PricingSection } from "@/components/pricing-section"
 import { StickyFooter } from "@/components/sticky-footer"
+import { DeductionFinderSection } from "@/components/deduction-finder-section"
 
 export default function Home() {
   useEffect(() => {
@@ -29,14 +30,17 @@ export default function Home() {
       <Hero />
 
       {/* Features Section */}
-      <div id="features">
+      {/* <div id="features">
         <Features />
-      </div>
+      </div> */}
+      {/* Deduction Finder Section */}
+      <DeductionFinderSection />
 
       {/* Pricing Section */}
       <div id="pricing">
         <PricingSection />
       </div>
+
 
       {/* Testimonials Section */}
       <div id="testimonials">

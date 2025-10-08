@@ -28,6 +28,8 @@ type TaxResults = {
   taxableIncome: number
   federalTax: number
   provincialTax: number
+  cppPremiums: number
+  eiPremiums: number
   totalTax: number
   afterTaxIncome: number
   averageTaxRate: number
@@ -134,6 +136,14 @@ const provincialRates: Record<string, Array<{ limit: number; rate: number }>> = 
 const federalBPA = 16129 // 2025 federal basic personal amount
 const federalCreditRate = 0.145 // 2025 effective credit rate
 
+// 2025 CPP and EI rates and maximums
+const cppRate = 0.0595 // 5.95% for 2025
+const cppMaxEarnings = 68500 // Maximum pensionable earnings for 2025
+const cppBasicExemption = 3500 // Basic exemption amount
+
+const eiRate = 0.0166 // 1.66% for 2025
+const eiMaxEarnings = 63100 // Maximum insurable earnings for 2025
+
   function calculateTaxForBrackets(income: number, brackets: Array<{ limit: number; rate: number }>): number {
   let tax = 0
   let previousLimit = 0
@@ -149,6 +159,21 @@ const federalCreditRate = 0.145 // 2025 effective credit rate
   }
 
   return tax
+}
+
+function calculateCPPAndEI(employmentIncome: number, selfEmploymentIncome: number) {
+  // Calculate total employment income for CPP/EI purposes
+  const totalEmploymentIncome = employmentIncome + selfEmploymentIncome
+  
+  // CPP calculation
+  const cppEarnings = Math.max(0, Math.min(totalEmploymentIncome, cppMaxEarnings) - cppBasicExemption)
+  const cppPremiums = Math.max(0, cppEarnings * cppRate)
+  
+  // EI calculation (only on employment income, not self-employment)
+  const eiEarnings = Math.min(employmentIncome, eiMaxEarnings)
+  const eiPremiums = eiEarnings * eiRate
+  
+  return { cppPremiums, eiPremiums }
 }
 
 function calculateIncomeTax(data: IncomeTaxData): TaxResults {
@@ -172,6 +197,9 @@ function calculateIncomeTax(data: IncomeTaxData): TaxResults {
   // Calculate net income (before BPA credit)
   const netIncome = totalIncome - totalDeductions
 
+  // Calculate CPP and EI premiums
+  const { cppPremiums, eiPremiums } = calculateCPPAndEI(data.employmentIncome, data.selfEmploymentIncome)
+
   // Calculate federal tax before credits
   const federalTaxBeforeCredits = calculateTaxForBrackets(netIncome, federalBrackets)
 
@@ -187,8 +215,8 @@ function calculateIncomeTax(data: IncomeTaxData): TaxResults {
   const provincialCreditRate = 0.0505
   const provincialTax = Math.max(0, provincialTaxBeforeCredits - provincialBPA * provincialCreditRate)
 
-  // Total tax
-  const totalTax = federalTax + provincialTax
+  // Total tax including CPP and EI premiums
+  const totalTax = federalTax + provincialTax + cppPremiums + eiPremiums
 
   // Taxes owed or refund
   const taxesOwedOrRefund = totalTax - data.taxesPaid
@@ -200,10 +228,10 @@ function calculateIncomeTax(data: IncomeTaxData): TaxResults {
   const federalTaxWithCredits = Math.max(0, federalTax - eligibleDividendCredit - ineligibleDividendCredit)
 
   // After-tax income
-  const afterTaxIncome = totalIncome - (federalTaxWithCredits + provincialTax) - totalDeductions
+  const afterTaxIncome = totalIncome - (federalTaxWithCredits + provincialTax + cppPremiums + eiPremiums) - totalDeductions
 
   // Tax rates
-  const totalTaxWithCredits = federalTaxWithCredits + provincialTax
+  const totalTaxWithCredits = federalTaxWithCredits + provincialTax + cppPremiums + eiPremiums
   const averageTaxRate = totalIncome > 0 ? (totalTaxWithCredits / totalIncome) * 100 : 0
 
   // Marginal rate (simplified - top bracket rate)
@@ -227,6 +255,8 @@ function calculateIncomeTax(data: IncomeTaxData): TaxResults {
     taxableIncome: netIncome,
     federalTax: federalTaxWithCredits,
     provincialTax,
+    cppPremiums,
+    eiPremiums,
     totalTax: totalTaxWithCredits,
     afterTaxIncome,
     averageTaxRate,
@@ -268,22 +298,22 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
       </div>
 
       {/* Income Sources - Consolidated */}
-      <Card className="bg-slate-900/50 border-slate-800/50 backdrop-blur-sm shadow-xl">
+      <Card className="bg-card/50 border-border/50 backdrop-blur-sm shadow-xl py-6">
         <CardHeader className="pb-3">
-          <CardTitle className="text-lg font-semibold text-white">Income Sources</CardTitle>
-          <CardDescription className="text-sm text-slate-300">Enter all your income for the year</CardDescription>
+          <CardTitle className="text-lg font-semibold text-card-foreground">Income Sources</CardTitle>
+          <CardDescription className="text-sm text-muted-foreground">Enter all your income for the year</CardDescription>
         </CardHeader>
         <CardContent className="pt-0 space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <Label htmlFor="employmentIncome" className="text-sm font-medium text-slate-200">Employment Income *</Label>
+                <Label htmlFor="employmentIncome" className="text-sm font-medium text-card-foreground">Employment Income *</Label>
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <HelpCircle className="h-3.5 w-3.5 text-slate-400 cursor-help" />
+                      <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
                     </TooltipTrigger>
-                    <TooltipContent className="max-w-xs bg-slate-800 border-slate-700 text-white">
+                    <TooltipContent className="max-w-xs bg-popover border-border text-popover-foreground">
                       <p>Total employment income from all T4 slips</p>
                     </TooltipContent>
                   </Tooltip>
@@ -295,91 +325,92 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
                 placeholder="$0"
                 value={taxData.employmentIncome || ""}
                 onChange={(e) => updateField("employmentIncome", Number.parseFloat(e.target.value) || 0)}
-                className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
+                className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="selfEmploymentIncome" className="text-sm font-medium text-slate-200">Self-Employment Income</Label>
+              <Label htmlFor="selfEmploymentIncome" className="text-sm font-medium text-card-foreground">Self-Employment Income</Label>
               <Input
                 id="selfEmploymentIncome"
                 type="number"
                 placeholder="$0"
                 value={taxData.selfEmploymentIncome || ""}
                 onChange={(e) => updateField("selfEmploymentIncome", Number.parseFloat(e.target.value) || 0)}
-                className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
+                className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="otherIncome" className="text-sm font-medium text-slate-200">Other Income</Label>
+              <Label htmlFor="otherIncome" className="text-sm font-medium text-card-foreground">Other Income</Label>
               <Input
                 id="otherIncome"
                 type="number"
                 placeholder="$0"
                 value={taxData.otherIncome || ""}
                 onChange={(e) => updateField("otherIncome", Number.parseFloat(e.target.value) || 0)}
-                className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
+                className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
               />
             </div>
           </div>
+            <hr className="border-border" />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="capitalGains" className="text-sm font-medium text-slate-200">Capital Gains</Label>
+              <Label htmlFor="capitalGains" className="text-sm font-medium text-card-foreground">Capital Gains</Label>
               <Input
                 id="capitalGains"
                 type="number"
                 placeholder="$0"
                 value={taxData.capitalGains || ""}
                 onChange={(e) => updateField("capitalGains", Number.parseFloat(e.target.value) || 0)}
-                className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
+                className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="eligibleDividends" className="text-sm font-medium text-slate-200">Eligible Dividends</Label>
+              <Label htmlFor="eligibleDividends" className="text-sm font-medium text-card-foreground">Eligible Dividends</Label>
               <Input
                 id="eligibleDividends"
                 type="number"
                 placeholder="$0"
                 value={taxData.eligibleDividends || ""}
                 onChange={(e) => updateField("eligibleDividends", Number.parseFloat(e.target.value) || 0)}
-                className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
+                className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="ineligibleDividends" className="text-sm font-medium text-slate-200">Ineligible Dividends</Label>
+            <Label htmlFor="ineligibleDividends" className="text-sm font-medium text-card-foreground">Ineligible Dividends</Label>
             <Input
               id="ineligibleDividends"
               type="number"
               placeholder="$0"
               value={taxData.ineligibleDividends || ""}
               onChange={(e) => updateField("ineligibleDividends", Number.parseFloat(e.target.value) || 0)}
-              className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
+              className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
             />
           </div>
         </CardContent>
       </Card>
 
       {/* Deductions & Taxes - Consolidated */}
-      <Card className="bg-slate-900/50 border-slate-800/50 backdrop-blur-sm shadow-xl">
+      <Card className="bg-card/50 border-border/50 backdrop-blur-sm shadow-xl py-6">
         <CardHeader className="pb-3">
-          <CardTitle className="text-lg font-semibold text-white">Deductions & Taxes Paid</CardTitle>
-          <CardDescription className="text-sm text-slate-300">Registered savings and taxes already paid</CardDescription>
+          <CardTitle className="text-lg font-semibold text-card-foreground">Deductions & Taxes Paid</CardTitle>
+          <CardDescription className="text-sm text-muted-foreground">Registered savings and taxes already paid</CardDescription>
         </CardHeader>
         <CardContent className="pt-0 space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <Label htmlFor="rrspContribution" className="text-sm font-medium text-slate-200">RRSP Contribution</Label>
+                <Label htmlFor="rrspContribution" className="text-sm font-medium text-card-foreground">RRSP Contribution</Label>
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <HelpCircle className="h-3.5 w-3.5 text-slate-400 cursor-help" />
+                      <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
                     </TooltipTrigger>
-                    <TooltipContent className="max-w-xs bg-slate-800 border-slate-700 text-white">
+                    <TooltipContent className="max-w-xs bg-popover border-border text-popover-foreground">
                       <p>Registered Retirement Savings Plan contributions reduce taxable income</p>
                     </TooltipContent>
                   </Tooltip>
@@ -391,19 +422,19 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
                 placeholder="$0"
                 value={taxData.rrspContribution || ""}
                 onChange={(e) => updateField("rrspContribution", Number.parseFloat(e.target.value) || 0)}
-                className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
+                className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
               />
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <Label htmlFor="fhsaContribution" className="text-sm font-medium text-slate-200">FHSA Contribution</Label>
+                <Label htmlFor="fhsaContribution" className="text-sm font-medium text-card-foreground">FHSA Contribution</Label>
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <HelpCircle className="h-3.5 w-3.5 text-slate-400 cursor-help" />
+                      <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
                     </TooltipTrigger>
-                    <TooltipContent className="max-w-xs bg-slate-800 border-slate-700 text-white">
+                    <TooltipContent className="max-w-xs bg-popover border-border text-popover-foreground">
                       <p>First Home Savings Account contributions (up to $8,000/year)</p>
                     </TooltipContent>
                   </Tooltip>
@@ -415,20 +446,20 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
                 placeholder="$0"
                 value={taxData.fhsaContribution || ""}
                 onChange={(e) => updateField("fhsaContribution", Number.parseFloat(e.target.value) || 0)}
-                className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
+                className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="taxesPaid" className="text-sm font-medium text-slate-200">Income Tax Already Paid</Label>
+            <Label htmlFor="taxesPaid" className="text-sm font-medium text-card-foreground">Income Tax Already Paid</Label>
             <Input
               id="taxesPaid"
               type="number"
               placeholder="$0"
               value={taxData.taxesPaid || ""}
               onChange={(e) => updateField("taxesPaid", Number.parseFloat(e.target.value) || 0)}
-              className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
+              className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
             />
           </div>
         </CardContent>
@@ -441,138 +472,115 @@ function IncomeTaxResults({ taxData }: { taxData: IncomeTaxData }) {
   const results = calculateIncomeTax(taxData)
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("en-CA", {
-      style: "currency",
-      currency: "CAD",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(value)
+    // Use simple string formatting to avoid hydration issues
+    return `$${Math.round(value).toLocaleString()}`
   }
 
   return (
-    <Card className="bg-slate-900/50 border-slate-800/50 backdrop-blur-sm shadow-xl">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-lg font-semibold text-white">Tax Calculation Results</CardTitle>
-        <CardDescription className="text-sm text-slate-300">Your income tax calculation</CardDescription>
-      </CardHeader>
-      <CardContent className="pt-0 space-y-4">
+    <Card className="bg-card/50 border-border/50 backdrop-blur-sm shadow-xl">
+      <CardContent className="p-6 space-y-4">
+        {/* After-Tax Income - Highlighted at top - Only show if employment income is filled */}
+        {taxData.employmentIncome > 0 && (
+          <div className="flex justify-between items-center p-4 bg-green-300/20 border border-green-300/30 rounded-lg animate-in fade-in-0 slide-in-from-top-2 duration-300">
+            <div>
+              <div className="text-sm font-medium text-green-700 dark:text-green-300">After-Tax Income</div>
+              <div className="text-xs text-muted-foreground">Your take-home pay</div>
+            </div>
+            <div className="text-right">
+              <div className="text-2xl font-bold text-green-700 dark:text-green-300">{formatCurrency(results.afterTaxIncome)}</div>
+            </div>
+          </div>
+        )}
+
         {/* Income Summary */}
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <span className="text-sm text-slate-300">Total Income</span>
-            <span className="text-sm font-medium text-white">{formatCurrency(results.totalIncome)}</span>
+            <span className="text-sm text-muted-foreground">Total Income</span>
+            <span className="text-sm font-medium text-card-foreground">{formatCurrency(results.totalIncome)}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-sm text-slate-300">Deductions</span>
-            <span className="text-sm font-medium text-white">{formatCurrency(results.totalDeductions)}</span>
+            <span className="text-sm text-muted-foreground">Deductions</span>
+            <span className="text-sm font-medium text-card-foreground">{formatCurrency(results.totalDeductions)}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-sm text-slate-300">Taxable Income</span>
-            <span className="text-sm font-medium text-white">{formatCurrency(results.taxableIncome)}</span>
+            <span className="text-sm text-muted-foreground">Taxable Income</span>
+            <span className="text-sm font-medium text-card-foreground">{formatCurrency(results.taxableIncome)}</span>
           </div>
         </div>
 
         {/* Tax Breakdown */}
-        <div className="pt-3 border-t border-slate-700 space-y-2">
+        <div className="pt-3 border-t border-border space-y-2">
           <div className="flex justify-between items-center">
-            <span className="text-sm text-slate-300">Federal Tax</span>
-            <span className="text-sm font-medium text-white">{formatCurrency(results.federalTax)}</span>
+            <span className="text-sm text-muted-foreground">Federal Tax</span>
+            <span className="text-sm font-medium text-card-foreground">{formatCurrency(results.federalTax)}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-sm text-slate-300">Provincial Tax</span>
-            <span className="text-sm font-medium text-white">{formatCurrency(results.provincialTax)}</span>
+            <span className="text-sm text-muted-foreground">Provincial Tax</span>
+            <span className="text-sm font-medium text-card-foreground">{formatCurrency(results.provincialTax)}</span>
           </div>
-        </div>
-
-        {/* Refund/Owed - Highlighted */}
-        <div className="pt-3 border-t border-slate-700">
           <div className="flex justify-between items-center">
-            <span className="text-sm text-slate-300">Taxes Paid</span>
-            <span className="text-sm font-medium text-white">{formatCurrency(results.taxesPaid)}</span>
-          </div>
-          <div className={`flex justify-between items-center mt-2 p-3 rounded-lg ${
-            results.taxesOwedOrRefund >= 0 
-              ? 'bg-red-900/20 border border-red-800/50' 
-              : 'bg-green-900/20 border border-green-800/50'
-          }`}>
-            <span className={`font-medium ${
-              results.taxesOwedOrRefund >= 0 
-                ? 'text-red-300' 
-                : 'text-green-300'
-            }`}>
-              {results.taxesOwedOrRefund >= 0 ? 'Taxes Still Owed' : 'Refund'}
-            </span>
-            <span className={`font-bold text-lg ${
-              results.taxesOwedOrRefund >= 0 
-                ? 'text-red-300' 
-                : 'text-green-300'
-            }`}>
-              {formatCurrency(Math.abs(results.taxesOwedOrRefund))}
-            </span>
-          </div>
-        </div>
-
-        {/* After-Tax Income - Highlighted */}
-        <div className="pt-3 border-t border-slate-700">
-          <div className="flex justify-between items-center p-4 bg-slate-800/30 border border-slate-600/50 rounded-lg">
-            <div>
-              <div className="text-sm font-medium text-slate-200">After-Tax Income</div>
-              <div className="text-xs text-slate-400">Your take-home pay</div>
-            </div>
-            <div className="text-right">
-              <div className="text-2xl font-bold text-white">{formatCurrency(results.afterTaxIncome)}</div>
-            </div>
+            <span className="text-sm text-muted-foreground">CPP/EI Premiums</span>
+            <span className="text-sm font-medium text-card-foreground">{formatCurrency(results.cppPremiums + results.eiPremiums)}</span>
           </div>
         </div>
 
         {/* Tax Rates */}
-        <div className="pt-3 border-t border-slate-700">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="text-center p-3 bg-slate-800/30 rounded-lg">
-              <div className="text-xs text-slate-400">Average Rate</div>
-              <div className="text-sm font-semibold text-white">{results.averageTaxRate.toFixed(1)}%</div>
-            </div>
-            <div className="text-center p-3 bg-slate-800/30 rounded-lg">
-              <div className="text-xs text-slate-400">Marginal Rate</div>
-              <div className="text-sm font-semibold text-white">{results.marginalTaxRate.toFixed(1)}%</div>
-            </div>
+        <div className="pt-3 border-t border-border space-y-2">
+          <div className="flex justify-between items-center">
+            <span className="text-sm text-muted-foreground">Average Tax Rate</span>
+            <span className="text-sm font-medium text-card-foreground">{results.averageTaxRate.toFixed(1)}%</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-sm text-muted-foreground">Marginal Tax Rate</span>
+            <span className="text-sm font-medium text-card-foreground">{results.marginalTaxRate.toFixed(1)}%</span>
           </div>
         </div>
 
+        {/* Refund/Owed - Highlighted - Only show if employment income is filled */}
+        {taxData.employmentIncome > 0 && (
+          <div className="pt-3 border-t border-border animate-in fade-in-0 slide-in-from-bottom-2 duration-300">
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-muted-foreground">Taxes Paid</span>
+              <span className="text-sm font-medium text-card-foreground">{formatCurrency(results.taxesPaid)}</span>
+            </div>
+            <div className={`flex justify-between items-center mt-2 p-3 rounded-lg ${
+              results.taxesOwedOrRefund >= 0 
+                ? 'bg-red-500/10 border border-red-500/20' 
+                : 'bg-green-300/20 border border-green-300/30'
+            }`}>
+              <span className={`font-medium ${
+                results.taxesOwedOrRefund >= 0 
+                  ? 'text-red-600 dark:text-red-400' 
+                  : 'text-green-700 dark:text-green-300'
+              }`}>
+                {results.taxesOwedOrRefund >= 0 ? 'Taxes owed to CRA' : 'Refund from CRA'}
+              </span>
+              <span className={`font-bold text-lg ${
+                results.taxesOwedOrRefund >= 0 
+                  ? 'text-red-600 dark:text-red-400' 
+                  : 'text-green-700 dark:text-green-300'
+              }`}>
+                {formatCurrency(Math.abs(results.taxesOwedOrRefund))}
+              </span>
+            </div>
+          </div>
+        )}
+
+
         {/* Promotional CTA Section */}
-        <div className="pt-4 p-6 bg-purple-900/20 border border-purple-800/50 rounded-lg">
-          <h3 className="text-xl text-purple-200 leading-tight mb-3">
+        <div className="pt-4 p-6 bg-primary/10 border border-primary/20 rounded-lg">
+          <h3 className="text-xl text-primary leading-tight mb-3 font-bold">
             Find $450 - $2,670* in business deductions           
           </h3>
-          <p className="text-sm text-purple-300 leading-relaxed mb-4">
+          <p className="text-sm text-muted-foreground leading-relaxed mb-4">
             Tallo is Canada's leading AI-powered tax deduction tool for freelancers and self-employed professionals, trusted by 1M Canadians.    
           </p>
-          <button className="flex flex-row justify-center align-center bg-purple-600 text-white hover:bg-purple-700 px-6 py-3 rounded-lg font-medium transition-colors">
+          <button className="flex flex-row justify-center align-center bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3 rounded-lg font-medium transition-colors">
             Try Tallo for free
             <span className="ml-2">▶</span>
           </button>
-          <p className="text-xs text-purple-400 leading-relaxed mt-3">
+          <p className="text-xs text-muted-foreground leading-relaxed mt-3 italic">
             *Based on the average deductions claimed by users with income profiles similar to yours.
-          </p>
-        </div>
-
-        {/* Detailed Summary Explanation Section */}
-        <div className="pt-4">
-          <h3 className="text-lg text-white mb-3">Summary</h3>
-          <p className="text-sm leading-relaxed text-slate-300 mb-3">
-            If you make {formatCurrency(results.totalIncome)} a year living in Ontario, you will be taxed{" "}
-            {formatCurrency(results.totalTax)}. That means your net pay will be {formatCurrency(results.afterTaxIncome)}{" "}
-            per year, or {formatCurrency(results.afterTaxIncome / 12)} per month. Your average tax rate is{" "}
-            {results.averageTaxRate.toFixed(1)}% and your marginal tax rate is{" "}
-            {results.marginalTaxRate.toFixed(1)}%. This marginal tax rate means your immediate additional income will
-            be taxed at this rate. For instance, an increase of $100 in your income will be taxed $
-            {((results.marginalTaxRate / 100) * 100).toFixed(0)}, meaning that your net pay will only increase by $
-            {(100 - (results.marginalTaxRate / 100) * 100).toFixed(0)}.
-          </p>
-          <p className="text-xs leading-relaxed text-slate-400">
-            These calculations are approximate and include the following non-refundable tax credits: the basic personal
-            amount, CPP contributions, and the Canada employment amount. After-tax income is your total income net of
-            federal tax, provincial/territorial tax, and payroll tax. Rates are current as of 2025.
           </p>
         </div>
       </CardContent>
@@ -597,10 +605,10 @@ export function IncomeTaxCalculator() {
   return (
     <div id="calculator" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="text-center mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">
+        <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
           Canada Income Tax Calculator
         </h1>
-        <p className="text-lg text-slate-300 max-w-2xl mx-auto">
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
           Calculate your income tax instantly. Get accurate estimates for federal tax, provincial tax, and see your total tax liability or refund.
         </p>
       </div>

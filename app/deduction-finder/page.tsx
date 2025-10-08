@@ -102,10 +102,10 @@ export default function DeductionFinderPage() {
         {/* Main Calculator Section */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="text-center my-6">
-            <h1 className="text-3xl md:text-4xl  text-foreground mb-3 text-balance">
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
               Canadian Tax Deduction Finder
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-pretty leading-relaxed">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Discover all the tax deductions you're eligible for as a Canadian freelancer or self-employed individual. 
               Our smart questionnaire helps you identify potential savings.
             </p>
@@ -163,7 +163,7 @@ export default function DeductionFinderPage() {
                   <span className="w-1.5 h-1.5 bg-primary rounded-full" />
                   Tax Education
                 </div>
-                <h2 className="text-4xl  mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
+                <h2 className="text-4xl font-bold mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
                   What are Tax Deductions for Canadian Freelancers?
                 </h2>
               </div>
@@ -183,7 +183,7 @@ export default function DeductionFinderPage() {
                   <span className="w-1.5 h-1.5 bg-secondary rounded-full" />
                   Deduction Categories
                 </div>
-                <h2 className="text-4xl  mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
+                <h2 className="text-4xl font-bold mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
                   Top Tax Deductions for Canadian Freelancers
                 </h2>
               </div>
@@ -264,7 +264,7 @@ export default function DeductionFinderPage() {
                   <span className="w-1.5 h-1.5 bg-accent rounded-full" />
                   How It Works
                 </div>
-                <h2 className="text-4xl  mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
+                <h2 className="text-4xl font-bold mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
                   How to Claim Your Tax Deductions
                 </h2>
               </div>
@@ -290,7 +290,7 @@ export default function DeductionFinderPage() {
                   <span className="w-1.5 h-1.5 bg-primary rounded-full" />
                   FAQ
                 </div>
-                <h2 className="text-4xl  mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
+                <h2 className="text-4xl font-bold mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
                   Frequently Asked Questions
                 </h2>
               </div>

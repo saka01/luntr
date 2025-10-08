@@ -35,56 +35,47 @@ export function CalculatorForm({ taxData, setTaxData }: Props) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Province Selection */}
-      <Card className="shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-xl">Province / Territory</CardTitle>
-          <CardDescription>Select your province to calculate accurate tax rates</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            <Label htmlFor="province">Province *</Label>
-            <Select value={taxData.province} onValueChange={(value) => updateField("province", value)}>
-              <SelectTrigger id="province">
-                <SelectValue placeholder="Select province" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="ON">Ontario</SelectItem>
-                <SelectItem value="BC">British Columbia</SelectItem>
-                <SelectItem value="AB">Alberta</SelectItem>
-                <SelectItem value="QC">Quebec</SelectItem>
-                <SelectItem value="MB">Manitoba</SelectItem>
-                <SelectItem value="SK">Saskatchewan</SelectItem>
-                <SelectItem value="NS">Nova Scotia</SelectItem>
-                <SelectItem value="NB">New Brunswick</SelectItem>
-                <SelectItem value="PE">Prince Edward Island</SelectItem>
-                <SelectItem value="NL">Newfoundland and Labrador</SelectItem>
-                <SelectItem value="YT">Yukon</SelectItem>
-                <SelectItem value="NT">Northwest Territories</SelectItem>
-                <SelectItem value="NU">Nunavut</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="flex justify-center">
+        <Select value={taxData.province} onValueChange={(value) => updateField("province", value)}>
+          <SelectTrigger id="province" className="h-10 bg-input/50 border-border text-foreground w-64">
+            <SelectValue placeholder="Select province" />
+          </SelectTrigger>
+          <SelectContent className="bg-popover border-border">
+            <SelectItem value="ON">Ontario</SelectItem>
+            <SelectItem value="BC">British Columbia</SelectItem>
+            <SelectItem value="AB">Alberta</SelectItem>
+            <SelectItem value="QC">Quebec</SelectItem>
+            <SelectItem value="MB">Manitoba</SelectItem>
+            <SelectItem value="SK">Saskatchewan</SelectItem>
+            <SelectItem value="NS">Nova Scotia</SelectItem>
+            <SelectItem value="NB">New Brunswick</SelectItem>
+            <SelectItem value="PE">Prince Edward Island</SelectItem>
+            <SelectItem value="NL">Newfoundland and Labrador</SelectItem>
+            <SelectItem value="YT">Yukon</SelectItem>
+            <SelectItem value="NT">Northwest Territories</SelectItem>
+            <SelectItem value="NU">Nunavut</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
 
       {/* Income Inputs */}
-      <Card className="shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-xl">Income</CardTitle>
-          <CardDescription>Enter all sources of income for the tax year</CardDescription>
+      <Card className="bg-card/50 border-border/50 backdrop-blur-sm shadow-xl py-6">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg font-semibold text-card-foreground">Income Sources</CardTitle>
+          <CardDescription className="text-sm text-muted-foreground">Enter all your income for the year</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="pt-0 space-y-4">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <Label htmlFor="selfEmploymentIncome">Self-Employment Income *</Label>
+              <Label htmlFor="selfEmploymentIncome" className="text-sm font-medium text-card-foreground">Self-Employment Income *</Label>
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                    <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
                   </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
+                  <TooltipContent className="max-w-xs bg-popover border-border text-popover-foreground">
                     <p>Total revenue from your business or freelance work before expenses</p>
                   </TooltipContent>
                 </Tooltip>
@@ -96,6 +87,7 @@ export function CalculatorForm({ taxData, setTaxData }: Props) {
               placeholder="$0"
               value={taxData.selfEmploymentIncome || ""}
               onChange={(e) => updateField("selfEmploymentIncome", Number.parseFloat(e.target.value) || 0)}
+              className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
             />
           </div>
 
@@ -111,14 +103,15 @@ export function CalculatorForm({ taxData, setTaxData }: Props) {
           </div>
 
           {showEmploymentIncome && (
-            <div className="space-y-2 pl-4 border-l-2 border-muted">
-              <Label htmlFor="employmentIncome">Employment Income (T4)</Label>
+            <div className="space-y-2 pl-4 border-l-2 border-border">
+              <Label htmlFor="employmentIncome" className="text-sm font-medium text-card-foreground">Employment Income (T4)</Label>
               <Input
                 id="employmentIncome"
                 type="number"
                 placeholder="$0"
                 value={taxData.employmentIncome || ""}
                 onChange={(e) => updateField("employmentIncome", Number.parseFloat(e.target.value) || 0)}
+                className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
               />
             </div>
           )}
@@ -135,45 +128,49 @@ export function CalculatorForm({ taxData, setTaxData }: Props) {
           </div>
 
           {showOtherIncome && (
-            <div className="space-y-4 pl-4 border-l-2 border-muted">
+            <div className="space-y-4 pl-4 border-l-2 border-border">
               <div className="space-y-2">
-                <Label htmlFor="capitalGains">Capital Gains</Label>
+                <Label htmlFor="capitalGains" className="text-sm font-medium text-card-foreground">Capital Gains</Label>
                 <Input
                   id="capitalGains"
                   type="number"
                   placeholder="$0"
                   value={taxData.capitalGains || ""}
                   onChange={(e) => updateField("capitalGains", Number.parseFloat(e.target.value) || 0)}
+                  className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="eligibleDividends">Eligible Dividends</Label>
+                <Label htmlFor="eligibleDividends" className="text-sm font-medium text-card-foreground">Eligible Dividends</Label>
                 <Input
                   id="eligibleDividends"
                   type="number"
                   placeholder="$0"
                   value={taxData.eligibleDividends || ""}
                   onChange={(e) => updateField("eligibleDividends", Number.parseFloat(e.target.value) || 0)}
+                  className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="ineligibleDividends">Ineligible Dividends</Label>
+                <Label htmlFor="ineligibleDividends" className="text-sm font-medium text-card-foreground">Ineligible Dividends</Label>
                 <Input
                   id="ineligibleDividends"
                   type="number"
                   placeholder="$0"
                   value={taxData.ineligibleDividends || ""}
                   onChange={(e) => updateField("ineligibleDividends", Number.parseFloat(e.target.value) || 0)}
+                  className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="otherIncome">Other Income</Label>
+                <Label htmlFor="otherIncome" className="text-sm font-medium text-card-foreground">Other Income</Label>
                 <Input
                   id="otherIncome"
                   type="number"
                   placeholder="$0"
                   value={taxData.otherIncome || ""}
                   onChange={(e) => updateField("otherIncome", Number.parseFloat(e.target.value) || 0)}
+                  className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
                 />
               </div>
             </div>
@@ -182,10 +179,10 @@ export function CalculatorForm({ taxData, setTaxData }: Props) {
       </Card>
 
       {/* Business Deductions */}
-      <Card className="shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-xl">Business Deductions (T2125)</CardTitle>
-          <CardDescription>Common expenses for freelancers and self-employed individuals</CardDescription>
+      <Card className="bg-card/50 border-border/50 backdrop-blur-sm shadow-xl py-6">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg font-semibold text-card-foreground">Business Deductions (T2125)</CardTitle>
+          <CardDescription className="text-sm text-muted-foreground">Common expenses for freelancers and self-employed individuals</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <Collapsible open={showDeductions} onOpenChange={setShowDeductions}>
@@ -201,13 +198,13 @@ export function CalculatorForm({ taxData, setTaxData }: Props) {
               <div className="space-y-4">
                 <div className="space-y-3 p-4 bg-muted/30 rounded-lg">
                   <div className="flex items-center gap-2">
-                    <Label htmlFor="vehicleExpense">Vehicle Expenses</Label>
+                    <Label htmlFor="vehicleExpense" className="text-sm font-medium text-card-foreground">Vehicle Expenses</Label>
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                          <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
                         </TooltipTrigger>
-                        <TooltipContent className="max-w-xs">
+                        <TooltipContent className="max-w-xs bg-popover border-border text-popover-foreground">
                           <p>Gas, insurance, maintenance, and lease/loan payments for business use</p>
                         </TooltipContent>
                       </Tooltip>
@@ -219,9 +216,10 @@ export function CalculatorForm({ taxData, setTaxData }: Props) {
                     placeholder="$0"
                     value={taxData.vehicleExpense || ""}
                     onChange={(e) => updateField("vehicleExpense", Number.parseFloat(e.target.value) || 0)}
+                    className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
                   />
                   <div className="space-y-2">
-                    <Label htmlFor="vehicleBusinessUse">Business Use %</Label>
+                    <Label htmlFor="vehicleBusinessUse" className="text-sm font-medium text-card-foreground">Business Use %</Label>
                     <Input
                       id="vehicleBusinessUse"
                       type="number"
@@ -230,19 +228,20 @@ export function CalculatorForm({ taxData, setTaxData }: Props) {
                       placeholder="100"
                       value={taxData.vehicleBusinessUse || ""}
                       onChange={(e) => updateField("vehicleBusinessUse", Number.parseFloat(e.target.value) || 100)}
+                      className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-3 p-4 bg-muted/30 rounded-lg">
                   <div className="flex items-center gap-2">
-                    <Label htmlFor="homeOfficeExpense">Home Office Expenses</Label>
+                    <Label htmlFor="homeOfficeExpense" className="text-sm font-medium text-card-foreground">Home Office Expenses</Label>
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                          <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
                         </TooltipTrigger>
-                        <TooltipContent className="max-w-xs">
+                        <TooltipContent className="max-w-xs bg-popover border-border text-popover-foreground">
                           <p>Rent, utilities, internet, and property taxes for your home office space</p>
                         </TooltipContent>
                       </Tooltip>
@@ -254,9 +253,10 @@ export function CalculatorForm({ taxData, setTaxData }: Props) {
                     placeholder="$0"
                     value={taxData.homeOfficeExpense || ""}
                     onChange={(e) => updateField("homeOfficeExpense", Number.parseFloat(e.target.value) || 0)}
+                    className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
                   />
                   <div className="space-y-2">
-                    <Label htmlFor="homeOfficeBusinessUse">Business Use %</Label>
+                    <Label htmlFor="homeOfficeBusinessUse" className="text-sm font-medium text-card-foreground">Business Use %</Label>
                     <Input
                       id="homeOfficeBusinessUse"
                       type="number"
@@ -265,19 +265,20 @@ export function CalculatorForm({ taxData, setTaxData }: Props) {
                       placeholder="100"
                       value={taxData.homeOfficeBusinessUse || ""}
                       onChange={(e) => updateField("homeOfficeBusinessUse", Number.parseFloat(e.target.value) || 100)}
+                      className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <Label htmlFor="mealsExpense">Meals & Entertainment</Label>
+                    <Label htmlFor="mealsExpense" className="text-sm font-medium text-card-foreground">Meals & Entertainment</Label>
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                          <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
                         </TooltipTrigger>
-                        <TooltipContent className="max-w-xs">
+                        <TooltipContent className="max-w-xs bg-popover border-border text-popover-foreground">
                           <p>Business meals (automatically limited to 50% deduction by CRA)</p>
                         </TooltipContent>
                       </Tooltip>
@@ -289,51 +290,56 @@ export function CalculatorForm({ taxData, setTaxData }: Props) {
                     placeholder="$0"
                     value={taxData.mealsExpense || ""}
                     onChange={(e) => updateField("mealsExpense", Number.parseFloat(e.target.value) || 0)}
+                    className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
                   />
                   <p className="text-xs text-muted-foreground">50% deduction applied automatically</p>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="advertisingExpense">Advertising & Marketing</Label>
+                  <Label htmlFor="advertisingExpense" className="text-sm font-medium text-card-foreground">Advertising & Marketing</Label>
                   <Input
                     id="advertisingExpense"
                     type="number"
                     placeholder="$0"
                     value={taxData.advertisingExpense || ""}
                     onChange={(e) => updateField("advertisingExpense", Number.parseFloat(e.target.value) || 0)}
+                    className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="softwareExpense">Software & Subscriptions</Label>
+                  <Label htmlFor="softwareExpense" className="text-sm font-medium text-card-foreground">Software & Subscriptions</Label>
                   <Input
                     id="softwareExpense"
                     type="number"
                     placeholder="$0"
                     value={taxData.softwareExpense || ""}
                     onChange={(e) => updateField("softwareExpense", Number.parseFloat(e.target.value) || 0)}
+                    className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="travelExpense">Travel Expenses</Label>
+                  <Label htmlFor="travelExpense" className="text-sm font-medium text-card-foreground">Travel Expenses</Label>
                   <Input
                     id="travelExpense"
                     type="number"
                     placeholder="$0"
                     value={taxData.travelExpense || ""}
                     onChange={(e) => updateField("travelExpense", Number.parseFloat(e.target.value) || 0)}
+                    className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="professionalFeesExpense">Professional Fees</Label>
+                  <Label htmlFor="professionalFeesExpense" className="text-sm font-medium text-card-foreground">Professional Fees</Label>
                   <Input
                     id="professionalFeesExpense"
                     type="number"
                     placeholder="$0"
                     value={taxData.professionalFeesExpense || ""}
                     onChange={(e) => updateField("professionalFeesExpense", Number.parseFloat(e.target.value) || 0)}
+                    className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
                   />
                 </div>
               </div>
@@ -343,21 +349,21 @@ export function CalculatorForm({ taxData, setTaxData }: Props) {
       </Card>
 
       {/* RRSP & FHSA */}
-      <Card className="shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-xl">RRSP & FHSA Contributions</CardTitle>
-          <CardDescription>Reduce your taxable income with registered savings</CardDescription>
+      <Card className="bg-card/50 border-border/50 backdrop-blur-sm shadow-xl py-6">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg font-semibold text-card-foreground">RRSP & FHSA Contributions</CardTitle>
+          <CardDescription className="text-sm text-muted-foreground">Reduce your taxable income with registered savings</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="pt-0 space-y-4">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <Label htmlFor="rrspContribution">RRSP Contribution</Label>
+              <Label htmlFor="rrspContribution" className="text-sm font-medium text-card-foreground">RRSP Contribution</Label>
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                    <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
                   </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
+                  <TooltipContent className="max-w-xs bg-popover border-border text-popover-foreground">
                     <p>Registered Retirement Savings Plan contributions reduce taxable income</p>
                   </TooltipContent>
                 </Tooltip>
@@ -369,18 +375,19 @@ export function CalculatorForm({ taxData, setTaxData }: Props) {
               placeholder="$0"
               value={taxData.rrspContribution || ""}
               onChange={(e) => updateField("rrspContribution", Number.parseFloat(e.target.value) || 0)}
+              className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
             />
           </div>
 
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <Label htmlFor="fhsaContribution">FHSA Contribution</Label>
+              <Label htmlFor="fhsaContribution" className="text-sm font-medium text-card-foreground">FHSA Contribution</Label>
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                    <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
                   </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
+                  <TooltipContent className="max-w-xs bg-popover border-border text-popover-foreground">
                     <p>First Home Savings Account contributions (up to $8,000/year)</p>
                   </TooltipContent>
                 </Tooltip>
@@ -392,26 +399,28 @@ export function CalculatorForm({ taxData, setTaxData }: Props) {
               placeholder="$0"
               value={taxData.fhsaContribution || ""}
               onChange={(e) => updateField("fhsaContribution", Number.parseFloat(e.target.value) || 0)}
+              className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
             />
           </div>
         </CardContent>
       </Card>
 
       {/* Taxes Paid */}
-      <Card className="shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-xl">Taxes Already Paid</CardTitle>
-          <CardDescription>Income tax deducted at source or installments paid</CardDescription>
+      <Card className="bg-card/50 border-border/50 backdrop-blur-sm shadow-xl py-6">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg font-semibold text-card-foreground">Taxes Already Paid</CardTitle>
+          <CardDescription className="text-sm text-muted-foreground">Income tax deducted at source or installments paid</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-0">
           <div className="space-y-2">
-            <Label htmlFor="taxesPaid">Income Tax Paid</Label>
+            <Label htmlFor="taxesPaid" className="text-sm font-medium text-card-foreground">Income Tax Paid</Label>
             <Input
               id="taxesPaid"
               type="number"
               placeholder="$0"
               value={taxData.taxesPaid || ""}
               onChange={(e) => updateField("taxesPaid", Number.parseFloat(e.target.value) || 0)}
+              className="h-10 bg-input/50 border-border text-foreground placeholder:text-muted-foreground [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
             />
           </div>
         </CardContent>

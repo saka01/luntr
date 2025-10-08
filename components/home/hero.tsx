@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import { useState, useEffect } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Sparkles } from "lucide-react"
+import { Logo } from "../logo"
 
 export default function Hero() {
   const [mounted, setMounted] = useState(false)
@@ -30,9 +31,8 @@ export default function Hero() {
               transition={{ duration: 0.5 }}
               className="mb-8"
             >
-              <Badge variant="secondary" className="inline-flex items-center gap-2 px-4 py-2 text-sm">
-                <Sparkles className="h-4 w-4" />
-                Entrepreneur
+              <Badge variant="outline" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-extrabold">
+                LAUNCHING SOON
                   </Badge>
                 </motion.div> */}
 
@@ -55,7 +55,7 @@ export default function Hero() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mx-auto mb-12 max-w-2xl text-lg text-muted-foreground"
             >
-              Tallo automatically finds CRA-eligible write-offs + files your taxes every year.
+              Tallo automatically finds CRA-eligible write-offs from your transactions. No tax expertise required.
             </motion.p>
 
             <motion.div
@@ -103,7 +103,7 @@ export default function Hero() {
                           <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
                           <path d="M2 12h20"></path>
                         </svg>
-                        Get started
+                        Get Early Access
                       </p>
                     </div>
                     <div className="text-muted-foreground group-hover:ml-4 ease-in-out transition-all size-[24px] flex items-center justify-center rounded-full border-2 border-border">
@@ -127,7 +127,7 @@ export default function Hero() {
                 </a>
 
                 {/* Deduction finder button */}
-                <a href="/deduction-finder">
+                {/* <a href="/deduction-finder">
                   <div className="group cursor-pointer border border-border bg-card gap-2 h-[60px] flex items-center p-[10px] rounded-full">
                     <div className="border border-border bg-secondary h-[40px] rounded-full flex items-center justify-center text-secondary-foreground">
                       <p className="font-medium tracking-tight mr-3 ml-3 flex items-center gap-2 justify-center text-base">
@@ -161,13 +161,13 @@ export default function Hero() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         className="lucide lucide-arrow-right group-hover:rotate-180 ease-in-out transition-all"
-                      >
+                       >
                         <path d="M5 12h14"></path>
                         <path d="m12 5 7 7-7 7"></path>
                       </svg>
                     </div>
                   </div>
-                </a>
+                </a> */}
               </div>
             </motion.div>
           </div>
