@@ -1,98 +1,84 @@
 'use client'
 
-import { useState } from 'react'
-import { DeductionForm } from '@/components/deduction-form'
-import { LeadCaptureForm } from '@/components/deduction-results'
+import { useState, useEffect } from 'react'
+import { DeductionFinderStep1 } from '@/components/deduction-finder-step1'
+import { DeductionFinderStep2 } from '@/components/deduction-finder-step2'
+import { DeductionFinderStep3 } from '@/components/deduction-finder-step3'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { Button } from "@/components/ui/button"
+import { RotateCcw } from "lucide-react"
 
 export default function DeductionFinderPage() {
   const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState<Record<string, any>>({})
-  const [isComplete, setIsComplete] = useState(false)
-  const [qualifyingDeductions, setQualifyingDeductions] = useState<string[]>([])
+  const [selectedDeductions, setSelectedDeductions] = useState<Set<string>>(new Set())
+  const [totalValue, setTotalValue] = useState({ min: 0, max: 0 })
+  const [isInitialized, setIsInitialized] = useState(false)
 
-  const handleNext = (stepData: Record<string, any>) => {
+  // Load saved data from localStorage on component mount
+  useEffect(() => {
+    const savedFormData = localStorage.getItem('deduction-finder-form-data')
+    const savedStep = localStorage.getItem('deduction-finder-step')
+    const savedDeductions = localStorage.getItem('deduction-finder-selected')
+    
+    if (savedFormData) {
+      setFormData(JSON.parse(savedFormData))
+    }
+    if (savedStep) {
+      setCurrentStep(parseInt(savedStep))
+    }
+    if (savedDeductions) {
+      setSelectedDeductions(new Set(JSON.parse(savedDeductions)))
+    }
+    
+    setIsInitialized(true)
+  }, [])
+
+  // Save form data to localStorage whenever it changes (but not on initial load)
+  useEffect(() => {
+    if (isInitialized && Object.keys(formData).length > 0) {
+      localStorage.setItem('deduction-finder-form-data', JSON.stringify(formData))
+    }
+  }, [formData, isInitialized])
+
+  // Save current step to localStorage whenever it changes (but not on initial load)
+  useEffect(() => {
+    if (isInitialized) {
+      localStorage.setItem('deduction-finder-step', currentStep.toString())
+    }
+  }, [currentStep, isInitialized])
+
+  // Save selected deductions to localStorage whenever they change (but not on initial load)
+  useEffect(() => {
+    if (isInitialized && selectedDeductions.size > 0) {
+      localStorage.setItem('deduction-finder-selected', JSON.stringify(Array.from(selectedDeductions)))
+    }
+  }, [selectedDeductions, isInitialized])
+
+  const handleStep1Next = (stepData: Record<string, any>) => {
     const newFormData = { ...formData, ...stepData }
     setFormData(newFormData)
-    
-    if (currentStep < 4) {
-      setCurrentStep(currentStep + 1)
-    } else {
-      // Calculate qualifying deductions
-      const deductions = calculateDeductions(newFormData)
-      setQualifyingDeductions(deductions)
-      setIsComplete(true)
-    }
+    setCurrentStep(1)
   }
 
-  const handlePrevious = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1)
-    }
+  const handleStep2Next = (selectedDeductions: Set<string>, totalValue: { min: number; max: number }) => {
+    setSelectedDeductions(selectedDeductions)
+    setTotalValue(totalValue)
+    setCurrentStep(2)
   }
 
   const handleRestart = () => {
     setCurrentStep(0)
     setFormData({})
-    setIsComplete(false)
-    setQualifyingDeductions([])
-  }
-
-  const calculateDeductions = (data: Record<string, any>): string[] => {
-    const deductions: string[] = []
-    
-    // Home office deduction
-    if (data.workFromHome === 'yes' && data.dedicatedSpace === 'yes') {
-      deductions.push('Home Office Deduction')
-    }
-    
-    // Vehicle expenses
-    if (data.vehicleForWork === 'yes') {
-      deductions.push('Vehicle Expenses')
-    }
-    
-    // Business meals
-    if (data.businessMeals === 'yes') {
-      deductions.push('Business Meals (50% deductible)')
-    }
-    
-    // Professional development
-    if (data.professionalDevelopment === 'yes') {
-      deductions.push('Professional Development & Training')
-    }
-    
-    // Equipment and supplies
-    if (data.businessEquipment === 'yes') {
-      deductions.push('Business Equipment & Supplies')
-    }
-    
-    // Marketing and advertising
-    if (data.marketingExpenses === 'yes') {
-      deductions.push('Marketing & Advertising')
-    }
-    
-    // Professional fees
-    if (data.professionalFees === 'yes') {
-      deductions.push('Professional Fees (Legal, Accounting)')
-    }
-    
-    // Insurance
-    if (data.businessInsurance === 'yes') {
-      deductions.push('Business Insurance')
-    }
-    
-    // Internet and phone
-    if (data.internetPhone === 'yes') {
-      deductions.push('Internet & Phone (Business Portion)')
-    }
-    
-    // Travel expenses
-    if (data.businessTravel === 'yes') {
-      deductions.push('Business Travel Expenses')
-    }
-    
-    return deductions
+    setSelectedDeductions(new Set())
+    setTotalValue({ min: 0, max: 0 })
+    setIsInitialized(false)
+    localStorage.removeItem('deduction-finder-form-data')
+    localStorage.removeItem('deduction-finder-step')
+    localStorage.removeItem('deduction-finder-selected')
+    // Re-initialize after clearing
+    setTimeout(() => setIsInitialized(true), 100)
   }
 
   return (
@@ -111,41 +97,26 @@ export default function DeductionFinderPage() {
             </p>
           </div>
 
-          {/* Progress Bar */}
-          {!isComplete && (
-            <div className="flex-shrink-0 px-6 py-3 mb-4">
-              <div className="max-w-4xl mx-auto">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-muted-foreground ">
-                    Step {currentStep + 1} of 5
-                  </span>
-                  <span className="text-sm text-muted-foreground ">
-                    {Math.round(((currentStep + 1) / 5) * 100)}% Complete
-                  </span>
-                </div>
-                <div className="w-full bg-muted rounded-full h-2">
-                  <div 
-                    className="bg-gradient-to-r from-primary to-secondary h-2 rounded-full transition-all duration-500 ease-out shadow-lg"
-                    style={{ width: `${((currentStep + 1) / 5) * 100}%` }}
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-
           {/* Main Content */}
           <div className="flex items-center justify-center p-3 max-w-4xl mx-auto">
             <div className="w-full">
-              {!isComplete ? (
-                <DeductionForm
-                  currentStep={currentStep}
-                  onNext={handleNext}
-                  onPrevious={handlePrevious}
+              {currentStep === 0 && (
+                <DeductionFinderStep1
+                  onNext={handleStep1Next}
                   formData={formData}
                 />
-              ) : (
-                <LeadCaptureForm
-                  deductions={qualifyingDeductions}
+              )}
+              {currentStep === 1 && (
+                <DeductionFinderStep2
+                  formData={formData}
+                  onNext={handleStep2Next}
+                />
+              )}
+              {currentStep === 2 && (
+                <DeductionFinderStep3
+                  formData={formData}
+                  selectedDeductions={selectedDeductions}
+                  totalValue={totalValue}
                   onRestart={handleRestart}
                 />
               )}
@@ -344,3 +315,4 @@ export default function DeductionFinderPage() {
     </div>
   )
 }
+
