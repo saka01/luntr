@@ -139,7 +139,7 @@ export function TestimonialsSection() {
           </div>
         </div>
 
-        <div className="-mt-8 flex justify-center">
+        {/* <div className="-mt-8 flex justify-center">
           <button className="group relative inline-flex items-center gap-2 rounded-full border border-[#e78a53]/30 bg-black/50 px-6 py-3 text-sm font-medium text-white transition-all hover:border-[#e78a53]/60 hover:bg-[#e78a53]/10 active:scale-95">
             <div className="absolute inset-x-0 -top-px mx-auto h-px w-3/4 bg-gradient-to-r from-transparent via-[#e78a53]/40 to-transparent"></div>
             <div className="absolute inset-x-0 -bottom-px mx-auto h-px w-3/4 bg-gradient-to-r from-transparent via-[#e78a53]/40 to-transparent"></div>
@@ -148,7 +148,7 @@ export function TestimonialsSection() {
             </svg>
             Share your experience
           </button>
-        </div>
+        </div> */}
       </div>
     </section>
   )

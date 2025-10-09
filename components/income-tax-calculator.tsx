@@ -280,7 +280,7 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
           <SelectTrigger id="province" className="h-10 bg-slate-800/50 border-slate-700 text-white w-64">
             <SelectValue placeholder="Select province" />
           </SelectTrigger>
-          <SelectContent className="bg-slate-800 border-slate-700">
+          <SelectContent className="bg-popover border-border">
             <SelectItem value="ON">Ontario</SelectItem>
             <SelectItem value="BC">British Columbia</SelectItem>
             <SelectItem value="AB">Alberta</SelectItem>
@@ -624,9 +624,6 @@ function IncomeTaxResults({ taxData }: { taxData: IncomeTaxData }) {
               </div>
             </a>
           </motion.div>
-          <p className="text-xs text-muted-foreground leading-relaxed mt-3 italic">
-            *Based on average savings for similar income profiles.
-          </p>
         </div>
       </CardContent>
     </Card>

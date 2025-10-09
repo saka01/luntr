@@ -1,7 +1,9 @@
 "use client"
 
+import { useState } from "react"
 import { motion } from "framer-motion"
 import { Check, Sparkles } from "lucide-react"
+import { WaitlistPopup } from "@/components/waitlist-popup"
 
 const pricingPlans = [
   {
@@ -15,7 +17,7 @@ const pricingPlans = [
       "Basic expense reports",
     ],
     popular: false,
-    cta: "Get Started",
+    cta: "Join waitlist",
   },
   {
     name: "Pro",
@@ -32,7 +34,7 @@ const pricingPlans = [
       "Educational deduction explanations",
     ],
     popular: true,
-    cta: "Start Free Trial",
+    cta: "Join waitlist",
   },
   {
     name: "Full Service",
@@ -48,11 +50,16 @@ const pricingPlans = [
       "Tax optimization consultation",
     ],
     popular: false,
-    cta: "Start",
+    cta: "Join waitlist",
   },
 ]
 
 export function PricingSection() {
+  const [isWaitlistOpen, setIsWaitlistOpen] = useState(false)
+
+  const handleJoinWaitlist = () => {
+    setIsWaitlistOpen(true)
+  }
 
   return (
     <section className="relative py-24 px-4">
@@ -143,7 +150,8 @@ export function PricingSection() {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`w-full py-3 px-6 rounded-lg font-medium transition-all duration-200 ${
+                onClick={handleJoinWaitlist}
+                className={`w-full py-3 px-6 rounded-lg font-medium transition-all duration-200 cursor-pointer ${
                   plan.popular
                     ? "bg-gradient-to-r from-[#e78a53] to-[#e78a53]/80 text-white shadow-lg shadow-[#e78a53]/25 hover:shadow-[#e78a53]/40"
                     : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
@@ -173,6 +181,12 @@ export function PricingSection() {
           </motion.button>
         </motion.div> */}
       </div>
+      
+      {/* Waitlist Popup */}
+      <WaitlistPopup 
+        isOpen={isWaitlistOpen} 
+        onClose={() => setIsWaitlistOpen(false)} 
+      />
     </section>
   )
 }

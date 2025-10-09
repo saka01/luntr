@@ -1,7 +1,9 @@
 "use client"
 
+import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { ChevronDown, ChevronRight } from "lucide-react"
 import type { TaxData } from "./tax-calculator"
 import { calculateTax } from "@/lib/tax-calculations"
 import { motion } from "framer-motion"
@@ -11,6 +13,7 @@ type Props = {
 }
 
 export function ResultsPanel({ taxData }: Props) {
+  const [isTaxRatesExpanded, setIsTaxRatesExpanded] = useState(false)
   const results = calculateTax(taxData)
 
   const formatCurrency = (value: number) => {
@@ -37,16 +40,18 @@ export function ResultsPanel({ taxData }: Props) {
   return (
     <Card className="bg-card/50 border-border/50 backdrop-blur-sm shadow-xl">
       <CardContent className="p-6 space-y-4">
-        {/* After-Tax Income - Highlighted at top */}
-        <div className="flex justify-between items-center p-4 bg-green-300/20 border border-green-300/30 rounded-lg">
-          <div>
-            <div className="text-sm font-medium text-green-700 dark:text-green-300">After-Tax Income</div>
-            <div className="text-xs text-muted-foreground">Your take-home pay</div>
+        {/* After-Tax Income - Highlighted at top - Only show if self-employment income > 0 */}
+        {taxData.selfEmploymentIncome > 0 && (
+          <div className="flex justify-between items-center p-4 bg-green-300/20 border border-green-300/30 rounded-lg">
+            <div>
+              <div className="text-sm font-medium text-green-700 dark:text-green-300">After-Tax Income</div>
+              <div className="text-xs text-muted-foreground">Your take-home pay</div>
+            </div>
+            <div className="text-right">
+              <div className="text-2xl font-bold text-green-700 dark:text-green-300">{formatCurrency(results.afterTaxIncome)}</div>
+            </div>
           </div>
-          <div className="text-right">
-            <div className="text-2xl font-bold text-green-700 dark:text-green-300">{formatCurrency(results.afterTaxIncome)}</div>
-          </div>
-        </div>
+        )}
 
         {/* Income Summary */}
         <div className="space-y-2">
@@ -92,16 +97,37 @@ export function ResultsPanel({ taxData }: Props) {
           </div>
         </div>
 
-        {/* Tax Rates */}
-        <div className="pt-3 border-t border-border space-y-2">
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">Average Tax Rate</span>
-            <span className="text-sm font-medium text-card-foreground">{formatPercent(results.averageTaxRate)}</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">Marginal Tax Rate</span>
-            <span className="text-sm font-medium text-card-foreground">{formatPercent(results.marginalTaxRate)}</span>
-          </div>
+        {/* Tax Rates - Collapsible */}
+        <div className="pt-3 border-t border-border">
+          <button
+            onClick={() => setIsTaxRatesExpanded(!isTaxRatesExpanded)}
+            className="flex items-center justify-between w-full text-left hover:bg-muted/50 rounded-lg p-2 -m-2 transition-colors"
+          >
+            <span className="text-sm font-medium text-card-foreground">Tax Rates</span>
+            {isTaxRatesExpanded ? (
+              <ChevronDown className="h-4 w-4 text-muted-foreground" />
+            ) : (
+              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+            )}
+          </button>
+          {isTaxRatesExpanded && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2 }}
+              className="space-y-2 mt-2"
+            >
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-muted-foreground">Average Tax Rate</span>
+                <span className="text-sm font-medium text-card-foreground">{formatPercent(results.averageTaxRate)}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-muted-foreground">Marginal Tax Rate</span>
+                <span className="text-sm font-medium text-card-foreground">{formatPercent(results.marginalTaxRate)}</span>
+              </div>
+            </motion.div>
+          )}
         </div>
 
         {/* Refund/Owed - Highlighted */}
@@ -136,22 +162,37 @@ export function ResultsPanel({ taxData }: Props) {
 
         {/* Business Expenses Deducted - Highlighted with Breakdown */}
         <div className="pt-3 border-t border-border">
-          <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+          <div className="p-4 bg-secondary/10 border border-secondary/20 rounded-lg">
             {/* Header */}
-            <div className="flex justify-between items-center mb-3">
-              <div>
-                <div className="text-sm font-medium text-blue-600 dark:text-blue-400">Total Business Tax Savings</div>
-                <div className="text-xs text-muted-foreground">A breakdown of declared business tax expenses</div>
+            {results.businessExpenses > 0 ? (
+              <div className="flex justify-between items-center mb-3">
+                <div>
+                  <div className="font-medium text-secondary dark:text-secondary text-sm">
+                    Total Business Tax Savings
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    A breakdown of declared business tax expenses
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-secondary dark:text-secondary">
+                    {formatCurrency(results.businessExpenses)}
+                  </div>
+                </div>
               </div>
-              <div className="text-right">
-                <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{formatCurrency(results.businessExpenses)}</div>
+            ) : (
+              <div className="flex justify-center items-center">
+                  <div className="font-bold text-secondary text-center dark:text-secondary text-xl">
+                    Enter business expenses to reduce your tax bill
+                  </div>
               </div>
-            </div>
+            )}
             
-            {/* Detailed Deduction Breakdown */}
-            <div className="space-y-2 pt-3 border-t border-blue-500/20">
-              {/* <div className="text-sm font-medium text-blue-600 dark:text-blue-400 mb-2">Deduction Breakdown</div> */}
-              {taxData.vehicleExpense > 0 && (
+            {/* Detailed Deduction Breakdown - Only show if there are expenses */}
+            {results.businessExpenses > 0 && (
+              <div className="space-y-2 pt-3 border-t border-secondary/20">
+                {/* <div className="text-sm font-medium text-blue-600 dark:text-blue-400 mb-2">Deduction Breakdown</div> */}
+                {taxData.vehicleExpense > 0 && (
                 <div className="flex justify-between items-center text-sm">
                   <span className="text-muted-foreground">Vehicle Expenses ({taxData.vehicleBusinessUse}%)</span>
                   <span className="text-card-foreground">−{formatCurrency((taxData.vehicleExpense * taxData.vehicleBusinessUse) / 100)}</span>
@@ -193,10 +234,8 @@ export function ResultsPanel({ taxData }: Props) {
                   <span className="text-card-foreground">−{formatCurrency(taxData.professionalFeesExpense)}</span>
                 </div>
               )}
-              {results.businessExpenses === 0 && (
-                <div className="text-sm text-muted-foreground italic">No business expenses entered</div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -256,9 +295,6 @@ export function ResultsPanel({ taxData }: Props) {
               </div>
             </a>
           </motion.div>
-          <p className="text-xs text-muted-foreground leading-relaxed mt-3 italic">
-            *Average savings from self-employed Canadians with similar income.
-          </p>
         </div>
 
         {/* Detailed Summary Explanation Section */}
