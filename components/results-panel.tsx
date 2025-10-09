@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import type { TaxData } from "./tax-calculator"
 import { calculateTax } from "@/lib/tax-calculations"
+import { motion } from "framer-motion"
 
 type Props = {
   taxData: TaxData
@@ -201,18 +202,62 @@ export function ResultsPanel({ taxData }: Props) {
 
         {/* Promotional CTA Section */}
         <div className="pt-4 p-6 bg-primary/10 border border-primary/20 rounded-lg">
-          <h3 className="text-xl text-primary leading-tight mb-3 font-bold">
-            Find $450 - $2,670* in business deductions           
-          </h3>
+          <h3 className="text-xl text-primary leading-tight mb-3 font-extrabold">          
+            You could be leaving $450 – $2,670 in deductions on the table.
+        </h3>
           <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-            Tallo is Canada's leading AI-powered tax deduction tool for freelancers and self-employed professionals, trusted by 1M Canadians.    
-          </p>
-          <Button className="flex flex-row justify-center align-center bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3 rounded-lg font-medium transition-colors">
-            Try Tallo for free
-            <span className="ml-2">▶</span>
-          </Button>
+          Tallo helps you uncover every CRA-eligible business expense that lowers your tax bill.          </p>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="flex justify-start"
+          >
+            <a href="/deduction-finder">
+              <div className="group cursor-pointer border border-border bg-card gap-2 h-[56px] sm:h-[64px] flex items-center p-[8px] sm:p-[11px] rounded-full hover:bg-card/80 transition-all duration-300">
+                <div className="border border-border bg-primary h-[40px] sm:h-[43px] rounded-full flex items-center justify-center text-secondary-foreground px-4 sm:px-6">
+                  <p className="font-medium tracking-tight flex items-center gap-2 sm:gap-3 justify-center text-sm sm:text-base">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="lucide lucide-search sm:w-5 sm:h-5"
+                    >
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <span className="hidden sm:inline">Find My Deductions</span>
+                    <span className="sm:hidden">Find Deductions</span>
+                  </p>
+                </div>
+                <div className="text-muted-foreground group-hover:ml-2 sm:group-hover:ml-4 ease-in-out transition-all size-[20px] sm:size-[24px] flex items-center justify-center rounded-full border-2 border-border">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-arrow-right group-hover:rotate-180 ease-in-out transition-all sm:w-3.5 sm:h-3.5"
+                  >
+                    <path d="M5 12h14"></path>
+                    <path d="m12 5 7 7-7 7"></path>
+                  </svg>
+                </div>
+              </div>
+            </a>
+          </motion.div>
           <p className="text-xs text-muted-foreground leading-relaxed mt-3 italic">
-            *Based on the average deductions claimed by users with income profiles similar to yours.
+            *Average savings from self-employed Canadians with similar income.
           </p>
         </div>
 

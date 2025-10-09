@@ -169,10 +169,10 @@ export function WaitlistPopup({ isOpen, onClose }: WaitlistPopupProps) {
                           <Users className="w-3 h-3" />
                           <span>Join 211+ early adopters</span>
                         </div>
-                        {/* <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-1">
                           <Calendar className="w-3 h-3" />
-                          <span>Launching Q2 2025</span>
-                        </div> */}
+                          <span>Closes November 30, 2025</span>
+                        </div>
                       </div>
                     </div>
                   </>
@@ -217,7 +217,7 @@ export function WaitlistPopup({ isOpen, onClose }: WaitlistPopupProps) {
                         </div>
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-primary rounded-full" />
-                          <span>Direct line to our CPA team</span>
+                          <span>Get 50% OFF - 2027 Full Service tax filings</span>
                         </div>
                       </div>
                     </div>
