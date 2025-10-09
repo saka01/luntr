@@ -263,7 +263,7 @@ export const Header = () => {
 
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="flex items-center justify-center w-10 h-10 rounded-full bg-background/50 border border-border/50 transition-colors hover:bg-background/80"
+          className="flex items-center justify-center w-10 h-10 rounded-full bg-background/50 border border-border/50 transition-colors hover:bg-background/80 cursor-pointer"
           aria-label="Toggle menu"
         >
           <div className="flex flex-col items-center justify-center w-5 h-5 space-y-1">
@@ -300,7 +300,7 @@ export const Header = () => {
                 <div className="ml-4 space-y-2">
                   <a
                     href="/canada-income-tax-calculator"
-                    className="flex items-center gap-3 px-4 py-3 text-base text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50 group"
+                    className="flex items-center gap-3 px-4 py-3 text-base text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50 group cursor-pointer"
                   >
                     <div className="w-6 h-6 flex items-center justify-center">
                       <svg className="w-4 h-4 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -315,7 +315,7 @@ export const Header = () => {
                   
                   <a
                     href="/canada-t2125-tax-calculator"
-                    className="flex items-center gap-3 px-4 py-3 text-base text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50 group"
+                    className="flex items-center gap-3 px-4 py-3 text-base text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50 group cursor-pointer"
                   >
                     <div className="w-6 h-6 flex items-center justify-center">
                       <svg className="w-4 h-4 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -330,7 +330,7 @@ export const Header = () => {
                   
                   <a
                     href="/deduction-finder"
-                    className="flex items-center gap-3 px-4 py-3 text-base text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50 group"
+                    className="flex items-center gap-3 px-4 py-3 text-base text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50 group cursor-pointer"
                   >
                     <div className="w-6 h-6 flex items-center justify-center">
                       <svg className="w-4 h-4 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -347,19 +347,19 @@ export const Header = () => {
               
               <button
                 onClick={() => handleMobileNavClick("pricing")}
-                className="text-left px-4 py-3 text-lg font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-background/50"
+                className="text-left px-4 py-3 text-lg font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-background/50 cursor-pointer"
               >
                 Pricing
               </button>
               <button
                 onClick={() => handleMobileNavClick("testimonials")}
-                className="text-left px-4 py-3 text-lg font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-background/50"
+                className="text-left px-4 py-3 text-lg font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-background/50 cursor-pointer"
               >
                 Testimonials
               </button>
               <button
                 onClick={() => handleMobileNavClick("faq")}
-                className="text-left px-4 py-3 text-lg font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-background/50"
+                className="text-left px-4 py-3 text-lg font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-background/50 cursor-pointer"
               >
                 FAQ
               </button>

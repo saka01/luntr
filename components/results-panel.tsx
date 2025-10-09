@@ -97,11 +97,40 @@ export function ResultsPanel({ taxData }: Props) {
           </div>
         </div>
 
+        {/* Total Tax Owed - Only show if there's actual income and tax liability */}
+        {results.totalIncome > 0 && (
+          results.totalTax > 0 ? (
+            <div className="pt-3 border-t border-border">
+              <div className="flex justify-between items-center p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+                <div>
+                  <div className="text-sm font-medium text-red-600 dark:text-red-400">Total Tax Owed to CRA</div>
+                  <div className="text-xs text-muted-foreground">Your total tax liability</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-red-600 dark:text-red-400">{formatCurrency(results.totalTax)}</div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="pt-3 border-t border-border">
+              <div className="flex justify-between items-center p-4 bg-green-300/20 border border-green-300/30 rounded-lg">
+                <div>
+                  <div className="text-sm font-medium text-green-700 dark:text-green-300">No Taxes Owed!</div>
+                  <div className="text-xs text-muted-foreground">Your income is below the taxable threshold</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-green-700 dark:text-green-300">$0</div>
+                </div>
+              </div>
+            </div>
+          )
+        )}
+
         {/* Tax Rates - Collapsible */}
         <div className="pt-3 border-t border-border">
           <button
             onClick={() => setIsTaxRatesExpanded(!isTaxRatesExpanded)}
-            className="flex items-center justify-between w-full text-left hover:bg-muted/50 rounded-lg p-2 -m-2 transition-colors"
+            className="flex items-center justify-between w-full text-left hover:bg-muted/50 rounded-lg p-2 -m-2 transition-colors cursor-pointer"
           >
             <span className="text-sm font-medium text-card-foreground">Tax Rates</span>
             {isTaxRatesExpanded ? (

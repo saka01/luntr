@@ -67,7 +67,7 @@ export function WaitlistPopup({ isOpen, onClose }: WaitlistPopupProps) {
               {/* Close button */}
               <button
                 onClick={handleClose}
-                className="absolute -top-4 -right-4 z-10 w-8 h-8 rounded-full bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                className="absolute -top-4 -right-4 z-10 w-8 h-8 rounded-full bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>

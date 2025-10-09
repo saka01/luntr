@@ -151,7 +151,7 @@ export function DeductionFinderStep1({ onNext, formData, onRestart }: Step1Props
                   <button
                     key={option.value}
                     onClick={() => handleOptionSelect(option.value)}
-                    className={`w-full p-6 text-left rounded-xl border-2 transition-all duration-300 transform hover:scale-[1.02] ${
+                    className={`w-full p-6 text-left rounded-xl border-2 transition-all duration-300 transform hover:scale-[1.02] cursor-pointer ${
                       selectedOption === option.value
                         ? 'border-primary bg-gradient-to-r from-primary/10 to-secondary/10 text-foreground shadow-lg shadow-primary/20'
                         : 'border-border hover:border-primary/50 hover:bg-muted/50 hover:shadow-md bg-card'
