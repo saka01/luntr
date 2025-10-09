@@ -232,8 +232,8 @@ export function ResultsPanel({ taxData }: Props) {
                       <circle cx="11" cy="11" r="8"></circle>
                       <path d="m21 21-4.35-4.35"></path>
                     </svg>
-                    <span className="hidden sm:inline">Find My Deductions</span>
-                    <span className="sm:hidden">Find Deductions</span>
+                    <span className="hidden sm:inline">See missed deductions</span>
+                    <span className="sm:hidden">See missed deductions</span>
                   </p>
                 </div>
                 <div className="text-muted-foreground group-hover:ml-2 sm:group-hover:ml-4 ease-in-out transition-all size-[20px] sm:size-[24px] flex items-center justify-center rounded-full border-2 border-border">
