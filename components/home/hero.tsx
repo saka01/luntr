@@ -5,9 +5,11 @@ import { useState, useEffect } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Sparkles } from "lucide-react"
 import { Logo } from "../logo"
+import { WaitlistPopup } from "../waitlist-popup"
 
 export default function Hero() {
   const [mounted, setMounted] = useState(false)
+  const [isWaitlistOpen, setIsWaitlistOpen] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -83,7 +85,7 @@ export default function Hero() {
               {/* Action buttons */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 {/* Get started button */}
-                <a href="/signup">
+                <button onClick={() => setIsWaitlistOpen(true)}>
                   <div className="group cursor-pointer border border-border bg-card gap-2 h-[60px] flex items-center p-[10px] rounded-full">
                     <div className="border border-border bg-primary h-[40px] rounded-full flex items-center justify-center text-primary-foreground">
                       <p className="font-medium tracking-tight mr-3 ml-3 flex items-center gap-2 justify-center text-base">
@@ -124,7 +126,7 @@ export default function Hero() {
                       </svg>
                     </div>
                   </div>
-                </a>
+                </button>
 
                 {/* Deduction finder button */}
                 {/* <a href="/deduction-finder">
@@ -237,6 +239,12 @@ export default function Hero() {
           </motion.div> */}
         </div>
       </section>
+      
+      {/* Waitlist Popup */}
+      <WaitlistPopup 
+        isOpen={isWaitlistOpen} 
+        onClose={() => setIsWaitlistOpen(false)} 
+      />
     </>
   )
 }
