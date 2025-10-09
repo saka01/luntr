@@ -81,11 +81,11 @@ export function WaitlistPopup({ isOpen, onClose }: WaitlistPopupProps) {
                       <div className="flex items-center justify-center mb-4">
                         <Logo className="text-primary w-24 h-6" />
                       </div>
-                      <h2 className="text-2xl font-bold text-foreground mb-2">
+                      <h2 className="text-2xl font-bold text-foreground">
                         Join the Waitlist
                       </h2>
                       <p className="text-muted-foreground text-sm">
-                        Be among the first to unlock missed tax deductions
+                        Unlock early access to hidden tax savings
                       </p>
                     </div>
 

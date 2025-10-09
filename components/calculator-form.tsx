@@ -39,23 +39,23 @@ export function CalculatorForm({ taxData, setTaxData }: Props) {
       {/* Province Selection */}
       <div className="flex justify-center">
         <Select value={taxData.province} onValueChange={(value) => updateField("province", value)}>
-          <SelectTrigger id="province" className="h-10 bg-input/50 border-border text-foreground w-64">
+          <SelectTrigger id="province" className="h-10 bg-input/50 border-border text-foreground w-64 px-16 py-6 cursor-pointer">
             <SelectValue placeholder="Select province" />
           </SelectTrigger>
-          <SelectContent className="bg-popover border-border">
-            <SelectItem value="ON">Ontario</SelectItem>
-            <SelectItem value="BC">British Columbia</SelectItem>
-            <SelectItem value="AB">Alberta</SelectItem>
-            <SelectItem value="QC">Quebec</SelectItem>
-            <SelectItem value="MB">Manitoba</SelectItem>
-            <SelectItem value="SK">Saskatchewan</SelectItem>
-            <SelectItem value="NS">Nova Scotia</SelectItem>
-            <SelectItem value="NB">New Brunswick</SelectItem>
-            <SelectItem value="PE">Prince Edward Island</SelectItem>
-            <SelectItem value="NL">Newfoundland and Labrador</SelectItem>
-            <SelectItem value="YT">Yukon</SelectItem>
-            <SelectItem value="NT">Northwest Territories</SelectItem>
-            <SelectItem value="NU">Nunavut</SelectItem>
+          <SelectContent className="bg-popover border-border cursor-pointer">
+            <SelectItem value="ON" className="cursor-pointer">Ontario</SelectItem>
+            <SelectItem value="BC" className="cursor-pointer">British Columbia</SelectItem>
+            <SelectItem value="AB" className="cursor-pointer">Alberta</SelectItem>
+            <SelectItem value="QC" className="cursor-pointer">Quebec</SelectItem>
+            <SelectItem value="MB" className="cursor-pointer">Manitoba</SelectItem>
+            <SelectItem value="SK" className="cursor-pointer">Saskatchewan</SelectItem>
+            <SelectItem value="NS" className="cursor-pointer">Nova Scotia</SelectItem>
+            <SelectItem value="NB" className="cursor-pointer">New Brunswick</SelectItem>
+            <SelectItem value="PE" className="cursor-pointer">Prince Edward Island</SelectItem>
+            <SelectItem value="NL" className="cursor-pointer">Newfoundland and Labrador</SelectItem>
+            <SelectItem value="YT" className="cursor-pointer">Yukon</SelectItem>
+            <SelectItem value="NT" className="cursor-pointer">Northwest Territories</SelectItem>
+            <SelectItem value="NU" className="cursor-pointer">Nunavut</SelectItem>
           </SelectContent>
         </Select>
       </div>

@@ -41,6 +41,9 @@ export function ResultsPanel({ taxData }: Props) {
     <Card className="bg-card/50 border-border/50 backdrop-blur-sm shadow-xl">
       <CardContent className="p-6 space-y-4">
         {/* After-Tax Income - Highlighted at top - Only show if self-employment income > 0 */}
+        <div className="text-center">
+          <p className="text-lg font-bold text-card-foreground">Your Results</p>
+        </div>
         {taxData.selfEmploymentIncome > 0 && (
           <div className="flex justify-between items-center p-4 bg-green-300/20 border border-green-300/30 rounded-lg">
             <div>
