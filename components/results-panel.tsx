@@ -27,7 +27,7 @@ export function ResultsPanel({ taxData }: Props) {
 
   if (!taxData.province) {
     return (
-      <Card className="bg-card/50 border-border/50 backdrop-blur-sm shadow-xl">
+      <Card className="bg-gradient-to-br from-primary/5 via-card to-secondary/5 border-primary/20 backdrop-blur-sm shadow-xl">
         <CardContent className="p-6">
           <div className="text-center py-12">
             <p className="text-muted-foreground">Select a province to see your tax calculation</p>
@@ -38,7 +38,7 @@ export function ResultsPanel({ taxData }: Props) {
   }
 
   return (
-    <Card className="bg-card/50 border-border/50 backdrop-blur-sm shadow-xl">
+    <Card className="bg-gradient-to-br from-primary/5 via-card to-secondary/5 border-primary/20 backdrop-blur-sm shadow-xl">
       <CardContent className="p-6 space-y-4">
         {/* After-Tax Income - Highlighted at top - Only show if self-employment income > 0 */}
         <div className="text-center">

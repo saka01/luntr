@@ -299,7 +299,7 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
       {/* Province Selection */}
       <div className="flex justify-center">
         <Select value={taxData.province} onValueChange={(value) => updateField("province", value)}>
-          <SelectTrigger id="province" className="h-10 bg-slate-800/50 border-slate-700 text-white w-64 px-16 py-6 cursor-pointer">
+          <SelectTrigger id="province" className="h-10 bg-background border-border text-foreground w-64 px-16 py-6 cursor-pointer">
             <SelectValue placeholder="Select province" />
           </SelectTrigger>
           <SelectContent className="bg-popover border-border">
@@ -321,7 +321,7 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
       </div>
 
       {/* Income Sources - Consolidated */}
-      <Card className="bg-card/50 border-border/50 backdrop-blur-sm shadow-xl py-6">
+      <Card className="bg-gradient-to-br from-card via-card to-card/80 border-border/20 backdrop-blur-sm shadow-xl py-6">
         <CardHeader className="pb-3">
           <CardTitle className="text-lg font-semibold text-card-foreground">Income Sources</CardTitle>
           <CardDescription className="text-sm text-muted-foreground">Enter all your income for the year</CardDescription>
@@ -418,7 +418,7 @@ function IncomeTaxForm({ taxData, setTaxData }: { taxData: IncomeTaxData; setTax
       </Card>
 
       {/* Deductions & Taxes - Consolidated */}
-      <Card className="bg-card/50 border-border/50 backdrop-blur-sm shadow-xl py-6">
+      <Card className="bg-gradient-to-br from-card via-card to-card/80 border-border/20 backdrop-blur-sm shadow-xl py-6">
         <CardHeader className="pb-3">
           <CardTitle className="text-lg font-semibold text-card-foreground">Deductions & Taxes Paid</CardTitle>
           <CardDescription className="text-sm text-muted-foreground">Registered savings and taxes already paid</CardDescription>
@@ -500,7 +500,7 @@ function IncomeTaxResults({ taxData }: { taxData: IncomeTaxData }) {
   }
 
   return (
-    <Card className="bg-card/50 border-border/50 backdrop-blur-sm shadow-xl">
+    <Card className="bg-gradient-to-br from-primary/5 via-card to-secondary/5 border-primary/20 backdrop-blur-sm shadow-xl">
       <CardContent className="p-6 space-y-4">
         <div className="text-center">
           <p className="text-lg font-bold text-card-foreground">Your Results</p>

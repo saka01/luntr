@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 
 const DeductionFinderLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="bg-background text-foreground dark">
+    <div className="bg-background text-foreground">
       {children}
     </div>
   )

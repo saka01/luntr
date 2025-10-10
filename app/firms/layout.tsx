@@ -40,7 +40,7 @@ export default function FirmsLayout({
   children: React.ReactNode
 }>) {
   return (
-    <div className="bg-background text-foreground dark">
+    <div className="bg-background text-foreground">
     {children}
   </div>
   )
