@@ -244,3 +244,13 @@ body {
 .animate-shiny-text {
   animation: shiny-text 3s ease-in-out infinite;
 }
+
+/* Theme-aware glow effect */
+.theme-glow {
+  background: radial-gradient(ellipse 50% 35% at 50% 0%, color-mix(in srgb, var(--primary) 30%, transparent), transparent 60%), var(--background);
+}
+
+.dark .theme-glow {
+  background: radial-gradient(ellipse 50% 35% at 50% 0%, rgba(226, 232, 240, 0.12), transparent 60%), var(--background);
+}
+

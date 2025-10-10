@@ -25,7 +25,7 @@ export function DeductionFinderSection() {
             {/* Content */}
             <div className="relative z-10">
               <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl lg:text-4xl mb-4 sm:mb-6">
-              You're <span className="text-white font-thin italic">overpaying</span> <span className="text-secondary bg-secondary/10 italic rounded-full">$400</span> – <span className="text-secondary bg-secondary/10 italic rounded-full">$3,100+</span> {" "} in taxes!
+              You're <span className="text-foreground font-thin italic">overpaying</span> <span className="text-secondary bg-secondary/10 italic rounded-full">$400</span> – <span className="text-secondary bg-secondary/10 italic rounded-full">$3,100+</span> {" "} in taxes!
               </h2>
               
               <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto px-4 sm:px-0">

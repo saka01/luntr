@@ -5,32 +5,17 @@ import { Moon, Sun, Monitor } from "lucide-react"
 import { useTheme } from "next-themes"
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = React.useState(false)
-
-  React.useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) {
-    return (
-      <div className="flex items-center justify-center w-10 h-10 rounded-full bg-red-500 border border-gray-300">
-        <Sun className="h-4 w-4 text-white" />
-      </div>
-    )
-  }
+  const { theme, setTheme, resolvedTheme } = useTheme()
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
     console.log("Theme toggle clicked! Current theme:", theme)
     
+    // Toggle between light and dark only
     if (theme === "light") {
       console.log("Switching to dark")
       setTheme("dark")
-    } else if (theme === "dark") {
-      console.log("Switching to system")
-      setTheme("system")
     } else {
       console.log("Switching to light")
       setTheme("light")
@@ -38,7 +23,8 @@ export function ThemeToggle() {
   }
 
   const getIcon = () => {
-    switch (theme) {
+    const currentTheme = resolvedTheme || theme
+    switch (currentTheme) {
       case "light":
         return <Sun className="h-4 w-4 text-yellow-600" />
       case "dark":
@@ -46,7 +32,7 @@ export function ThemeToggle() {
       case "system":
         return <Monitor className="h-4 w-4 text-gray-600" />
       default:
-        return <Sun className="h-4 w-4 text-yellow-600" />
+        return <Monitor className="h-4 w-4 text-gray-600" />
     }
   }
 
@@ -54,7 +40,7 @@ export function ThemeToggle() {
     <button
       onClick={handleClick}
       onMouseDown={(e) => e.preventDefault()}
-      className="flex items-center justify-center w-10 h-10 rounded-full bg-white border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg"
+      className="flex items-center justify-center w-10 h-10 rounded-full bg-background border-2 border-border hover:border-primary hover:bg-accent transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg"
       aria-label={`Current theme: ${theme}. Click to cycle themes.`}
       title={`Current theme: ${theme}. Click to cycle themes.`}
       type="button"

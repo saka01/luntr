@@ -77,17 +77,17 @@ export function PricingSection() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-6"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-background/5 border border-border backdrop-blur-sm mb-6"
           >
             <Sparkles className="w-4 h-4 text-[#e78a53]" />
-            <span className="text-sm font-medium text-white/80">Pricing</span>
+            <span className="text-sm font-medium text-foreground/80">Pricing</span>
           </motion.div>
 
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white via-white to-white/60 bg-clip-text text-transparent mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-foreground via-foreground to-foreground/60 bg-clip-text text-transparent mb-4">
             Choose your plan
           </h2>
 
-          <p className="text-lg text-white/60 max-w-2xl mx-auto mb-8">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
             Choose the plan that fits your business needs. Start free and upgrade as you grow.
           </p>
 
@@ -97,9 +97,9 @@ export function PricingSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="flex items-center justify-center gap-2 p-3 bg-white/5 rounded-full border border-white/10 backdrop-blur-sm w-fit mx-auto px-6 py-2"
+            className="flex items-center justify-center gap-2 p-3 bg-background/5 rounded-full border border-border/10 backdrop-blur-sm w-fit mx-auto px-6 py-2"
           >
-            <span className="text-sm text-white/80">All paid plans billed annually</span>
+            <span className="text-sm text-foreground/80">All paid plans billed annually</span>
           </motion.div>
         </motion.div>
 
@@ -116,7 +116,7 @@ export function PricingSection() {
               className={`relative rounded-2xl p-8 backdrop-blur-sm border transition-all duration-300 ${
                 plan.popular
                   ? "bg-gradient-to-b from-[#e78a53]/10 to-transparent border-[#e78a53]/30 shadow-lg shadow-[#e78a53]/10"
-                  : "bg-white/5 border-white/10 hover:border-white/20"
+                  : "bg-background/5 border-border"
               }`}
             >
               {plan.popular && (
@@ -128,21 +128,21 @@ export function PricingSection() {
               )}
 
               <div className="text-center mb-8">
-                <h3 className="text-xl font-bold text-white mb-2">{plan.name}</h3>
+                <h3 className="text-xl font-bold text-foreground mb-2">{plan.name}</h3>
                 <div className="flex items-baseline justify-center gap-1 mb-2">
-                  <span className="text-4xl font-bold text-white">{plan.price}</span>
+                  <span className="text-4xl font-bold text-foreground">{plan.price}</span>
                   {plan.period && (
-                    <span className="text-white/60 text-lg">{plan.period}</span>
+                    <span className="text-muted-foreground text-lg">{plan.period}</span>
                   )}
                 </div>
-                <p className="text-white/60 text-sm">{plan.description}</p>
+                <p className="text-muted-foreground text-sm">{plan.description}</p>
               </div>
 
               <ul className="space-y-4 mb-8">
                 {plan.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-center gap-3">
                     <Check className="w-5 h-5 text-[#e78a53] flex-shrink-0" />
-                    <span className="text-white/80 text-sm">{feature}</span>
+                    <span className="text-foreground/80 text-sm">{feature}</span>
                   </li>
                 ))}
               </ul>
@@ -154,7 +154,7 @@ export function PricingSection() {
                 className={`w-full py-3 px-6 rounded-lg font-medium transition-all duration-200 cursor-pointer ${
                   plan.popular
                     ? "bg-gradient-to-r from-[#e78a53] to-[#e78a53]/80 text-white shadow-lg shadow-[#e78a53]/25 hover:shadow-[#e78a53]/40"
-                    : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
+                    : "bg-background/10 text-foreground border border-border hover:bg-background/20"
                 }`}
               >
                 {plan.cta}
@@ -171,7 +171,7 @@ export function PricingSection() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center mt-16"
         >
-          <p className="text-white/60 mb-4">Need a custom solution? We're here to help.</p>
+          <p className="text-muted-foreground mb-4">Need a custom solution? We're here to help.</p>
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
