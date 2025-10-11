@@ -80,11 +80,11 @@ export function PricingSection() {
           </motion.div>
 
           <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-foreground via-foreground to-foreground/60 bg-clip-text text-transparent mb-4">
-            Choose your plan
+            Start Free
           </h2>
 
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-            Choose the plan that fits your business needs. Start free and upgrade as you grow.
+            Choose a plan that fits your needs. Upgrade as you grow.
           </p>
 
           {/* Pricing Note */}
@@ -93,7 +93,7 @@ export function PricingSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="flex items-center justify-center gap-2 p-3 bg-background/5 rounded-full border border-border/10 backdrop-blur-sm w-fit mx-auto px-6 py-2"
+            className="flex items-center justify-center gap-2 p-3 bg-background/5 rounded-full border border-border backdrop-blur-sm w-fit mx-auto px-6 py-2"
           >
             <span className="text-sm text-foreground/80">All paid plans billed annually</span>
           </motion.div>
