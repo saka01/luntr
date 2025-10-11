@@ -260,7 +260,7 @@ export const Header = () => {
           className="flex items-center justify-start gap-2 flex-1 min-w-0 relative z-[10001]"
           href="/"
         >
-          <Logo className="text-foreground flex-shrink-0" />
+          <Logo className="text-foreground flex-shrink-0 w-20 h-7" />
         </a>
 
         <div className="flex items-center gap-2 relative z-[10001] flex-shrink-0">
