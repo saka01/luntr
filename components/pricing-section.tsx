@@ -17,13 +17,13 @@ const pricingPlans = [
       "Basic expense reports",
     ],
     popular: false,
-    cta: "Join waitlist",
+    cta: "Get Early Access",
   },
   {
     name: "Pro",
     price: "$149",
     period: "/year",
-    description: "For self-employed professionals who want to maximize deductions",
+    description: "For content creators who want to maximize deductions",
     features: [
       "Unlimited AI-identified business transactions",
       "Connect multiple accounts (banks + credit cards)",
@@ -34,7 +34,7 @@ const pricingPlans = [
       "Educational deduction explanations",
     ],
     popular: true,
-    cta: "Join waitlist",
+    cta: "Get Early Access",
   },
   {
     name: "Full Service",
@@ -50,16 +50,12 @@ const pricingPlans = [
       "Tax optimization consultation",
     ],
     popular: false,
-    cta: "Join waitlist",
+    cta: "Coming Soon",
   },
 ]
 
 export function PricingSection() {
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false)
-
-  const handleJoinWaitlist = () => {
-    setIsWaitlistOpen(true)
-  }
 
   return (
     <section className="relative py-24 px-4">
@@ -150,7 +146,7 @@ export function PricingSection() {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={handleJoinWaitlist}
+                onClick={() => setIsWaitlistOpen(true)}
                 className={`w-full py-3 px-6 rounded-lg font-medium transition-all duration-200 cursor-pointer ${
                   plan.popular
                     ? "bg-gradient-to-r from-[#e78a53] to-[#e78a53]/80 text-white shadow-lg shadow-[#e78a53]/25 hover:shadow-[#e78a53]/40"

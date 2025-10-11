@@ -2,33 +2,33 @@ import { Marquee } from "@/components/magicui/marquee"
 
 const testimonials = [
   {
-    name: "Sarah Chen",
-    username: "@sarahfreelance",
-    body: "Tallo saved me $3,200 in taxes last year by catching deductions I never knew existed. The AI categorization is incredible.",
+    name: "Emma",
+    username: "YouTube Creator",
+    body: "I literally had no idea I could write off my camera gear or Adobe subscriptions. I've been paying taxes on money I shouldn't have for 3 years.",
     img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
   },
   {
-    name: "Marcus Johnson",
-    username: "@marcusconsulting",
-    body: "Finally, a tool that makes T2125 forms actually manageable. The CRA-compliant reports saved me hours of work.",
+    name: "Alex",
+    username: "Instagram Influencer",
+    body: "I'm so stressed about taxes every year. I don't know what counts as business vs personal expenses. I just guess and hope I don't get audited.",
     img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=face",
   },
   {
-    name: "Priya Patel",
-    username: "@priyadesigns",
-    body: "As a graphic designer, I was missing so many business expenses. Tallo's AI found $1,800 in deductions I overlooked.",
+    name: "Maya",
+    username: "Graphic Designer",
+    body: "My accountant charges me $600 just to tell me what I can write off. That's almost a month of groceries. There has to be a better way.",
     img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
   },
   {
-    name: "Lisa Rodriguez",
-    username: "@lisacreative",
-    body: "I was terrified of doing my own taxes as a freelancer. Tallo made it so simple and saved me $2,500 in accountant fees.",
+    name: "Jordan",
+    username: "Content Creator",
+    body: "I buy so much stuff for work - lenses, software, coffee meetings with clients. But I never track it properly and probably miss tons of deductions.",
     img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
   },
   {
-    name: "Michael Brown",
-    username: "@michaeldev",
-    body: "The TurboTax export feature is seamless. I went from spending days on taxes to just a few hours. Incredible tool.",
+    name: "Sam",
+    username: "Freelance Writer",
+    body: "The T2125 form looks like hieroglyphics to me. I end up paying way more tax than I should because I'm scared of making mistakes.",
     img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face",
   },
 ]
@@ -69,24 +69,10 @@ export function TestimonialsSection() {
   return (
     <section id="testimonials" className="mb-24">
       <div className="mx-auto max-w-7xl">
-        <div className="mx-auto max-w-[540px]">
-          <div className="flex justify-center">
-            <button
-              type="button"
-              className="group relative z-[60] mx-auto rounded-full border border-border/20 bg-background/5 px-6 py-1 text-xs backdrop-blur transition-all duration-300 hover:scale-105 hover:shadow-xl active:scale-100 md:text-sm cursor-pointer"
-            >
-              <div className="absolute inset-x-0 -top-px mx-auto h-0.5 w-1/2 bg-gradient-to-r from-transparent via-[#e78a53] to-transparent shadow-2xl transition-all duration-500 group-hover:w-3/4"></div>
-              <div className="absolute inset-x-0 -bottom-px mx-auto h-0.5 w-1/2 bg-gradient-to-r from-transparent via-[#e78a53] to-transparent shadow-2xl transition-all duration-500 group-hover:h-px"></div>
-              <span className="relative text-foreground">Testimonials</span>
-            </button>
-          </div>
+        <div className="mx-auto max-w-[740px]">
           <h2 className="from-foreground/60 via-foreground to-foreground/60 dark:from-muted-foreground/55 dark:via-foreground dark:to-muted-foreground/55 mt-5 bg-gradient-to-r bg-clip-text text-center text-4xl font-semibold tracking-tighter text-transparent md:text-[54px] md:leading-[60px] __className_bb4e88 relative z-10">
-            What our users say
+            What we heard from <br/> <span className="text-primary font-thin italic">Canadian content creators</span>
           </h2>
-
-          <p className="mt-5 relative z-10 text-center text-lg text-zinc-500">
-            Tallo helps Canadian freelancers save on taxes and easily maximize deductions.
-          </p>
         </div>
 
         <div className="my-16 flex max-h-[738px] justify-center gap-6 overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_25%,black_75%,transparent)]">

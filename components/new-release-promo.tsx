@@ -29,7 +29,7 @@ export function NewReleasePromo() {
           <div className="relative z-10">
             <div className="mt-8 text-center">
               <h2 className="text-4xl font-bold text-primary-foreground mb-6">Track. Deduct. Save on Taxes.</h2>
-              <p className="text-primary-foreground/60 mb-8">Built for Canadian freelancers and self-employed professionals.</p>
+              <p className="text-primary-foreground/60 mb-8">Built for Canadian content creators.</p>
               <svg
                 width="100"
                 height="50"

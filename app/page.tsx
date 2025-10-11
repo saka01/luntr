@@ -21,19 +21,20 @@ export default function Home() {
       {/* <div id="features">
         <Features />
       </div> */}
-      {/* Deduction Finder Section */}
-      <DeductionFinderSection />
-
-      {/* Pricing Section */}
-      <div id="pricing">
-        <PricingSection />
-      </div>
-
 
       {/* Testimonials Section */}
       <div id="testimonials">
         <TestimonialsSection />
       </div>
+      
+      {/* Pricing Section */}
+      <div id="pricing">
+        <PricingSection />
+      </div>
+
+      {/* Deduction Finder Section */}
+      <DeductionFinderSection />
+
 
       <NewReleasePromo />
 

@@ -40,8 +40,10 @@ export default function FirmsLayout({
   children: React.ReactNode
 }>) {
   return (
-    <div className="bg-background text-foreground">
-    {children}
-  </div>
+    <div className="bg-background text-foreground min-h-screen flex flex-col">
+      <main className="flex-1">
+        {children}
+      </main>
+    </div>
   )
 }
