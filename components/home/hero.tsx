@@ -19,7 +19,7 @@ export default function Hero() {
     return null
   }
 
-  const words = ["Entreppreneur", "Founder"]
+  const words = ["Content Creator", "Influencer", "Creator"]
 
   return (
     <>
@@ -46,7 +46,7 @@ export default function Hero() {
               className="mb-8"
             >
               <h1 id="main-title" className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-              You <span className="text-primary italic">create</span>. <br/>We help you <span className="italic text-primary">keep more</span> of what you earn. 
+              You <span className="text-primary italic">create content</span>. <br/>We help you <span className="italic text-primary">keep more</span> of what you earn. 
               
               {/* Stop <strong>losing</strong> <i className="italic font-thin">thousands</i> in taxes <em className="italic">every year</em> */}
               </h1>
@@ -59,7 +59,7 @@ export default function Hero() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mx-auto mb-12 max-w-2xl text-lg text-muted-foreground"
             >
-              Tallo automatically finds CRA-eligible write-offs from your transactions. <br />No tax expertise required.
+Every lens, app, subscription, trip, and client meal counts. <br/>Tallo is the simplest way to uncover and track tax write-offs.
             </motion.p>
 
             <motion.div
@@ -176,69 +176,83 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* Social Proof Section */}
-          {/* <motion.div
+          {/* Social Media Icons Section */}
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mt-auto pb-8"
           >
             <div className="text-center">
-              <p className="text-sm text-muted-foreground mb-6">Trusted by developers at</p>
+              <p className="text-sm text-muted-foreground mb-6">Built for Canadian creators 🇨🇦 on</p>
               <div className="flex items-center justify-center gap-8">
-              
-                <div className="opacity-60 grayscale hover:opacity-100 hover:grayscale-0 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)] transition-all duration-300">
+                {/* YouTube */}
+                <div>
                   <svg
-                    width="32"
-                    height="32"
-                    viewBox="0 0 512 512"
-                    className="h-8 w-8 fill-current text-foreground"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path fillRule="evenodd" d="M256,48,496,464H16Z" />
-                  </svg>
-                </div>
-
-              
-                <div className="opacity-60 grayscale hover:opacity-100 hover:grayscale-0 hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.5)] transition-all duration-300">
-                  <img
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Tailwind_CSS_Logo.svg-6xxjTKleFAC9zoBBGesuy0rIESAcXA.png"
-                    alt="Tailwind CSS"
-                    className="h-8 object-contain"
-                  />
-                </div>
-
-                <div className="opacity-60 grayscale hover:opacity-100 hover:grayscale-0 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)] transition-all duration-300">
-                  <svg
-                    width="32"
-                    height="32"
+                    width="56"
+                    height="56"
                     viewBox="0 0 24 24"
-                    className="h-8 w-8 fill-current text-foreground"
+                    className="h-14 w-14 fill-current text-red-500"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <path d="M4 0h16v8h-8zM4 8h8l8 8H4zM4 16h8v8z" />
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                   </svg>
                 </div>
 
-              
-              
-                <div className="opacity-60 grayscale hover:opacity-100 hover:grayscale-0 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)] transition-all duration-300">
+                {/* Instagram */}
+                <div>
                   <svg
-                    width="32"
-                    height="32"
-                    viewBox="0 0 256 256"
-                    className="h-8 w-8 fill-current text-foreground"
+                    width="56"
+                    height="56"
+                    viewBox="0 0 24 24"
+                    className="h-14 w-14 fill-current text-pink-500"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <path
-                      d="M119.616813,0.0688905149 C119.066276,0.118932037 117.314565,0.294077364 115.738025,0.419181169 C79.3775171,3.69690087 45.3192571,23.3131775 23.7481916,53.4631946 C11.7364614,70.2271045 4.05395894,89.2428829 1.15112414,109.384595 C0.12512219,116.415429 0,118.492153 0,128.025062 C0,137.557972 0.12512219,139.634696 1.15112414,146.665529 C8.10791789,194.730411 42.3163245,235.11392 88.7116325,250.076335 C97.0197458,252.753556 105.778299,254.580072 115.738025,255.680985 C119.616813,256.106338 136.383187,256.106338 140.261975,255.680985 C157.453763,253.779407 172.017986,249.525878 186.382014,242.194795 C188.584164,241.068861 189.00958,240.768612 188.709286,240.518404 C188.509091,240.36828 179.124927,227.782837 167.86393,212.570214 L147.393939,184.922273 L121.743891,146.965779 C107.630108,126.098464 96.0187683,109.034305 95.9186706,109.034305 C95.8185728,109.009284 95.7184751,125.873277 95.6684262,146.465363 C95.5933529,182.52028 95.5683284,183.971484 95.1178886,184.82219 C94.4672532,186.048207 93.9667644,186.548623 92.915738,187.099079 C92.114956,187.499411 91.4142717,187.574474 87.6355816,187.574474 L83.3063539,187.574474 L82.1552297,186.848872 C81.4044966,186.373477 80.8539589,185.747958 80.4785924,185.022356 L79.9530792,183.896422 L80.0031281,133.729796 L80.0782014,83.5381493 L80.8539589,82.5623397 C81.25435,82.0369037 82.1051808,81.3613431 82.7057674,81.0360732 C83.7317693,80.535658 84.1321603,80.4856165 88.4613881,80.4856165 C93.5663734,80.4856165 94.4172043,80.6857826 95.7434995,82.1369867 C96.1188661,82.5373189 110.007429,103.454675 126.623656,128.650581 C143.239883,153.846488 165.962072,188.250034 177.122972,205.139048 L197.392766,235.839522 L198.418768,235.163961 C207.502639,229.259062 217.112023,220.852086 224.719453,212.09482 C240.910264,193.504394 251.345455,170.835585 254.848876,146.665529 C255.874878,139.634696 256,137.557972 256,128.025062 C256,118.492153 255.874878,116.415429 254.848876,109.384595 C247.892082,61.3197135 213.683675,20.9362052 167.288368,5.97379012 C159.105376,3.32158945 150.396872,1.49507389 140.637341,0.394160408 C138.234995,0.143952798 121.693842,-0.131275573 119.616813,0.0688905149 Z M172.017986,77.4831252 C173.219159,78.0836234 174.195112,79.2345784 174.545455,80.435575 C174.74565,81.0861148 174.795699,94.9976579 174.74565,126.348671 L174.670577,171.336 L166.73783,159.17591 L158.780059,147.01582 L158.780059,114.313685 C158.780059,93.1711423 158.880156,81.2862808 159.030303,80.7108033 C159.430694,79.3096407 160.306549,78.2087272 161.507722,77.5581875 C162.533724,77.0327515 162.909091,76.98271 166.837928,76.98271 C170.541544,76.98271 171.19218,77.0327515 172.017986,77.4831252 Z"
-                      fill="#ffffff"
-                    />
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                  </svg>
+                </div>
+
+                {/* TikTok */}
+                <div>
+                  <svg
+                    width="56"
+                    height="56"
+                    viewBox="0 0 24 24"
+                    className="h-14 w-14 fill-current text-black dark:text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                  </svg>
+                </div>
+
+                {/* Twitter/X */}
+                <div>
+                  <svg
+                    width="56"
+                    height="56"
+                    viewBox="0 0 24 24"
+                    className="h-14 w-14 fill-current text-blue-400"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  </svg>
+                </div>
+
+                {/* Twitch */}
+                <div>
+                  <svg
+                    width="56"
+                    height="56"
+                    viewBox="0 0 24 24"
+                    className="h-14 w-14 fill-current text-purple-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/>
                   </svg>
                 </div>
               </div>
             </div>
-          </motion.div> */}
+          </motion.div>
         </div>
       </section>
       
