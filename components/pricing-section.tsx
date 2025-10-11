@@ -7,7 +7,7 @@ import { WaitlistPopup } from "@/components/waitlist-popup"
 
 const pricingPlans = [
   {
-    name: "Free",
+    name: "Start Free",
     price: "$0",
     description: "Perfect for getting started with expense tracking",
     features: [
@@ -20,7 +20,7 @@ const pricingPlans = [
     cta: "Get Early Access",
   },
   {
-    name: "Pro",
+    name: "Creator Pro",
     price: "$149",
     period: "/year",
     description: "For content creators who want to maximize deductions",
@@ -37,7 +37,7 @@ const pricingPlans = [
     cta: "Get Early Access",
   },
   {
-    name: "Full Service",
+    name: "Creator Premium",
     price: "$250",
     period: "/year",
     description: "Complete tax filing service with audit protection",
@@ -86,17 +86,6 @@ export function PricingSection() {
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
             Choose a plan that fits your needs. Upgrade as you grow.
           </p>
-
-          {/* Pricing Note */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="flex items-center justify-center gap-2 p-3 bg-background/5 rounded-full border border-border backdrop-blur-sm w-fit mx-auto px-6 py-2"
-          >
-            <span className="text-sm text-foreground/80">All paid plans billed annually</span>
-          </motion.div>
         </motion.div>
 
         {/* Pricing Cards */}

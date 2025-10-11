@@ -25,11 +25,11 @@ export function DeductionFinderSection() {
             {/* Content */}
             <div className="relative z-10">
               <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl lg:text-4xl mb-4 sm:mb-6">
-              You're <span className="text-foreground font-thin italic">overpaying</span> <span className="text-secondary bg-secondary/10 italic rounded-full">$400</span> – <span className="text-secondary bg-secondary/10 italic rounded-full">$3,100+</span> {" "} in taxes!
+              Most creators <span className="text-foreground font-thin italic">overpay</span> <span className="text-secondary bg-secondary/10 italic rounded-full">$400</span> – <span className="text-secondary bg-secondary/10 italic rounded-full mr-1">$3,100+{" "}</span>in taxes every year!
               </h2>
               
               <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto px-4 sm:px-0">
-              Let's find the CRA deductions you're missing with our <strong className="text-secondary">Free Deduction Finder</strong>.
+              Tallo helps you find what the CRA actually lets you claim - <strong className="text-secondary italic"> fast.</strong>
               </p>
 
               <svg
@@ -73,7 +73,7 @@ export function DeductionFinderSection() {
                           <circle cx="11" cy="11" r="8"></circle>
                           <path d="m21 21-4.35-4.35"></path>
                         </svg>
-                        <span className="hidden sm:inline">Try Deduction Finder</span>
+                        <span className="hidden sm:inline font-bold">Try the <span className="underline decoration-wavy decoration-2 decoration-background/60">free</span> Deduction Finder</span>
                         <span className="sm:hidden">Try Finder</span>
                       </p>
                     </div>
@@ -103,23 +103,8 @@ export function DeductionFinderSection() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
-                className="mt-6 sm:mt-8 flex items-center justify-center gap-2 text-xs sm:text-sm text-muted-foreground"
+                className="sm:mt-2 flex items-center justify-center gap-1 text-xs sm:text-sm text-muted-foreground"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-foreground sm:w-4 sm:h-4"
-                >
-                  <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"></path>
-                  <path d="M12 6v6l4 2"></path>
-                </svg>
                 <span>Takes <i className="italic">less than</i> 2 minutes</span>
               </motion.div>
             </div>

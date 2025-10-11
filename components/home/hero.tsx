@@ -46,7 +46,7 @@ export default function Hero() {
               className="mb-8"
             >
               <h1 id="main-title" className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-              You <span className="text-primary italic">create content</span>. <br/>We help you <span className="italic text-primary">keep more</span> of what you earn. 
+              You <span className="text-primary italic">create</span>. <br/>We help you <span className="italic text-primary">keep more</span> of what you earn. 
               
               {/* Stop <strong>losing</strong> <i className="italic font-thin">thousands</i> in taxes <em className="italic">every year</em> */}
               </h1>

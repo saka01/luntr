@@ -33,9 +33,6 @@ const testimonials = [
   },
 ]
 
-const firstColumn = testimonials.slice(0, 2)
-const secondColumn = testimonials.slice(2, 4)
-const thirdColumn = testimonials.slice(4, 5)
 
 const TestimonialCard = ({
   img,
@@ -77,14 +74,14 @@ export function TestimonialsSection() {
 
         <div className="my-16 flex max-h-[738px] justify-center gap-6 overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_25%,black_75%,transparent)]">
           <div>
-            <Marquee pauseOnHover vertical className="[--duration:20s]">
-              {firstColumn.map((testimonial) => (
+            <Marquee pauseOnHover className="[--duration:20s]">
+              {testimonials.map((testimonial) => (
                 <TestimonialCard key={testimonial.username} {...testimonial} />
               ))}
             </Marquee>
           </div>
 
-          <div className="hidden md:block">
+          {/* <div className="hidden md:block">
             <Marquee reverse pauseOnHover vertical className="[--duration:25s]">
               {secondColumn.map((testimonial) => (
                 <TestimonialCard key={testimonial.username} {...testimonial} />
@@ -98,7 +95,7 @@ export function TestimonialsSection() {
                 <TestimonialCard key={testimonial.username} {...testimonial} />
               ))}
             </Marquee>
-          </div>
+          </div> */}
         </div>
 
         {/* <div className="-mt-8 flex justify-center">

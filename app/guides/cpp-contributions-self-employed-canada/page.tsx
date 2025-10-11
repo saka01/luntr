@@ -221,7 +221,7 @@ export default function CPPContributionsSelfEmployed() {
                     <div>
                       <h4 className=" text-slate-800 mb-2">Quarterly Installments</h4>
                       <ul className="space-y-1 text-slate-600 text-sm">
-                        <li>• Required if total tax > $3,000</li>
+                        <li>• Required if total tax &gt; $3,000</li>
                         <li>• Due: Mar 15, Jun 15, Sep 15, Dec 15</li>
                         <li>• Can estimate or use CRA's suggested amounts</li>
                         <li>• Penalty for underpayment</li>

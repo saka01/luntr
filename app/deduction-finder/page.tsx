@@ -86,19 +86,19 @@ export default function DeductionFinderPage() {
       
       <main className="relative z-10">
         {/* Main Calculator Section */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           <div className="text-center my-6">
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
-              Canadian Tax Deduction Finder
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3">
+              Canadian Content Creator Tax Deduction Finder
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Discover all the tax deductions you're eligible for as a Canadian freelancer or self-employed individual. 
-              Our smart questionnaire helps you identify potential savings.
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
+              Discover all the tax deductions you're eligible for as a Canadian content creator, freelancer, or self-employed individual. 
+              Our smart questionnaire helps you identify potential savings in under 2 minutes.
             </p>
           </div>
 
           {/* Main Content */}
-          <div className="flex items-center justify-center p-3 max-w-4xl mx-auto">
+          <div className="flex items-center justify-center p-2 sm:p-3 max-w-4xl mx-auto">
             <div className="w-full">
               {currentStep === 0 && (
                 <DeductionFinderStep1
@@ -125,8 +125,8 @@ export default function DeductionFinderPage() {
         </div>
 
         {/* SEO Blog Section */}
-        <div className="relative py-20 overflow-hidden">
-          <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
+        <div className="relative py-16 sm:py-20 overflow-hidden">
+          <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-20">
             {/* What are Tax Deductions */}
             <section id="what-are-deductions" className="animate-fade-in">
               <div className="text-center mb-8">
@@ -134,14 +134,14 @@ export default function DeductionFinderPage() {
                   <span className="w-1.5 h-1.5 bg-primary rounded-full" />
                   Tax Education
                 </div>
-                <h2 className="text-4xl font-bold mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
-                  What are Tax Deductions for Canadian Freelancers?
+                <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
+                  What are Tax Deductions for Canadian Content Creators?
                 </h2>
               </div>
               <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-8 shadow-lg">
-                <p className="text-lg text-muted-foreground leading-relaxed text-pretty">
+                <p className="text-base sm:text-lg text-muted-foreground leading-relaxed text-pretty">
                   Tax deductions are legitimate business expenses that reduce your taxable income, ultimately lowering the amount of tax you owe. 
-                  As a Canadian freelancer or self-employed individual, you can deduct reasonable expenses incurred to earn business income. 
+                  As a Canadian content creator, freelancer, or self-employed individual, you can deduct reasonable expenses incurred to earn business income. 
                   These deductions are claimed on your T2125 Statement of Business or Professional Activities form.
                 </p>
               </div>
@@ -154,75 +154,75 @@ export default function DeductionFinderPage() {
                   <span className="w-1.5 h-1.5 bg-secondary rounded-full" />
                   Deduction Categories
                 </div>
-                <h2 className="text-4xl font-bold mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
-                  Top Tax Deductions for Canadian Freelancers
+                <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
+                  Top Tax Deductions for Canadian Content Creators
                 </h2>
               </div>
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
                 <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm border border-border/50">
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-lg flex items-center gap-2">
+                    <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                       <div className="w-2 h-2 bg-primary rounded-full" />
                       Home Office Expenses
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="text-sm text-muted-foreground">
-                    Deduct rent, utilities, internet, property taxes, and home insurance based on the percentage of your home used exclusively for business.
+                    Deduct rent, utilities, internet, property taxes, and home insurance based on the percentage of your home used exclusively for content creation.
                   </CardContent>
                 </Card>
                 <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm border border-border/50">
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-lg flex items-center gap-2">
+                    <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                       <div className="w-2 h-2 bg-secondary rounded-full" />
-                      Vehicle Expenses
+                      Camera & Video Equipment
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="text-sm text-muted-foreground">
-                    Gas, insurance, maintenance, repairs, and lease payments can be deducted based on business use percentage. Keep detailed mileage logs.
+                    Cameras, lenses, tripods, lighting, microphones, and video accessories used for content creation are fully deductible.
                   </CardContent>
                 </Card>
                 <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm border border-border/50">
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-lg flex items-center gap-2">
+                    <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                       <div className="w-2 h-2 bg-accent rounded-full" />
                       Software & Subscriptions
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="text-sm text-muted-foreground">
-                    Business software, cloud services, professional memberships, and online tools used for your business are fully deductible.
+                    Adobe Creative Suite, editing software, cloud storage, and social media management tools are fully deductible.
                   </CardContent>
                 </Card>
                 <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm border border-border/50">
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-lg flex items-center gap-2">
+                    <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                       <div className="w-2 h-2 bg-primary rounded-full" />
                       Professional Development
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="text-sm text-muted-foreground">
-                    Courses, conferences, books, training, and certifications directly related to your business are deductible expenses.
+                    Courses, workshops, conferences, books, and training directly related to content creation are deductible expenses.
                   </CardContent>
                 </Card>
                 <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm border border-border/50">
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-lg flex items-center gap-2">
+                    <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                       <div className="w-2 h-2 bg-secondary rounded-full" />
-                      Marketing & Advertising
+                      Vehicle Expenses
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="text-sm text-muted-foreground">
-                    Website costs, social media ads, business cards, promotional materials, and marketing campaigns are deductible.
+                    Gas, insurance, maintenance, and lease payments for driving to shoots, meetings, or picking up equipment.
                   </CardContent>
                 </Card>
                 <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm border border-border/50">
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-lg flex items-center gap-2">
+                    <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                       <div className="w-2 h-2 bg-accent rounded-full" />
-                      Professional Fees
+                      Business Meals
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="text-sm text-muted-foreground">
-                    Legal fees, accounting services, bookkeeping, and professional consultations related to your business are deductible.
+                    Client meals, collaboration dinners, and business entertainment are 50% deductible with proper documentation.
                   </CardContent>
                 </Card>
               </div>

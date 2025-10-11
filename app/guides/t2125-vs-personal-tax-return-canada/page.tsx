@@ -377,7 +377,7 @@ export default function T2125VsRegularTaxReturn() {
                     <li>• T2125 is attached to your regular T1 return</li>
                     <li>• CPP contributions calculated on total income</li>
                     <li>• Can claim business deductions for self-employment portion</li>
-                    <li>• May need to make quarterly installments if total tax > $3,000</li>
+                    <li>• May need to make quarterly installments if total tax &gt; $3,000</li>
                   </ul>
                 </div>
 
