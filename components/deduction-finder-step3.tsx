@@ -123,7 +123,7 @@ export function DeductionFinderStep3({ formData, selectedDeductions, totalValue,
         <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 mb-6 mx-auto">
           <div className="flex items-center justify-center gap-2 text-primary font-medium">
             <Mail className="w-4 h-4" />
-            <span>You're #{waitlistPosition} on the waitlist</span>
+            <span>You're #{211 + waitlistPosition} on the waitlist</span>
           </div>
         </div>
       )}
