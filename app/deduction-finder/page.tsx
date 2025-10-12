@@ -173,7 +173,7 @@ export default function DeductionFinderPage() {
                 </h2>
               </div>
               <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
-                <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm border border-border/50">
+                <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm border border-border/50 py-4">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                       <div className="w-2 h-2 bg-primary rounded-full" />
@@ -184,7 +184,7 @@ export default function DeductionFinderPage() {
                     Deduct rent, utilities, internet, property taxes, and home insurance based on the percentage of your home used exclusively for content creation.
                   </CardContent>
                 </Card>
-                <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm border border-border/50">
+                <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm border border-border/50 py-4">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                       <div className="w-2 h-2 bg-secondary rounded-full" />
@@ -195,7 +195,7 @@ export default function DeductionFinderPage() {
                     Cameras, lenses, tripods, lighting, microphones, and video accessories used for content creation are fully deductible.
                   </CardContent>
                 </Card>
-                <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm border border-border/50">
+                <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm border border-border/50 py-4">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                       <div className="w-2 h-2 bg-accent rounded-full" />
@@ -206,7 +206,7 @@ export default function DeductionFinderPage() {
                     Adobe Creative Suite, editing software, cloud storage, and social media management tools are fully deductible.
                   </CardContent>
                 </Card>
-                <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm border border-border/50">
+                <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm border border-border/50 py-4">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                       <div className="w-2 h-2 bg-primary rounded-full" />
@@ -217,7 +217,7 @@ export default function DeductionFinderPage() {
                     Courses, workshops, conferences, books, and training directly related to content creation are deductible expenses.
                   </CardContent>
                 </Card>
-                <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm border border-border/50">
+                <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm border border-border/50 py-4">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                       <div className="w-2 h-2 bg-secondary rounded-full" />
@@ -228,7 +228,7 @@ export default function DeductionFinderPage() {
                     Gas, insurance, maintenance, and lease payments for driving to shoots, meetings, or picking up equipment.
                   </CardContent>
                 </Card>
-                <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm border border-border/50">
+                <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm border border-border/50 py-4">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                       <div className="w-2 h-2 bg-accent rounded-full" />
@@ -245,8 +245,8 @@ export default function DeductionFinderPage() {
             {/* How to Claim Deductions */}
             <section id="how-to-claim" className="animate-fade-in">
               <div className="text-center mb-12">
-                <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-3 py-1 rounded-full text-sm  mb-4">
-                  <span className="w-1.5 h-1.5 bg-accent rounded-full" />
+                <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-3 py-1 rounded-full text-sm  mb-4 bg-primary/10 text-primary">
+                  <span className="w-1.5 h-1.5 bg-primary rounded-full" />
                   How It Works
                 </div>
                 <h2 className="text-4xl font-bold mb-6 text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
@@ -271,7 +271,7 @@ export default function DeductionFinderPage() {
             {/* FAQ */}
             <section id="faq" className="animate-fade-in">
               <div className="text-center mb-12">
-                <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm  mb-4">
+                <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm  mb-4 bg-primary/10 text-primary">
                   <span className="w-1.5 h-1.5 bg-primary rounded-full" />
                   FAQ
                 </div>

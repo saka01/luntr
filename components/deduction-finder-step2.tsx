@@ -65,16 +65,12 @@ export function DeductionFinderStep2({ formData, onNext, onRestart }: Step2Props
           <div className="space-y-6 sm:space-y-8">
             {/* Header */}
             <div className="text-center space-y-2 sm:space-y-3">
-              <div className="flex justify-center">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full flex items-center justify-center">
-                  <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-primary" />
-                </div>
-              </div>
-              <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-foreground leading-tight px-2">
-                You could deduct approximately {formatCurrency(calculationResult.totalDeductible)} this year
+        
+              <h2 className="text-2xl sm:text-2xl md:text-2xl lg:text-2xl xl:text-3xl font-bold text-foreground leading-tight px-2">
+                You could deduct approximately <span className="text-primary">{formatCurrency(calculationResult.totalDeductible)}</span> this year
               </h2>
-              <p className="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto px-4 leading-relaxed">
-                Estimated tax saved: {formatCurrency(calculationResult.totalTaxSaved)} (based on your bracket and 20% business-use for mixed categories)
+              <p className="text-sm sm:text-sm md:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto px-4 leading-relaxed">
+                Estimated tax saved: {formatCurrency(calculationResult.totalTaxSaved)} (based on your bracket and assumed 20% business-use for mixed categories)
               </p>
             </div>
 

@@ -300,7 +300,7 @@ export const Header = () => {
               {/* Free Tools Mobile Dropdown */}
               <div className="space-y-2">
                 <div className="px-4 py-2 text-lg font-medium text-muted-foreground">
-                  Free Tools
+                  Tools
                 </div>
                 <div className="ml-4 space-y-2">
                   <a
