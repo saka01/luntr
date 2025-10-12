@@ -26,6 +26,22 @@ export function WaitlistPopup({ isOpen, onClose }: WaitlistPopupProps) {
     setIsSubmitting(true)
     setError("")
     
+    // Debug: Log the current values
+    console.log('Form values:', { email, name })
+    
+    // Basic validation
+    if (!email.trim()) {
+      setError('Email is required')
+      setIsSubmitting(false)
+      return
+    }
+    
+    if (!name.trim()) {
+      setError('Name is required')
+      setIsSubmitting(false)
+      return
+    }
+    
     try {
       const response = await fetch('/api/waitlist', {
         method: 'POST',
@@ -33,8 +49,8 @@ export function WaitlistPopup({ isOpen, onClose }: WaitlistPopupProps) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: email,
-          firstName: name,
+          email: email.trim(),
+          firstName: name.trim(),
           source: 'popup',
         }),
       })

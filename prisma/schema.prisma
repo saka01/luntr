@@ -9,14 +9,14 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+        
 
 model Waitlist {
-  id        String   @id @default(cuid())
+  id        Int      @id @default(autoincrement())
   email     String   @unique
   firstName String?
-  source    String?  // Track where the signup came from (popup, deduction-finder, etc.)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  source    String?  
+  created_at DateTime @default(now())
 
   @@map("waitlist")
 }

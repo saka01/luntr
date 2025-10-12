@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 
 const waitlistSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
+  email: z.string().min(1, 'Email is required').email('Please enter a valid email address'),
   firstName: z.string().optional(),
   source: z.string().optional(),
 })
@@ -11,6 +11,7 @@ const waitlistSchema = z.object({
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
+    console.log('Received waitlist data:', body)
     const validatedData = waitlistSchema.parse(body)
 
     // Check if email already exists
@@ -58,7 +59,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     )
   }
