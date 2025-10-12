@@ -2,60 +2,101 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Check, Sparkles } from "lucide-react"
+import { Check, X, Sparkles } from "lucide-react"
 import { WaitlistPopup } from "@/components/waitlist-popup"
 
-const pricingPlans = [
-  {
-    name: "Start Free",
-    price: "$0",
-    description: "Perfect for getting started with expense tracking",
-    features: [
-      "50 AI-identified business transactions per month",
-      "Connect 1 bank account or credit card",
-      "AI categorization and review",
-      "Basic expense reports",
-    ],
-    popular: false,
-    cta: "Get Early Access",
-  },
-  {
-    name: "Creator Pro",
-    price: "$149",
-    period: "/year",
-    description: "For content creators who want to maximize deductions",
-    features: [
-      "Unlimited AI-identified business transactions",
-      "Connect multiple accounts (banks + credit cards)",
-      "Receipt management and CRA-compliant documentation",
-      "T2125-organized reports",
-      "TurboTax export",
-      "GST/HST and Input Tax Credit tracking",
-      "Educational deduction explanations",
-    ],
-    popular: true,
-    cta: "Get Early Access",
-  },
-  {
-    name: "Creator Premium",
-    price: "$250",
-    period: "/year",
-    description: "Complete tax filing service with audit protection",
-    features: [
-      "Everything in Pro",
-      "Full tax filing to CRA",
-      "Audit security and protection",
-      "Dedicated tax professional",
-      "Priority support",
-      "Tax optimization consultation",
-    ],
-    popular: false,
-    cta: "Coming Soon",
-  },
-]
+const pricingPlans = {
+  monthly: [
+    {
+      name: "Start Free",
+      price: "$0",
+      description: "Perfect for getting started with expense tracking",
+      features: [
+        { text: "50 AI-identified business transactions per month", available: true },
+        { text: "Connect 1 bank account or credit card", available: true },
+        { text: "AI categorization and review", available: true },
+        { text: "Basic expense reports", available: true },
+        { text: "Unlimited AI-identified business transactions", available: false },
+        { text: "Connect multiple accounts (banks + credit cards)", available: false },
+        { text: "Receipt management and CRA-compliant documentation", available: false },
+        { text: "T2125-organized reports", available: false },
+        { text: "TurboTax export", available: false },
+        { text: "GST/HST and Input Tax Credit tracking", available: false },
+        { text: "Educational deduction explanations", available: false },
+      ],
+      popular: false,
+      cta: "Get Early Access",
+    },
+    {
+      name: "Creator Pro",
+      price: "$9",
+      period: "/month",
+      description: "For content creators who want to maximize deductions",
+      features: [
+        { text: "50 AI-identified business transactions per month", available: true },
+        { text: "Connect 1 bank account or credit card", available: true },
+        { text: "AI categorization and review", available: true },
+        { text: "Basic expense reports", available: true },
+        { text: "Unlimited AI-identified business transactions", available: true },
+        { text: "Connect multiple accounts (banks + credit cards)", available: true },
+        { text: "Receipt management and CRA-compliant documentation", available: true },
+        { text: "T2125-organized reports", available: true },
+        { text: "TurboTax export", available: true },
+        { text: "GST/HST and Input Tax Credit tracking", available: true },
+        { text: "Educational deduction explanations", available: true },
+      ],
+      popular: true,
+      cta: "Get Early Access",
+    },
+  ],
+  yearly: [
+    {
+      name: "Start Free",
+      price: "$0",
+      description: "Perfect for getting started with expense tracking",
+      features: [
+        { text: "50 AI-identified business transactions per month", available: true },
+        { text: "Connect 1 bank account or credit card", available: true },
+        { text: "AI categorization and review", available: true },
+        { text: "Basic expense reports", available: true },
+        { text: "Unlimited AI-identified business transactions", available: false },
+        { text: "Connect multiple accounts (banks + credit cards)", available: false },
+        { text: "Receipt management and CRA-compliant documentation", available: false },
+        { text: "T2125-organized reports", available: false },
+        { text: "TurboTax export", available: false },
+        { text: "GST/HST and Input Tax Credit tracking", available: false },
+        { text: "Educational deduction explanations", available: false },
+      ],
+      popular: false,
+      cta: "Get Early Access",
+    },
+    {
+      name: "Creator Pro",
+      price: "$97",
+      period: "/year",
+      description: "For content creators who want to maximize deductions",
+      features: [
+        { text: "50 AI-identified business transactions per month", available: true },
+        { text: "Connect 1 bank account or credit card", available: true },
+        { text: "AI categorization and review", available: true },
+        { text: "Basic expense reports", available: true },
+        { text: "Unlimited AI-identified business transactions", available: true },
+        { text: "Connect multiple accounts (banks + credit cards)", available: true },
+        { text: "Receipt management and CRA-compliant documentation", available: true },
+        { text: "T2125-organized reports", available: true },
+        { text: "TurboTax export", available: true },
+        { text: "GST/HST and Input Tax Credit tracking", available: true },
+        { text: "Educational deduction explanations", available: true },
+      ],
+      popular: true,
+      cta: "Get Early Access",
+    },
+  ],
+}
 
 export function PricingSection() {
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false)
+  const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('yearly')
 
   return (
     <section className="relative py-24 px-4">
@@ -86,11 +127,37 @@ export function PricingSection() {
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
             Choose a plan that fits your needs. Upgrade as you grow.
           </p>
+
+          {/* Billing Period Toggle */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="flex items-center justify-center gap-4 mb-8"
+          >
+            <span className={`text-sm font-medium transition-colors ${billingPeriod === 'monthly' ? 'text-foreground' : 'text-muted-foreground'}`}>
+              Monthly
+            </span>
+            <button
+              onClick={() => setBillingPeriod(billingPeriod === 'monthly' ? 'yearly' : 'monthly')}
+              className="relative w-12 h-6 bg-background/10 border border-border rounded-full transition-colors hover:bg-background/20"
+            >
+              <motion.div
+                animate={{ x: billingPeriod === 'yearly' ? 24 : 0 }}
+                transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                className="absolute top-0.5 left-0.5 w-5 h-5 bg-[#e78a53] rounded-full"
+              />
+            </button>
+            <span className={`text-sm font-medium transition-colors ${billingPeriod === 'yearly' ? 'text-foreground' : 'text-muted-foreground'}`}>
+              Yearly
+            </span>
+          </motion.div>
         </motion.div>
 
         {/* Pricing Cards */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {pricingPlans.map((plan, index) => (
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {pricingPlans[billingPeriod].map((plan, index) => (
             <motion.div
               key={plan.name}
               initial={{ opacity: 0, y: 20 }}
@@ -119,6 +186,11 @@ export function PricingSection() {
                   {plan.period && (
                     <span className="text-muted-foreground text-lg">{plan.period}</span>
                   )}
+                  {billingPeriod === 'yearly' && plan.name === 'Creator Pro' && (
+                    <span className="text-xs bg-green-500/10 text-green-500 px-2 py-1 rounded-full font-medium ml-2 border border-green-500">
+                      Save 20%
+                    </span>
+                  )}
                 </div>
                 <p className="text-muted-foreground text-sm">{plan.description}</p>
               </div>
@@ -126,8 +198,14 @@ export function PricingSection() {
               <ul className="space-y-4 mb-8">
                 {plan.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-[#e78a53] flex-shrink-0" />
-                    <span className="text-foreground/80 text-sm">{feature}</span>
+                    {feature.available ? (
+                      <Check className="w-5 h-5 text-[#e78a53] flex-shrink-0" />
+                    ) : (
+                      <X className="w-5 h-5 text-muted-foreground/50 flex-shrink-0" />
+                    )}
+                    <span className={`text-sm ${feature.available ? 'text-foreground/80' : 'text-muted-foreground/50'}`}>
+                      {feature.text}
+                    </span>
                   </li>
                 ))}
               </ul>
