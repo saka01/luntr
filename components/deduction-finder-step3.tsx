@@ -24,6 +24,7 @@ export function DeductionFinderStep3({ formData, selectedDeductions, totalValue,
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [waitlistPosition, setWaitlistPosition] = useState<number | null>(null)
 
   const handleInputChange = (field: string, value: string) => {
     setLeadFormData(prev => ({ ...prev, [field]: value }))
@@ -56,11 +57,38 @@ export function DeductionFinderStep3({ formData, selectedDeductions, totalValue,
     
     setIsSubmitting(true)
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    setIsSubmitting(false)
-    setIsSubmitted(true)
+    try {
+      const response = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: leadFormData.email,
+          firstName: leadFormData.firstName,
+          source: 'deduction-finder',
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        if (response.status === 409) {
+          setErrors({ email: 'This email is already on our waitlist' })
+        } else {
+          setErrors({ general: 'Something went wrong. Please try again.' })
+        }
+        return
+      }
+
+      setWaitlistPosition(data.data.position)
+      setIsSubmitted(true)
+    } catch (error) {
+      console.error('Waitlist submission error:', error)
+      setErrors({ general: 'Something went wrong. Please try again.' })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const formatCurrency = (amount: number) => {
@@ -91,11 +119,11 @@ export function DeductionFinderStep3({ formData, selectedDeductions, totalValue,
         Thanks for joining our waitlist. We'll notify you as soon as Tallo is ready.
       </p>
       
-      {leadFormData.email && (
+      {waitlistPosition && (
         <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 mb-6 mx-auto">
           <div className="flex items-center justify-center gap-2 text-primary font-medium">
             <Mail className="w-4 h-4" />
-            <span>You're #10001 on the waitlist</span>
+            <span>You're #{waitlistPosition} on the waitlist</span>
           </div>
         </div>
       )}
@@ -207,6 +235,13 @@ export function DeductionFinderStep3({ formData, selectedDeductions, totalValue,
                   )}
                 </div>
               </div>
+
+              {/* General Error Display */}
+              {errors.general && (
+                <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3">
+                  <p className="text-sm text-destructive text-center">{errors.general}</p>
+                </div>
+              )}
 
               {/* Submit Button */}
               <div className="pt-2 sm:pt-4">

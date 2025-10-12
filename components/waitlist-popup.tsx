@@ -19,19 +19,45 @@ export function WaitlistPopup({ isOpen, onClose }: WaitlistPopupProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [position, setPosition] = useState<number | null>(null)
+  const [error, setError] = useState<string>("")
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setError("")
     
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    
-    // Simulate getting position in waitlist
-    const mockPosition = Math.floor(Math.random() * 50) + 1
-    setPosition(mockPosition)
-    setIsSubmitted(true)
-    setIsSubmitting(false)
+    try {
+      const response = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          firstName: name,
+          source: 'popup',
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        if (response.status === 409) {
+          setError('This email is already on our waitlist')
+        } else {
+          setError('Something went wrong. Please try again.')
+        }
+        return
+      }
+
+      setPosition(data.data.position)
+      setIsSubmitted(true)
+    } catch (error) {
+      console.error('Waitlist submission error:', error)
+      setError('Something went wrong. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleClose = () => {
@@ -39,6 +65,7 @@ export function WaitlistPopup({ isOpen, onClose }: WaitlistPopupProps) {
     setName("")
     setIsSubmitted(false)
     setPosition(null)
+    setError("")
     onClose()
   }
 
@@ -142,6 +169,13 @@ export function WaitlistPopup({ isOpen, onClose }: WaitlistPopupProps) {
                           required
                         />
                       </div>
+
+                      {/* Error Display */}
+                      {error && (
+                        <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3">
+                          <p className="text-sm text-destructive text-center">{error}</p>
+                        </div>
+                      )}
 
                       <Button
                         type="submit"
