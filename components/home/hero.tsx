@@ -144,7 +144,7 @@ Tallo is the simplest way to uncover and track tax write-offs. Every lens, app, 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex flex-col items-center gap-6"
+              className="flex flex-col items-center gap-6 lg:mt-18"
             >
               {/* Decorative Elements */}
               <svg
