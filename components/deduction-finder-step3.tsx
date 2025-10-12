@@ -5,8 +5,9 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { CheckCircle, Mail, User, ArrowRight, Shield, Clock, Star } from 'lucide-react'
+import { CheckCircle, Mail, User, ArrowRight, Shield, Clock, Star, Calendar, Users } from 'lucide-react'
 import { formatCurrency } from '@/lib/tax-calculations'
+import { motion } from 'framer-motion'
 
 interface Step3Props {
   formData: Record<string, any>
@@ -73,56 +74,75 @@ export function DeductionFinderStep3({ formData, selectedDeductions, totalValue,
 
   if (isSubmitted) {
     return (
-      <div className="w-full">
-        <div className="animate-fade-in">
-          <Card className="p-4 sm:p-6 md:p-8 bg-card/80 border-border/50 backdrop-blur-sm shadow-xl">
-            <div className="text-center space-y-6">
-              <div className="flex justify-center">
-                <div className="w-20 h-20 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full flex items-center justify-center animate-pulse-glow">
-                  <CheckCircle className="w-10 h-10 text-primary" />
-                </div>
-              </div>
-              
-              <div className="space-y-3 sm:space-y-4">
-                <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-foreground leading-tight">
-                  You're on the list!
-                </h2>
-                <p className="text-sm sm:text-base md:text-lg xl:text-xl text-muted-foreground leading-relaxed">
-                  We'll notify you when Tallo launches and you can start saving on taxes automatically.
-                </p>
-                <p className="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed">
-                  Look for an email from Tallo with early access details.
-                </p>
-              </div>
-
-              <div className="pt-4 sm:pt-6">
-                <Button
-                  onClick={onRestart}
-                  variant="default"
-                  className="px-4 sm:px-6 md:px-8 text-xs sm:text-sm md:text-base"
-                >
-                  Start Over
-                </Button>
-              </div>
-            </div>
-          </Card>
+      <div className="text-center px-4">
+      <motion.div
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ type: "spring", duration: 0.5 }}
+        className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-6"
+      >
+        <CheckCircle className="w-8 h-8 text-primary" />
+      </motion.div>
+      
+      <h3 className="text-xl font-bold text-foreground mb-2">
+        You're on the list! 🎉
+      </h3>
+      <p className="text-muted-foreground text-sm mb-4">
+        Thanks for joining our waitlist. We'll notify you as soon as Tallo is ready.
+      </p>
+      
+      {leadFormData.email && (
+        <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 mb-6 mx-auto">
+          <div className="flex items-center justify-center gap-2 text-primary font-medium">
+            <Mail className="w-4 h-4" />
+            <span>You're #10001 on the waitlist</span>
+          </div>
+        </div>
+      )}
+    
+      <div className="space-y-3 text-sm text-muted-foreground text-center">
+        <p className="text-foreground font-medium text-center">What happens <span className="text-primary font-bold italic">next?</span></p>
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 justify-center">
+            <div className="w-2 h-2 bg-primary rounded-full" />
+            <span>We'll email you with early access details</span>
+          </div>
+          <div className="flex items-center gap-2 justify-center">
+            <div className="w-2 h-2 bg-primary rounded-full" />
+            <span>Get exclusive pricing and features</span>
+          </div>
+          <div className="flex items-center gap-2 justify-center">
+            <div className="w-2 h-2 bg-primary rounded-full" />
+            <span>50% off full service tax filings for 2027</span>
+          </div>
         </div>
       </div>
+    
+      <Button
+        onClick={onRestart}
+        className="w-fit mx-auto mt-12 bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors"
+      >
+        Start Over
+      </Button>
+    </div>
     )
   }
+
+
 
   return (
     <div className="w-full">
       <div className="animate-fade-in">
         <Card className="p-4 sm:p-6 md:p-8 bg-card/80 border-border/50 backdrop-blur-sm shadow-xl">
           <div className="space-y-8">
+
             {/* Header */}
             <div className="text-center space-y-2 sm:space-y-3">
-              <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-foreground leading-tight px-2">
+              <h2 className="text-2xl sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-foreground leading-tight px-2">
                 Tracking all of this manually is overwhelming
               </h2>
               <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-muted-foreground max-w-3xl mx-auto px-4 leading-relaxed">
-                <strong className="text-primary">Tallo automatically finds these deductions</strong> straight from your bank transactions and receipts — CRA-ready.
+                <strong className="text-primary">Tallo automatically tracks your expenses as a creator</strong> and finds every tax deduction you're missing better than you or your accountant.
               </p>
               
               {selectedDeductions.size > 0 && (
@@ -190,10 +210,11 @@ export function DeductionFinderStep3({ formData, selectedDeductions, totalValue,
 
               {/* Submit Button */}
               <div className="pt-2 sm:pt-4">
+                {/* Submit button on desktop/tablet - hidden on mobile and sm */}
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full h-12 sm:h-14 md:h-16 text-sm sm:text-base md:text-lg font-semibold bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-primary-foreground transition-all duration-300 hover:scale-[1.02] hover:shadow-lg disabled:hover:scale-100 disabled:hover:shadow-none"
+                  className="hidden md:flex w-full h-12 sm:h-14 md:h-16 text-sm sm:text-base md:text-lg font-semibold bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-primary-foreground transition-all duration-300 hover:scale-[1.02] hover:shadow-lg disabled:hover:scale-100 disabled:hover:shadow-none"
                 >
                   {isSubmitting ? (
                     <div className="flex items-center space-x-2">
@@ -207,6 +228,19 @@ export function DeductionFinderStep3({ formData, selectedDeductions, totalValue,
                     </div>
                   )}
                 </Button>
+                 {/* Social proof */}
+                 <div className="mt-6 text-center">
+                      <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
+                        <div className="flex items-center gap-1">
+                          <Users className="w-3 h-3" />
+                          <span>Join 211+ early adopters</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Calendar className="w-3 h-3" />
+                          <span>Closes November 30, 2025</span>
+                        </div>
+                      </div>
+                    </div>
               </div>
             </form>
 
@@ -223,22 +257,23 @@ export function DeductionFinderStep3({ formData, selectedDeductions, totalValue,
                 </div>
                 <div className="flex items-center space-x-1 sm:space-x-2">
                   <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
-                  <span>Designed for freelancers</span>
+                  <span>Built for creators</span>
                 </div>
               </div>
               
               <p className="text-xs text-muted-foreground max-w-2xl mx-auto px-4 leading-relaxed">
-                Join thousands of Canadian freelancers who are getting early access to Tallo. 
-                We'll notify you when we launch and you can start saving on taxes automatically.
+                Join hundreds of Canadian creators who are getting early access to Tallo. 
+                We'll notify you when we launch and you can start maximizing your tax savings automatically.
               </p>
             </div>
 
             {/* Restart Option */}
             <div className="text-center">
+              {/* Restart button on desktop/tablet - hidden on mobile and sm */}
               <Button
                 onClick={onRestart}
                 variant="outline"
-                className="px-4 sm:px-6 text-xs sm:text-sm"
+                className="hidden md:flex px-4 sm:px-6 text-xs sm:text-sm"
               >
                 Start Over
               </Button>

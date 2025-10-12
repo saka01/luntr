@@ -102,15 +102,7 @@ export default function DeductionFinderPage() {
       
       <main className="relative z-10">
         {/* Main Calculator Section */}
-        <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-2 sm:py-4 md:py-6">
-        <div className="max-w-3xl mx-auto px-2 sm:px-4 py-3 sm:py-4 md:py-6 text-center">
-          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-1 sm:mb-2 leading-tight">
-            Canadian Creator Tax Deduction Finder
-          </h1>
-          <p className="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed px-2">
-            Estimate how much you can save on taxes by finding every write-off you qualify for in less than 2 minutes.
-          </p>
-        </div>
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-2 sm:py-4 md:py-6 mt-4">
 
           {/* Main Content */}
           <div className="flex items-center justify-center p-1 sm:p-2 md:p-3 max-w-4xl mx-auto">

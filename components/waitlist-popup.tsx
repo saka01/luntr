@@ -204,8 +204,8 @@ export function WaitlistPopup({ isOpen, onClose }: WaitlistPopupProps) {
                       </div>
                     )}
 
-                    <div className="space-y-3 text-sm text-muted-foreground">
-                      <p>What happens next?</p>
+                    <div className="space-y-3 text-sm text-muted-foreground text-left">
+                      <p className="text-foreground font-medium text-left">What happens <span className="text-primary font-bold italic">next?</span></p>
                       <div className="space-y-2">
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-primary rounded-full" />
@@ -217,7 +217,7 @@ export function WaitlistPopup({ isOpen, onClose }: WaitlistPopupProps) {
                         </div>
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-primary rounded-full" />
-                          <span>Get 50% OFF - 2027 Full Service tax filings</span>
+                          <span>50% off full service tax filings for 2027</span>
                         </div>
                       </div>
                     </div>

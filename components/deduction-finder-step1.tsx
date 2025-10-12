@@ -183,23 +183,36 @@ export function DeductionFinderStep1({ onNext, formData, onRestart }: Step1Props
 
   return (
     <div className="w-full">
-      <div 
-        className={`transition-all duration-500 ease-in-out ${
-          isAnimating 
-            ? 'opacity-0 transform translate-x-8 scale-95' 
-            : 'opacity-100 transform translate-x-0 scale-100'
-        }`}
-      >
         <Card className="p-3 sm:p-4 md:p-6 lg:p-8 bg-card/80 border-border/50 backdrop-blur-sm shadow-xl">
-          <div className="space-y-4 sm:space-y-6">
-            {/* Progress Bar */}
+      
+            <div className="space-y-4 sm:space-y-6">
+              {/* Header - only show on first question */}
+              {currentQuestionIndex === 0 && (
+                <div className="text-center space-y-2 sm:space-y-3 pb-4 sm:pb-6 border-b border-border/50">
+                  <h1 className="text-2xl sm:text-3xl md:text-3xl lg:text-3xl font-bold text-foreground leading-tight">
+                    Canadian Creator Tax Deduction Finder
+                  </h1>
+                  <p className="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed px-2">
+                    Estimate how much you can save on taxes by finding every write-off you qualify for in less than 2 minutes.
+                  </p>
+                </div>
+              )}
+              
+              {/* Progress Bar */}
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs sm:text-sm text-muted-foreground">
-                Step 1 of 2 - Question {currentQuestionIndex + 1} of {questions.length}
-              </span>
-              <span className="text-xs sm:text-sm text-muted-foreground">
-                {Math.round(((currentQuestionIndex + 1) / questions.length) * 100)}% Complete
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs sm:text-sm text-muted-foreground">
+                  Step 1 of 2 - Question {currentQuestionIndex + 1} of {questions.length}
+                </span>
+           
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs sm:text-sm text-muted-foreground">
+                  {Math.round(((currentQuestionIndex + 1) / questions.length) * 100)}% Complete
+                </span>
+                {/* Next button on mobile and sm - top right */}
+               
+              </div>
             </div>
             <div className="w-full bg-muted rounded-full h-2">
               <div 
@@ -207,21 +220,55 @@ export function DeductionFinderStep1({ onNext, formData, onRestart }: Step1Props
                 style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
               />
             </div>
+            <div className="md:hidden flex flex-row sm:flex-row justify-between items-center gap-3 sm:gap-4">
+     <Button
+                  onClick={handlePrevious}
+                  disabled={currentQuestionIndex === 0}
+                  variant="outline"
+                  className="md:hidden px-2 py-1 text-xs"
+                >
+                  Previous
+                </Button>
+
+                <Button
+                  onClick={handleNext}
+                  disabled={currentQuestion?.multiple ? selectedOptions.length === 0 : !selectedOption}
+                  className="md:hidden px-3 py-1.5 text-xs bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  {currentQuestionIndex === questions.length - 1 ? 'Next' : 'Next'}
+                  <ArrowRight className="w-3 h-3 ml-1" />
+                </Button>
+
+        </div>
 
             {/* Question Header */}
-            <div className="text-center space-y-2 sm:space-y-3">
-              <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-foreground leading-tight">
-                {currentQuestion.question}
-              </h2>
-              {currentQuestion.multiple && (
-                <p className="text-xs sm:text-sm text-muted-foreground">
-                  Select all that apply
-                </p>
-              )}
+            <div 
+              className={`transition-all duration-300 ease-out ${
+                isAnimating 
+                  ? 'opacity-0 transform translate-y-4' 
+                  : 'opacity-100 transform translate-y-0'
+              }`}
+            >
+              <div className="text-center space-y-2 sm:space-y-3">
+                <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-foreground leading-tight">
+                  {currentQuestion.question}
+                </h2>
+                {currentQuestion.multiple && (
+                  <p className="text-xs sm:text-sm text-muted-foreground">
+                    Select all that apply
+                  </p>
+                )}
+              </div>
             </div>
 
             {/* Options */}
-            <div className="space-y-3 sm:space-y-4">
+            <div 
+              className={`space-y-3 sm:space-y-4 transition-all duration-300 ease-out delay-75 ${
+                isAnimating 
+                  ? 'opacity-0 transform translate-y-4' 
+                  : 'opacity-100 transform translate-y-0'
+              }`}
+            >
               {currentQuestion.options.map((option) => {
                 const IconComponent = option.icon
                 const isSelected = currentQuestion.multiple 
@@ -259,11 +306,12 @@ export function DeductionFinderStep1({ onNext, formData, onRestart }: Step1Props
             {/* Navigation */}
             <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 pt-3 sm:pt-4 md:pt-6">
               <div className="flex gap-2 order-2 sm:order-1">
+                {/* Previous button on desktop/tablet - hidden on mobile and sm */}
                 <Button
                   onClick={handlePrevious}
                   disabled={currentQuestionIndex === 0}
                   variant="outline"
-                  className="px-3 sm:px-4 md:px-8 text-xs sm:text-sm md:text-base"
+                  className="hidden md:flex px-3 sm:px-4 md:px-8 text-xs sm:text-sm md:text-base"
                 >
                   Previous
                 </Button>
@@ -279,18 +327,18 @@ export function DeductionFinderStep1({ onNext, formData, onRestart }: Step1Props
                 )}
               </div>
               
+              {/* Next button on desktop/tablet - hidden on mobile and sm */}
               <Button
                 onClick={handleNext}
                 disabled={currentQuestion?.multiple ? selectedOptions.length === 0 : !selectedOption}
-                className="px-4 sm:px-6 md:px-8 py-2 sm:py-3 md:py-4 text-xs sm:text-sm md:text-base bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 order-1 sm:order-2"
+                className="hidden md:flex px-4 sm:px-6 md:px-8 py-2 sm:py-3 md:py-4 text-xs sm:text-sm md:text-base bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 order-1 sm:order-2"
               >
-                {currentQuestionIndex === questions.length - 1 ? 'See My Deductions' : 'Next'}
+                {currentQuestionIndex === questions.length - 1 ? 'Next' : 'Next'}
                 <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" />
               </Button>
             </div>
           </div>
         </Card>
-      </div>
     </div>
   )
 }

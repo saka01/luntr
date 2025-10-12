@@ -105,19 +105,11 @@ export function DeductionFinderStep2({ formData, onNext, onRestart }: Step2Props
                                 {getCategoryDisplayName(deduction.category)}
                               </label>
                             </div>
-                            <p className="text-xs sm:text-sm text-muted-foreground mb-1 sm:mb-2">
-                              Your estimated deductible: {formatCurrency(deduction.deductibleAmount)}
-                            </p>
-                            <p className="text-xs sm:text-sm text-muted-foreground mb-1 sm:mb-2">
-                              Estimated tax saved: {formatCurrency(deduction.taxSaved)}
-                            </p>
-                            <p className="text-xs text-muted-foreground mb-1 sm:mb-2">
-                              Assumptions: {deduction.businessUsePercent}% business-use, {deduction.deductiblePercent}% deductible basis
-                            </p>
                             <p className="text-xs text-muted-foreground leading-relaxed">
                               Examples you can claim: {getCategoryExamples(deduction.category).join(', ')}
                             </p>
                           </div>
+                          
                         </div>
                         <div className="text-left sm:text-right flex-shrink-0">
                           <div className="text-sm sm:text-base md:text-lg font-semibold text-foreground">
@@ -127,6 +119,7 @@ export function DeductionFinderStep2({ formData, onNext, onRestart }: Step2Props
                             deductible
                           </div>
                         </div>
+
                       </div>
                     </AccordionContent>
                   </AccordionItem>
@@ -169,9 +162,10 @@ export function DeductionFinderStep2({ formData, onNext, onRestart }: Step2Props
                     Reset
                   </Button>
                 )}
+                {/* Next button on desktop/tablet - hidden on mobile and sm */}
                 <Button
                   onClick={handleNext}
-                  className="px-4 sm:px-6 md:px-8 py-2 sm:py-3 md:py-4 text-xs sm:text-sm md:text-base lg:text-lg bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] order-1 sm:order-2"
+                  className="hidden md:flex px-4 sm:px-6 md:px-8 py-2 sm:py-3 md:py-4 text-xs sm:text-sm md:text-base lg:text-lg bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] order-1 sm:order-2"
                 >
                   See How Tallo Can Help
                   <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 ml-1 sm:ml-2" />
