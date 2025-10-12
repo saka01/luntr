@@ -6,11 +6,12 @@ import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { CheckCircle, Mail, User, ArrowRight, Shield, Clock, Star } from 'lucide-react'
+import { formatCurrency } from '@/lib/tax-calculations'
 
 interface Step3Props {
   formData: Record<string, any>
   selectedDeductions: Set<string>
-  totalValue: { min: number; max: number }
+  totalValue: { totalDeductible: number; totalTaxSaved: number }
   onRestart: () => void
 }
 
@@ -74,7 +75,7 @@ export function DeductionFinderStep3({ formData, selectedDeductions, totalValue,
     return (
       <div className="w-full">
         <div className="animate-fade-in">
-          <Card className="p-8 bg-card/80 border-border/50 backdrop-blur-sm shadow-xl">
+          <Card className="p-4 sm:p-6 md:p-8 bg-card/80 border-border/50 backdrop-blur-sm shadow-xl">
             <div className="text-center space-y-6">
               <div className="flex justify-center">
                 <div className="w-20 h-20 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full flex items-center justify-center animate-pulse-glow">
@@ -82,23 +83,23 @@ export function DeductionFinderStep3({ formData, selectedDeductions, totalValue,
                 </div>
               </div>
               
-              <div className="space-y-4">
-                <h2 className="text-3xl font-bold text-foreground">
+              <div className="space-y-3 sm:space-y-4">
+                <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-foreground leading-tight">
                   You're on the list!
                 </h2>
-                <p className="text-xl text-muted-foreground">
+                <p className="text-sm sm:text-base md:text-lg xl:text-xl text-muted-foreground leading-relaxed">
                   We'll notify you when Tallo launches and you can start saving on taxes automatically.
                 </p>
-                <p className="text-muted-foreground">
+                <p className="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed">
                   Look for an email from Tallo with early access details.
                 </p>
               </div>
 
-              <div className="pt-6">
+              <div className="pt-4 sm:pt-6">
                 <Button
                   onClick={onRestart}
                   variant="default"
-                  className="px-8"
+                  className="px-4 sm:px-6 md:px-8 text-xs sm:text-sm md:text-base"
                 >
                   Start Over
                 </Button>
@@ -113,96 +114,96 @@ export function DeductionFinderStep3({ formData, selectedDeductions, totalValue,
   return (
     <div className="w-full">
       <div className="animate-fade-in">
-        <Card className="p-8 bg-card/80 border-border/50 backdrop-blur-sm shadow-xl">
+        <Card className="p-4 sm:p-6 md:p-8 bg-card/80 border-border/50 backdrop-blur-sm shadow-xl">
           <div className="space-y-8">
             {/* Header */}
-            <div className="text-center space-y-4">
-              <h2 className="text-3xl font-bold text-foreground">
+            <div className="text-center space-y-2 sm:space-y-3">
+              <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-foreground leading-tight px-2">
                 Tracking all of this manually is overwhelming
               </h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-muted-foreground max-w-3xl mx-auto px-4 leading-relaxed">
                 <strong className="text-primary">Tallo automatically finds these deductions</strong> straight from your bank transactions and receipts — CRA-ready.
               </p>
               
               {selectedDeductions.size > 0 && (
-                <div className="bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20 rounded-xl p-6 max-w-2xl mx-auto">
+                <div className="bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20 rounded-xl p-3 sm:p-4 md:p-6 max-w-2xl mx-auto">
                   <div className="flex items-center justify-center space-x-2 mb-2">
-                    <CheckCircle className="w-6 h-6 text-primary" />
-                    <h3 className="text-xl font-bold text-foreground">
+                    <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-primary" />
+                    <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-foreground leading-tight">
                       You selected {selectedDeductions.size} deduction{selectedDeductions.size !== 1 ? 's' : ''}
                     </h3>
                   </div>
-                  <p className="text-muted-foreground">
-                    Potential savings: {formatCurrency(totalValue.min)} – {formatCurrency(totalValue.max)} per year
+                  <p className="text-xs sm:text-sm md:text-base text-muted-foreground">
+                    Potential savings: {formatCurrency(totalValue.totalTaxSaved)} per year
                   </p>
                 </div>
               )}
             </div>
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="firstName" className="text-base font-medium text-foreground">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+              <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
+                <div className="space-y-1 sm:space-y-2">
+                  <Label htmlFor="firstName" className="text-sm sm:text-base font-medium text-foreground">
                     First Name *
                   </Label>
                   <div className="relative group">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
                     <Input
                       id="firstName"
                       type="text"
                       placeholder="Enter your first name"
                       value={leadFormData.firstName}
                       onChange={(e) => handleInputChange('firstName', e.target.value)}
-                      className={`pl-10 h-14 text-base transition-all duration-300 focus:ring-2 focus:ring-primary/20 focus:border-primary bg-card border-border ${
+                      className={`pl-8 sm:pl-10 h-10 sm:h-12 md:h-14 text-sm sm:text-base transition-all duration-300 focus:ring-2 focus:ring-primary/20 focus:border-primary bg-card border-border ${
                         errors.firstName ? 'border-destructive focus:border-destructive' : 'hover:border-primary/50'
                       }`}
                     />
                   </div>
                   {errors.firstName && (
-                    <p className="text-sm text-destructive animate-fade-in">{errors.firstName}</p>
+                    <p className="text-xs sm:text-sm text-destructive animate-fade-in">{errors.firstName}</p>
                   )}
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-base font-medium text-foreground">
+                <div className="space-y-1 sm:space-y-2">
+                  <Label htmlFor="email" className="text-sm sm:text-base font-medium text-foreground">
                     Email Address *
                   </Label>
                   <div className="relative group">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
                     <Input
                       id="email"
                       type="email"
                       placeholder="Enter your email address"
                       value={leadFormData.email}
                       onChange={(e) => handleInputChange('email', e.target.value)}
-                      className={`pl-10 h-14 text-base transition-all duration-300 focus:ring-2 focus:ring-primary/20 focus:border-primary bg-card border-border ${
+                      className={`pl-8 sm:pl-10 h-10 sm:h-12 md:h-14 text-sm sm:text-base transition-all duration-300 focus:ring-2 focus:ring-primary/20 focus:border-primary bg-card border-border ${
                         errors.email ? 'border-destructive focus:border-destructive' : 'hover:border-primary/50'
                       }`}
                     />
                   </div>
                   {errors.email && (
-                    <p className="text-sm text-destructive animate-fade-in">{errors.email}</p>
+                    <p className="text-xs sm:text-sm text-destructive animate-fade-in">{errors.email}</p>
                   )}
                 </div>
               </div>
 
               {/* Submit Button */}
-              <div className="pt-4">
+              <div className="pt-2 sm:pt-4">
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full h-16 text-lg font-semibold bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-primary-foreground transition-all duration-300 hover:scale-[1.02] hover:shadow-lg disabled:hover:scale-100 disabled:hover:shadow-none"
+                  className="w-full h-12 sm:h-14 md:h-16 text-sm sm:text-base md:text-lg font-semibold bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-primary-foreground transition-all duration-300 hover:scale-[1.02] hover:shadow-lg disabled:hover:scale-100 disabled:hover:shadow-none"
                 >
                   {isSubmitting ? (
                     <div className="flex items-center space-x-2">
-                      <div className="w-5 h-5 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
+                      <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
                       <span>Getting Early Access...</span>
                     </div>
                   ) : (
                     <div className="flex items-center space-x-2">
                       <span>Get Early Access</span>
-                      <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                      <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
                     </div>
                   )}
                 </Button>
@@ -210,23 +211,23 @@ export function DeductionFinderStep3({ formData, selectedDeductions, totalValue,
             </form>
 
             {/* Social Proof */}
-            <div className="text-center space-y-4 pt-6 border-t border-border">
-              <div className="flex items-center justify-center space-x-6 text-sm text-muted-foreground">
-                <div className="flex items-center space-x-2">
-                  <Shield className="w-4 h-4" />
+            <div className="text-center space-y-3 sm:space-y-4 pt-4 sm:pt-6 border-t border-border">
+              <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs sm:text-sm text-muted-foreground">
+                <div className="flex items-center space-x-1 sm:space-x-2">
+                  <Shield className="w-3 h-3 sm:w-4 sm:h-4" />
                   <span>Built in Canada 🇨🇦</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Star className="w-4 h-4" />
+                <div className="flex items-center space-x-1 sm:space-x-2">
+                  <Star className="w-3 h-3 sm:w-4 sm:h-4" />
                   <span>Backed by CPA</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Clock className="w-4 h-4" />
+                <div className="flex items-center space-x-1 sm:space-x-2">
+                  <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
                   <span>Designed for freelancers</span>
                 </div>
               </div>
               
-              <p className="text-xs text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-xs text-muted-foreground max-w-2xl mx-auto px-4 leading-relaxed">
                 Join thousands of Canadian freelancers who are getting early access to Tallo. 
                 We'll notify you when we launch and you can start saving on taxes automatically.
               </p>
@@ -237,7 +238,7 @@ export function DeductionFinderStep3({ formData, selectedDeductions, totalValue,
               <Button
                 onClick={onRestart}
                 variant="outline"
-                className="px-6 text-sm"
+                className="px-4 sm:px-6 text-xs sm:text-sm"
               >
                 Start Over
               </Button>

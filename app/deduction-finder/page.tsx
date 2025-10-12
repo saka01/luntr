@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { DeductionFinderStep1 } from '@/components/deduction-finder-step1'
+import { DeductionFinderStep1B } from '@/components/deduction-finder-step1b'
 import { DeductionFinderStep2 } from '@/components/deduction-finder-step2'
 import { DeductionFinderStep3 } from '@/components/deduction-finder-step3'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -13,7 +14,7 @@ export default function DeductionFinderPage() {
   const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState<Record<string, any>>({})
   const [selectedDeductions, setSelectedDeductions] = useState<Set<string>>(new Set())
-  const [totalValue, setTotalValue] = useState({ min: 0, max: 0 })
+  const [totalValue, setTotalValue] = useState({ totalDeductible: 0, totalTaxSaved: 0 })
   const [isInitialized, setIsInitialized] = useState(false)
 
   // Load saved data from localStorage on component mount
@@ -59,20 +60,35 @@ export default function DeductionFinderPage() {
   const handleStep1Next = (stepData: Record<string, any>) => {
     const newFormData = { ...formData, ...stepData }
     setFormData(newFormData)
-    setCurrentStep(1)
+    // Check if we need to go to spending bands step
+    if (stepData.expenseCategories && stepData.expenseCategories.length > 0) {
+      setCurrentStep(1) // Go to spending bands step
+    } else {
+      setCurrentStep(2) // Skip directly to results
+    }
   }
 
-  const handleStep2Next = (selectedDeductions: Set<string>, totalValue: { min: number; max: number }) => {
+  const handleStep1BNext = (stepData: Record<string, any>) => {
+    const newFormData = { ...formData, ...stepData }
+    setFormData(newFormData)
+    setCurrentStep(2)
+  }
+
+  const handleStep1BPrevious = () => {
+    setCurrentStep(0)
+  }
+
+  const handleStep2Next = (selectedDeductions: Set<string>, totalValue: { totalDeductible: number; totalTaxSaved: number }) => {
     setSelectedDeductions(selectedDeductions)
     setTotalValue(totalValue)
-    setCurrentStep(2)
+    setCurrentStep(3)
   }
 
   const handleRestart = () => {
     setCurrentStep(0)
     setFormData({})
     setSelectedDeductions(new Set())
-    setTotalValue({ min: 0, max: 0 })
+    setTotalValue({ totalDeductible: 0, totalTaxSaved: 0 })
     setIsInitialized(false)
     localStorage.removeItem('deduction-finder-form-data')
     localStorage.removeItem('deduction-finder-step')
@@ -86,18 +102,18 @@ export default function DeductionFinderPage() {
       
       <main className="relative z-10">
         {/* Main Calculator Section */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-        <div className="max-w-3xl mx-auto px-4 py-6 text-center">
-          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-2 sm:py-4 md:py-6">
+        <div className="max-w-3xl mx-auto px-2 sm:px-4 py-3 sm:py-4 md:py-6 text-center">
+          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-1 sm:mb-2 leading-tight">
             Canadian Creator Tax Deduction Finder
           </h1>
-          <p className="text-base text-muted-foreground">
+          <p className="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed px-2">
             Estimate how much you can save on taxes by finding every write-off you qualify for in less than 2 minutes.
           </p>
         </div>
 
           {/* Main Content */}
-          <div className="flex items-center justify-center p-2 sm:p-3 max-w-4xl mx-auto">
+          <div className="flex items-center justify-center p-1 sm:p-2 md:p-3 max-w-4xl mx-auto">
             <div className="w-full">
               {currentStep === 0 && (
                 <DeductionFinderStep1
@@ -106,12 +122,19 @@ export default function DeductionFinderPage() {
                 />
               )}
               {currentStep === 1 && (
+                <DeductionFinderStep1B
+                  onNext={handleStep1BNext}
+                  onPrevious={handleStep1BPrevious}
+                  formData={formData}
+                />
+              )}
+              {currentStep === 2 && (
                 <DeductionFinderStep2
                   formData={formData}
                   onNext={handleStep2Next}
                 />
               )}
-              {currentStep === 2 && (
+              {currentStep === 3 && (
                 <DeductionFinderStep3
                   formData={formData}
                   selectedDeductions={selectedDeductions}
