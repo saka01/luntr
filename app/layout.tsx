@@ -7,25 +7,25 @@ import { Header } from "@/components/header"
 import { ThemeProvider } from "@/components/theme-provider"
 
 export const metadata: Metadata = {
-  title: "Tallo | Unlock Missed Tax Deductions for Freelancers & Sole Proprietors",
+  title: "Tallo | Unlock Missed Tax Deductions for Creators",
   description:
-    "Tallo helps Canadian accountants and bookkeepers uncover missed T2125 tax deductions through intelligent automation and client self-review workflows — built in Canada for Canadians.",
+    "Tallo helps Canadian creators uncover missed T2125 tax deductions through intelligent automation and client self-review workflows — built in Canada for Canadians.",
   keywords: [
-    "T2125 tax deductions",
-    "Canadian accountants",
-    "bookkeepers",
-    "freelancer taxes",
+    "T2125 tax deductions for creators",
+    "Canadian creators",
+    "creators",
+    "creator taxes",
     "self-employed tax Canada",
-    "tax automation software",
-    "accounting firms Canada",
+    "tax automation software for creators",
+    "creators firms Canada",
     "CRA compliance",
-    "deduction finder",
+    "deduction finder for creators",
     "Tallo",
   ],
   openGraph: {
-    title: "Tallo | Built in Canada for Accountants",
+    title: "Tallo | Built in Canada for Creators",
     description:
-      "Uncover missed tax deductions for freelancers and sole proprietors with intelligent automation. Backed by CPAs. Built in Canada for Canadians.",
+      "Uncover missed tax deductions for creators with intelligent automation. Backed by CPAs. Built in Canada for Canadians.",
     url: "https://tallo.ca",
     siteName: "Tallo",
     locale: "en_CA",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Tallo | Unlock Missed Tax Deductions",
+    title: "Tallo | Unlock Missed Tax Deductions for Creators",
     description: "Helping Canadian accountants find more for their clients — powered by intelligent tax automation. Built in Canada for Canadians.",
   },
 }
