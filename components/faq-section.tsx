@@ -13,29 +13,29 @@ export function FAQSection() {
 
   const faqs = [
     {
-      question: "How does Tallo's AI expense categorization work?",
+      question: "How does Luntr's spaced repetition system work?",
       answer:
-        "Tallo uses advanced AI to automatically categorize your business transactions and identify deductible expenses. Simply connect your bank account or credit card, and our AI will analyze your transactions to find business-related expenses you might have missed, helping you maximize your deductions.",
+        "Luntr uses the scientifically-proven SM2 algorithm to optimize your learning schedule. Problems are presented at increasing intervals based on your performance - easy problems appear less frequently, while challenging ones are shown more often until you master them.",
     },
     {
-      question: "Is Tallo CRA-compliant?",
+      question: "What programming languages and topics does Luntr cover?",
       answer:
-        "Yes! Tallo generates CRA-compliant reports and documentation. Our T2125-organized reports meet Canadian tax requirements, and we provide proper receipt management and documentation that satisfies CRA audit standards.",
+        "Luntr covers a wide range of programming languages including Python, JavaScript, Java, C++, and more. We focus on fundamental algorithms, data structures, coding patterns, and problem-solving techniques that are essential for technical interviews and real-world development.",
     },
     {
-      question: "Can I export my data to TurboTax or other tax software?",
+      question: "How does the AI grading system work?",
       answer:
-        "Absolutely! Tallo integrates seamlessly with TurboTax. You can export your organized expense data directly to these platforms, saving you hours of manual data entry during tax season.",
+        "Our AI analyzes your code solutions for correctness, efficiency, and best practices. It provides detailed feedback on your approach, suggests optimizations, and helps you understand alternative solutions. The grading is instant and comprehensive.",
     },
     {
-      question: "What types of business expenses can Tallo track?",
+      question: "Can I track my progress and see my improvement over time?",
       answer:
-        "Tallo tracks all common business expenses including home office costs, vehicle expenses, meals, supplies, software subscriptions, professional development, and more. Our AI is trained on Canadian tax rules to identify legitimate business deductions you might not know about.",
+        "Yes! Luntr provides detailed analytics on your coding fitness, including accuracy rates, problem difficulty progression, time-to-solution trends, and personalized insights. You can see exactly how you're improving and identify areas that need more focus.",
     },
     {
-      question: "How secure is my financial data?",
+      question: "Is Luntr suitable for beginners or only experienced programmers?",
       answer:
-        "Your data security is our top priority. We use bank-level encryption and never store your banking credentials. All data is encrypted in transit and at rest, and we're fully compliant with Canadian privacy laws. Your financial information is safe with us.",
+        "Luntr is designed for all skill levels. Our adaptive system starts with easier problems and gradually increases difficulty based on your performance. Whether you're just learning to code or preparing for senior-level interviews, Luntr adjusts to your level.",
     },
   ]
 

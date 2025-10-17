@@ -2,12 +2,14 @@
 import { useState, useEffect } from "react"
 import { Logo } from "./logo"
 import { ThemeToggle } from "./theme-toggle"
-
+import { auth } from "@/lib/auth"
+import { User } from "@supabase/supabase-js"
+import { useRouter } from "next/navigation"
 export const Header = () => {
+  const router = useRouter()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [isFreeToolsOpen, setIsFreeToolsOpen] = useState(false)
-  const [freeToolsTimeout, setFreeToolsTimeout] = useState<NodeJS.Timeout | null>(null)
+  const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,14 +20,23 @@ export const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Cleanup timeout on unmount
   useEffect(() => {
-    return () => {
-      if (freeToolsTimeout) {
-        clearTimeout(freeToolsTimeout)
-      }
-    }
-  }, [freeToolsTimeout])
+    // Get initial user
+    auth.getCurrentUser().then(setUser)
+
+    // Listen for auth changes
+    const { data: { subscription } } = auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  const handleLogout = async () => {
+    await auth.signOut()
+    setUser(null)
+    router.push('/login')
+  }
 
   const handleMobileNavClick = (elementId: string) => {
     setIsMobileMenuOpen(false)
@@ -44,20 +55,6 @@ export const Header = () => {
     }, 100)
   }
 
-  const handleFreeToolsMouseEnter = () => {
-    if (freeToolsTimeout) {
-      clearTimeout(freeToolsTimeout)
-      setFreeToolsTimeout(null)
-    }
-    setIsFreeToolsOpen(true)
-  }
-
-  const handleFreeToolsMouseLeave = () => {
-    const timeout = setTimeout(() => {
-      setIsFreeToolsOpen(false)
-    }, 150) // 150ms delay before closing
-    setFreeToolsTimeout(timeout)
-  }
 
   return (
     <>
@@ -83,99 +80,19 @@ export const Header = () => {
         </a>
 
         <div className="absolute inset-0 hidden flex-1 flex-row items-center justify-center space-x-2 text-sm font-medium text-muted-foreground transition duration-200 hover:text-foreground md:flex md:space-x-2">
-          {/* <a
+          <a
+            href="/"
             className="relative px-4 py-2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-            onClick={(e) => {
-              e.preventDefault()
-              const element = document.getElementById("features")
-              if (element) {
-                const headerOffset = 120 // Account for sticky header height + margin
-                const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
-                const offsetPosition = elementPosition - headerOffset
-
-                window.scrollTo({
-                  top: offsetPosition,
-                  behavior: "smooth",
-                })
-              }
-            }}
           >
-            <span className="relative z-20">Features</span>
-          </a> */}
+            <span className="relative z-20">Home</span>
+          </a>
           
-          {/* Free Tools Dropdown */}
-          <div className="relative">
-            <button
-              className="relative px-4 py-2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center gap-1"
-              onMouseEnter={handleFreeToolsMouseEnter}
-              onMouseLeave={handleFreeToolsMouseLeave}
-            >
-              <span className="relative z-20">Free Tools</span>
-              <svg
-                className={`w-3 h-3 transition-transform duration-200 ${isFreeToolsOpen ? 'rotate-180' : ''}`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            
-            {isFreeToolsOpen && (
-              <div
-                className="absolute top-full left-0 mt-4 w-80 bg-background/95 backdrop-blur-md border border-border/50 rounded-xl shadow-2xl p-4 z-50"
-                onMouseEnter={handleFreeToolsMouseEnter}
-                onMouseLeave={handleFreeToolsMouseLeave}
-              >
-                <div className="space-y-4">
-                  {/* Pattern Practice */}
-                  <div className="group">
-                    <a href="/dashboard" className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors cursor-pointer">
-                      <div className="w-8 h-8 flex items-center justify-center">
-                        <svg className="w-5 h-5 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                        </svg>
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-foreground">Pattern Practice</h3>
-                        <p className="text-sm text-muted-foreground group-hover:text-foreground/80">Master coding patterns</p>
-                      </div>
-                    </a>
-                  </div>
-                  
-                  {/* Algorithm Training */}
-                  <div className="group">
-                    <a href="/session" className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors cursor-pointer">
-                      <div className="w-8 h-8 flex items-center justify-center">
-                        <svg className="w-5 h-5 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-foreground">Algorithm Training</h3>
-                        <p className="text-sm text-muted-foreground group-hover:text-foreground/80">Structured practice sessions</p>
-                      </div>
-                    </a>
-                  </div>
-                  
-                  {/* Progress Tracking */}
-                  <div className="group">
-                    <a href="/dashboard" className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors cursor-pointer">
-                      <div className="w-8 h-8 flex items-center justify-center">
-                        <svg className="w-5 h-5 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-foreground">Progress Tracking</h3>
-                        <p className="text-sm text-muted-foreground group-hover:text-foreground/80">Track your coding fitness</p>
-                      </div>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
+          <a
+            href="/dashboard"
+            className="relative px-4 py-2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+          >
+            <span className="relative z-20">Dashboard</span>
+          </a>
           
           <a
             className="relative px-4 py-2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
@@ -196,61 +113,34 @@ export const Header = () => {
           >
             <span className="relative z-20">Pricing</span>
           </a>
-          <a
-            className="relative px-4 py-2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-            onClick={(e) => {
-              e.preventDefault()
-              const element = document.getElementById("testimonials")
-              if (element) {
-                const headerOffset = 120 // Account for sticky header height + margin
-                const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
-                const offsetPosition = elementPosition - headerOffset
-
-                window.scrollTo({
-                  top: offsetPosition,
-                  behavior: "smooth",
-                })
-              }
-            }}
-          >
-            <span className="relative z-20">Testimonials</span>
-          </a>
-          <a
-            className="relative px-4 py-2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-            onClick={(e) => {
-              e.preventDefault()
-              const element = document.getElementById("faq")
-              if (element) {
-                const headerOffset = 120 // Account for sticky header height + margin
-                const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
-                const offsetPosition = elementPosition - headerOffset
-
-                window.scrollTo({
-                  top: offsetPosition,
-                  behavior: "smooth",
-                })
-              }
-            }}
-          >
-            <span className="relative z-20">FAQ</span>
-          </a>
         </div>
 
         <div className="flex items-center gap-4 relative z-[10000]">
           <ThemeToggle />
-          {/* <a
-            href="/login"
-            className="font-medium transition-colors hover:text-foreground text-muted-foreground text-sm cursor-pointer"
-          >
-            Log In
-          </a>
+          {user ? (
+            <button
+              onClick={handleLogout}
+              className="font-medium bg-red-500 px-4 py-2 rounded-md transition-colors hover:text-foreground text-white text-sm cursor-pointer"
+            >
+              Logout
+            </button>
+          ) : (
+            <>
+              <a
+                href="/login"
+                className="font-medium transition-colors hover:text-foreground text-muted-foreground text-sm cursor-pointer"
+              >
+                Log In
+              </a>
 
-          <a
-            href="/signup"
-            className="rounded-md font-bold relative cursor-pointer hover:-translate-y-0.5 transition duration-200 inline-block text-center bg-gradient-to-b from-primary to-primary/80 text-primary-foreground shadow-[0px_2px_0px_0px_rgba(255,255,255,0.3)_inset] px-4 py-2 text-sm"
-          >
-            Sign Up
-          </a> */}
+              <a
+                href="/signup"
+                className="rounded-md font-bold relative cursor-pointer hover:-translate-y-0.5 transition duration-200 inline-block text-center bg-gradient-to-b from-primary to-primary/80 text-primary-foreground shadow-[0px_2px_0px_0px_rgba(255,255,255,0.3)_inset] px-4 py-2 text-sm"
+              >
+                Sign Up
+              </a>
+            </>
+          )}
         </div>
       </header>
 
@@ -290,65 +180,19 @@ export const Header = () => {
         <div className="fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm md:hidden">
           <div className="absolute top-24 left-4 right-4 bg-background/95 backdrop-blur-md border border-border/50 rounded-2xl shadow-2xl p-6">
             <nav className="flex flex-col space-y-4">
-              {/* <button
-                onClick={() => handleMobileNavClick("features")}
-                className="text-left px-4 py-3 text-lg font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-background/50"
+              <a
+                href="/"
+                className="text-left px-4 py-3 text-lg font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-background/50 cursor-pointer"
               >
-                Features
-              </button> */}
+                Home
+              </a>
               
-              {/* Free Tools Mobile Dropdown */}
-              <div className="space-y-2">
-                <div className="px-4 py-2 text-lg font-medium text-muted-foreground">
-                  Tools
-                </div>
-                <div className="ml-4 space-y-2">
-                  <a
-                    href="/canada-income-tax-calculator"
-                    className="flex items-center gap-3 px-4 py-3 text-base text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50 group cursor-pointer"
-                  >
-                    <div className="w-6 h-6 flex items-center justify-center">
-                      <svg className="w-4 h-4 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="font-medium">Pattern Practice</div>
-                      <div className="text-sm text-muted-foreground group-hover:text-foreground/80">Master coding patterns</div>
-                    </div>
-                  </a>
-                  
-                  <a
-                    href="/session"
-                    className="flex items-center gap-3 px-4 py-3 text-base text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50 group cursor-pointer"
-                  >
-                    <div className="w-6 h-6 flex items-center justify-center">
-                      <svg className="w-4 h-4 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="font-medium">Algorithm Training</div>
-                      <div className="text-sm text-muted-foreground group-hover:text-foreground/80">Structured practice sessions</div>
-                    </div>
-                  </a>
-                  
-                  <a
-                    href="/dashboard"
-                    className="flex items-center gap-3 px-4 py-3 text-base text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50 group cursor-pointer"
-                  >
-                    <div className="w-6 h-6 flex items-center justify-center">
-                      <svg className="w-4 h-4 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="font-medium">Progress Tracking</div>
-                      <div className="text-sm text-muted-foreground group-hover:text-foreground/80">Track your coding fitness</div>
-                    </div>
-                  </a>
-                </div>
-              </div>
+              <a
+                href="/dashboard"
+                className="text-left px-4 py-3 text-lg font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-background/50 cursor-pointer"
+              >
+                Dashboard
+              </a>
               
               <button
                 onClick={() => handleMobileNavClick("pricing")}
@@ -356,32 +200,31 @@ export const Header = () => {
               >
                 Pricing
               </button>
-              <button
-                onClick={() => handleMobileNavClick("testimonials")}
-                className="text-left px-4 py-3 text-lg font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-background/50 cursor-pointer"
-              >
-                Testimonials
-              </button>
-              <button
-                onClick={() => handleMobileNavClick("faq")}
-                className="text-left px-4 py-3 text-lg font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-background/50 cursor-pointer"
-              >
-                FAQ
-              </button>
-              {/* <div className="border-t border-border/50 pt-4 mt-4 flex flex-col space-y-3">
-                <a
-                  href="/login"
-                  className="px-4 py-3 text-lg font-bold text-center bg-gradient-to-b from-primary to-primary/80 text-primary-foreground rounded-lg shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-                >
-                  Log In
-                </a>
-                <a
-                  href="/signup"
-                  className="px-4 py-3 text-lg font-bold text-center bg-gradient-to-b from-primary to-primary/80 text-primary-foreground rounded-lg shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-                >
-                  Sign Up
-                </a>
-              </div> */}
+              <div className="border-t border-border/50 pt-4 mt-4 flex flex-col space-y-3">
+                {user ? (
+                  <button
+                    onClick={handleLogout}
+                    className="px-4 py-3 text-lg font-bold text-center bg-red-500 text-primary-foreground rounded-lg shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <>
+                    <a
+                      href="/login"
+                      className="px-4 py-3 text-lg font-bold text-center bg-gradient-to-b from-primary to-primary/80 text-primary-foreground rounded-lg shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                    >
+                      Log In
+                    </a>
+                    <a
+                      href="/signup"
+                      className="px-4 py-3 text-lg font-bold text-center bg-gradient-to-b from-primary to-primary/80 text-primary-foreground rounded-lg shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                    >
+                      Sign Up
+                    </a>
+                  </>
+                )}
+              </div>
             </nav>
           </div>
         </div>

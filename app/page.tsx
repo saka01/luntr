@@ -1,5 +1,8 @@
 "use client"
 import Hero from "@/components/home/hero"
+import WhatMakesItWork from "@/components/what-makes-it-work"
+import StartSmallMasterDeep from "@/components/start-small-master-deep"
+import HowItWorks from "@/components/how-it-works"
 import Features from "@/components/features"
 import { TestimonialsSection } from "@/components/testimonials"
 import { NewReleasePromo } from "@/components/new-release-promo"
@@ -16,28 +19,37 @@ export default function Home() {
       {/* Hero Section */}
       <Hero />
 
+      {/* What Makes It Work Section */}yeah 
+      <WhatMakesItWork />
+
+      {/* Start Small Master Deep Section */}
+      <StartSmallMasterDeep />
+
+      {/* How It Works Section */}
+      <HowItWorks />
+
       {/* Features Section */}
       {/* <div id="features">
         <Features />
       </div> */}
 
       {/* Testimonials Section */}
-      <div id="testimonials">
+      {/* <div id="testimonials">
         <TestimonialsSection />
-      </div>
+      </div> */}
       
+      <NewReleasePromo />
       {/* Pricing Section */}
       <div id="pricing">
         <PricingSection />
       </div>
 
   
-      <NewReleasePromo />
 
       {/* FAQ Section */}
-      <div id="faq">
+      {/* <div id="faq">
         <FAQSection />
-      </div>
+      </div> */}
 
       {/* Sticky Footer */}
       <StickyFooter />

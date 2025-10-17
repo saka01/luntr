@@ -1,105 +1,88 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Check, X, Sparkles } from "lucide-react"
-import { WaitlistPopup } from "@/components/waitlist-popup"
 
 const pricingPlans = {
   monthly: [
     {
-      name: "Start Free",
+      name: "Free",
       price: "$0",
-      description: "Perfect for getting started with expense tracking",
+      period: "/month",
+      description: "Perfect for getting started",
       features: [
-        { text: "50 AI-identified business transactions per month", available: true },
-        { text: "Connect 1 bank account or credit card", available: true },
-        { text: "AI categorization and review", available: true },
-        { text: "Basic expense reports", available: true },
-        { text: "Unlimited AI-identified business transactions", available: false },
-        { text: "Connect multiple accounts (banks + credit cards)", available: false },
-        { text: "Receipt management and CRA-compliant documentation", available: false },
-        { text: "T2125-organized reports", available: false },
-        { text: "TurboTax export", available: false },
-        { text: "GST/HST and Input Tax Credit tracking", available: false },
-        { text: "Educational deduction explanations", available: false },
+        { text: "10 practice problems per day", available: true },
+        { text: "Basic DSA patterns", available: true },
+        { text: "Unlimited practice sessions", available: false },
+        { text: "Progress tracking", available: true },
+        { text: "Spaced repetition scheduling", available: false },
+        { text: "AI-powered feedback", available: false },
       ],
       popular: false,
-      cta: "Get Early Access",
+      cta: "Start Free",
     },
     {
-      name: "Creator Pro",
-      price: "$9",
+      name: "Monthly",
+      price: "$9.99",
       period: "/month",
-      description: "For content creators who want to maximize deductions",
+      description: "For developers actively interviewing",
       features: [
-        { text: "50 AI-identified business transactions per month", available: true },
-        { text: "Connect 1 bank account or credit card", available: true },
-        { text: "AI categorization and review", available: true },
-        { text: "Basic expense reports", available: true },
-        { text: "Unlimited AI-identified business transactions", available: true },
-        { text: "Connect multiple accounts (banks + credit cards)", available: true },
-        { text: "Receipt management and CRA-compliant documentation", available: true },
-        { text: "T2125-organized reports", available: true },
-        { text: "TurboTax export", available: true },
-        { text: "GST/HST and Input Tax Credit tracking", available: true },
-        { text: "Educational deduction explanations", available: true },
+        { text: "Unlimited practice problems per day", available: true },
+        { text: "All DSA patterns unlocked", available: true },
+
+        { text: "Unlimited practice sessions", available: true },
+        { text: "Blind 75 & NeetCode 150 + more", available: true },
+        { text: "Spaced repetition scheduling", available: true },
+        { text: "Performance tracking", available: true },
+        { text: "AI-powered feedback", available: true },
       ],
-      popular: true,
-      cta: "Get Early Access",
+      popular: false,
+      cta: "Start Free",
     },
   ],
   yearly: [
     {
-      name: "Start Free",
+      name: "Free",
       price: "$0",
-      description: "Perfect for getting started with expense tracking",
+      period: "/month",
+      description: "Perfect for getting started",
       features: [
-        { text: "50 AI-identified business transactions per month", available: true },
-        { text: "Connect 1 bank account or credit card", available: true },
-        { text: "AI categorization and review", available: true },
-        { text: "Basic expense reports", available: true },
-        { text: "Unlimited AI-identified business transactions", available: false },
-        { text: "Connect multiple accounts (banks + credit cards)", available: false },
-        { text: "Receipt management and CRA-compliant documentation", available: false },
-        { text: "T2125-organized reports", available: false },
-        { text: "TurboTax export", available: false },
-        { text: "GST/HST and Input Tax Credit tracking", available: false },
-        { text: "Educational deduction explanations", available: false },
+        { text: "10 practice problems per day", available: true },
+        { text: "Basic DSA patterns", available: true },
+        { text: "Progress tracking", available: true },
+        { text: "All DSA patterns unlocked", available: false },
+        { text: "Unlimited practice sessions", available: false },
+        { text: "Blind 75, NeetCode 150, and other FAANG practice sets", available: false },
+        { text: "Spaced repetition scheduling", available: false },
+        { text: "AI-powered feedback", available: false },
       ],
       popular: false,
-      cta: "Get Early Access",
+      cta: "Get Started",
     },
     {
-      name: "Creator Pro",
-      price: "$97",
+      name: "Yearly",
+      price: "$79",
       period: "/year",
-      description: "For content creators who want to maximize deductions",
+      description: "Lock in for your interview prep journey",
       features: [
-        { text: "50 AI-identified business transactions per month", available: true },
-        { text: "Connect 1 bank account or credit card", available: true },
-        { text: "AI categorization and review", available: true },
-        { text: "Basic expense reports", available: true },
-        { text: "Unlimited AI-identified business transactions", available: true },
-        { text: "Connect multiple accounts (banks + credit cards)", available: true },
-        { text: "Receipt management and CRA-compliant documentation", available: true },
-        { text: "T2125-organized reports", available: true },
-        { text: "TurboTax export", available: true },
-        { text: "GST/HST and Input Tax Credit tracking", available: true },
-        { text: "Educational deduction explanations", available: true },
+        { text: "Everything in monthly", available: true },
+        { text: "~$6.60/month", available: true },
+        { text: "Cancel anytime", available: true },
       ],
       popular: true,
-      cta: "Get Early Access",
+      cta: "Start Free",
     },
   ],
 }
 
 export function PricingSection() {
-  const [isWaitlistOpen, setIsWaitlistOpen] = useState(false)
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('yearly')
+  const router = useRouter()
 
   return (
-    <section className="relative py-24 px-4">
+    <section className="relative py-24 px-4 mb-88">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
@@ -121,11 +104,11 @@ export function PricingSection() {
           </motion.div>
 
           <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-foreground via-foreground to-foreground/60 bg-clip-text text-transparent mb-4">
-            Start Free
+            Investment in your next role
           </h2>
 
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-            Choose a plan that fits your needs. Upgrade as you grow.
+            Choose the plan that fits your interview prep timeline. Cancel anytime.
           </p>
 
           {/* Billing Period Toggle */}
@@ -186,9 +169,9 @@ export function PricingSection() {
                   {plan.period && (
                     <span className="text-muted-foreground text-lg">{plan.period}</span>
                   )}
-                  {billingPeriod === 'yearly' && plan.name === 'Creator Pro' && (
+                  {billingPeriod === 'yearly' && plan.name === 'Yearly' && (
                     <span className="text-xs bg-green-500/10 text-green-500 px-2 py-1 rounded-full font-medium ml-2 border border-green-500">
-                      Save 20%
+                      Save 34%
                     </span>
                   )}
                 </div>
@@ -197,12 +180,17 @@ export function PricingSection() {
 
               <ul className="space-y-4 mb-8">
                 {plan.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-center gap-3">
-                    {feature.available ? (
-                      <Check className="w-5 h-5 text-[#e78a53] flex-shrink-0" />
-                    ) : (
-                      <X className="w-5 h-5 text-muted-foreground/50 flex-shrink-0" />
-                    )}
+                  <li
+                    key={featureIndex}
+                    className="grid grid-cols-[20px_1fr] items-start gap-3"
+                  >
+                    <div className="h-5 w-5 flex items-center justify-center">
+                      {feature.available ? (
+                        <Check className="w-5 h-5 text-[#e78a53]" />
+                      ) : (
+                        <X className="w-5 h-5 text-muted-foreground/50" />
+                      )}
+                    </div>
                     <span className={`text-sm ${feature.available ? 'text-foreground/80' : 'text-muted-foreground/50'}`}>
                       {feature.text}
                     </span>
@@ -213,7 +201,7 @@ export function PricingSection() {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => setIsWaitlistOpen(true)}
+                onClick={() => router.push('/signup')}
                 className={`w-full py-3 px-6 rounded-lg font-medium transition-all duration-200 cursor-pointer ${
                   plan.popular
                     ? "bg-gradient-to-r from-[#e78a53] to-[#e78a53]/80 text-white shadow-lg shadow-[#e78a53]/25 hover:shadow-[#e78a53]/40"
@@ -245,11 +233,7 @@ export function PricingSection() {
         </motion.div> */}
       </div>
       
-      {/* Waitlist Popup */}
-      <WaitlistPopup 
-        isOpen={isWaitlistOpen} 
-        onClose={() => setIsWaitlistOpen(false)} 
-      />
+
     </section>
   )
 }
