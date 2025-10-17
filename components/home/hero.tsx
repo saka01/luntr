@@ -7,16 +7,47 @@ import { Sparkles } from "lucide-react"
 import { Logo } from "../logo"
 import { WaitlistPopup } from "../waitlist-popup"
 
+// Extend Window interface to include AddToHomeScreen
+declare global {
+  interface Window {
+    AddToHomeScreen: any;
+    AddToHomeScreenInstance: any;
+  }
+}
+
 export default function Hero() {
   const [mounted, setMounted] = useState(false)
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false)
 
   useEffect(() => {
     setMounted(true)
+    
+    // Initialize AddToHomeScreen when component mounts
+    if (typeof window !== 'undefined' && window.AddToHomeScreen) {
+      window.AddToHomeScreenInstance = window.AddToHomeScreen({
+        appName: 'Luntr',
+        appNameDisplay: 'standalone',
+        appIconUrl: '/apple-touch-icon.png',
+        assetUrl: 'https://cdn.jsdelivr.net/gh/philfung/add-to-homescreen@3.4/dist/assets/img/',
+        maxModalDisplayCount: -1,
+        displayOptions: { showMobile: true, showDesktop: true },
+        allowClose: true,
+        showArrow: true,
+      })
+    }
   }, [])
 
   if (!mounted) {
     return null
+  }
+
+  const handleAddToHomeScreen = () => {
+    if (window.AddToHomeScreenInstance) {
+      window.AddToHomeScreenInstance.show('en')
+    } else {
+      // Fallback to waitlist if add-to-homescreen is not available
+      setIsWaitlistOpen(true)
+    }
   }
 
   const words = ["Content Creator", "Influencer", "Creator"]
@@ -165,7 +196,7 @@ Luntr is the simplest way to master coding patterns. Practice with structured se
               {/* Action buttons */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 {/* Get started button */}
-                <button onClick={() => setIsWaitlistOpen(true)}>
+                <button onClick={handleAddToHomeScreen}>
                   <div className="group cursor-pointer border border-border bg-card gap-2 h-[60px] flex items-center p-[10px] rounded-full">
                     <div className="border border-border bg-primary h-[40px] rounded-full flex items-center justify-center text-primary-foreground">
                       <p className="font-medium tracking-tight mr-3 ml-3 flex items-center gap-2 justify-center text-base">
@@ -185,7 +216,7 @@ Luntr is the simplest way to master coding patterns. Practice with structured se
                           <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
                           <path d="M2 12h20"></path>
                         </svg>
-                        Start Training
+                        Install App
                       </p>
                     </div>
                     <div className="text-muted-foreground group-hover:ml-4 ease-in-out transition-all size-[24px] flex items-center justify-center rounded-full border-2 border-border">

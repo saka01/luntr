@@ -52,6 +52,13 @@ html {
   --font-mono: ${GeistMono.variable};
 }
         `}</style>
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/philfung/add-to-homescreen@3.4/dist/add-to-homescreen.min.css"
+        />
+        <script src="https://cdn.jsdelivr.net/gh/philfung/add-to-homescreen@3.4/dist/add-to-homescreen.min.js"></script>
       </head>
       <body suppressHydrationWarning>
         <ThemeProvider
