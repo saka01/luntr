@@ -1,12 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Textarea } from "@/components/ui/textarea"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
+import { COPY } from "@/content/copy"
 
 interface SessionCard {
   id: string
@@ -29,6 +30,15 @@ export function PlanCard({ card, onSubmit }: PlanCardProps) {
   const [feedback, setFeedback] = useState<{ score_0_5: number; brief_feedback: string } | null>(null)
   const [userGrade, setUserGrade] = useState<number | null>(null)
   const [isGrading, setIsGrading] = useState(false)
+
+  // Reset state when card changes
+  useEffect(() => {
+    setUserPlan("")
+    setIsSubmitted(false)
+    setFeedback(null)
+    setUserGrade(null)
+    setIsGrading(false)
+  }, [card.id])
 
   const handleSubmit = async () => {
     if (!userPlan.trim()) return

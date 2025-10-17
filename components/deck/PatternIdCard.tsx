@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -29,6 +29,15 @@ export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
   const [feedback, setFeedback] = useState<string>("")
   const [userGrade, setUserGrade] = useState<number | null>(null)
   const [isGrading, setIsGrading] = useState(false)
+
+  // Reset state when card changes
+  useEffect(() => {
+    setSelectedAnswer(null)
+    setIsSubmitted(false)
+    setFeedback("")
+    setUserGrade(null)
+    setIsGrading(false)
+  }, [card.id])
 
   const handleSubmit = async () => {
     if (selectedAnswer === null) return
@@ -116,7 +125,15 @@ export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
                   {isCorrect ? COPY.feedback.correct : COPY.feedback.incorrect}
                 </span>
               </div>
-              <p className="text-sm text-muted-foreground">{feedback}</p>
+              {isGrading ? (
+                <div className="flex items-center justify-center space-x-2 py-2">
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground">{feedback}</p>
+              )}
             </div>
 
             <div className="space-y-4">

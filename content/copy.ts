@@ -20,7 +20,7 @@ export const COPY = {
     dueToday: (n: number) => `Cards due today: ${n}`,
     startSession: "Start Session",
     mastery: (pct: number) => `Mastery: ${pct}%`,
-    streak: (d: number) => `Streak: ${d} day${d === 1 ? "" : "s"}`
+    streak: (d: number) => `🔥 ${d} day${d === 1 ? "" : "s"}`
   },
   session: {
     header: "Daily Session",

@@ -84,7 +84,7 @@ export default function SessionPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <div className="text-foreground text-lg">Loading your session...</div>
         </div>
@@ -94,7 +94,7 @@ export default function SessionPage() {
 
   if (sessionComplete) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <div className="h-screen bg-background flex items-center justify-center p-4">
         <Card className="w-full max-w-md bg-card/50 backdrop-blur-xl border-border">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl text-foreground">{COPY.session.completeTitle}</CardTitle>
@@ -117,7 +117,7 @@ export default function SessionPage() {
 
   if (cards.length === 0) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <div className="h-screen bg-background flex items-center justify-center p-4">
         <Card className="w-full max-w-md bg-card/50 backdrop-blur-xl border-border">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl text-foreground">No Patterns Available</CardTitle>
@@ -141,43 +141,36 @@ export default function SessionPage() {
   const currentCard = cards[currentCardIndex]
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Background gradient */}
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          background: "radial-gradient(ellipse 50% 35% at 50% 0%, rgba(226, 232, 240, 0.12), transparent 60%), #000000",
-        }}
-      />
+    <div className="h-full bg-background overflow-hidden">
 
-      {/* Decorative elements */}
-      <div className="absolute top-20 left-20 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 right-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-
-      <div className="relative z-10 container mx-auto px-4 py-8">
+      <div className="relative z-10 h-full max-h-screen flex flex-col container mx-auto px-4 py-8 gap-12 overflow-hidden">
         <SessionHeader 
           currentIndex={currentCardIndex + 1}
           totalCards={cards.length}
         />
 
-        <div className="max-w-2xl mx-auto mt-8">
-          {currentCard.type === 'mcq' ? (
-            <PatternIdCard
-              card={currentCard}
-              onSubmit={handleCardSubmit}
-            />
-          ) : (
-            <PlanCard
-              card={currentCard}
-              onSubmit={handleCardSubmit}
-            />
-          )}
-        </div>
+            {/* <SessionFooter 
+            key={currentCard.id}
+              currentIndex={currentCardIndex + 1}
+              totalCards={cards.length}
+            /> */}
+        {/* <div className="flex-1 flex items-center justify-center h-10"> */}
+          <div className="max-w-2xl w-full h-fit">
+            {currentCard.type === 'mcq' ? (
+              <PatternIdCard
+              key={currentCard.id}
+                card={currentCard}
+                onSubmit={handleCardSubmit}
+              />
+            ) : (
+              <PlanCard
+                card={currentCard}
+                onSubmit={handleCardSubmit}
+              />
+            )}
+          </div>
+        {/* </div> */}
 
-        <SessionFooter 
-          currentIndex={currentCardIndex + 1}
-          totalCards={cards.length}
-        />
       </div>
     </div>
   )

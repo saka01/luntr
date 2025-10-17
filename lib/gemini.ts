@@ -4,7 +4,7 @@ let genAI: GoogleGenerativeAI | null = null
 
 export function getGeminiClient() {
   if (!genAI) {
-    const apiKey = process.env.GEMINI_API_KEY
+    const apiKey = process.env.GEMINI_API_KEY_2
     if (!apiKey) {
       throw new Error('GEMINI_API_KEY environment variable is required')
     }
@@ -16,7 +16,12 @@ export function getGeminiClient() {
 export async function generateMCQRationale(pattern: string, problemSummary: string): Promise<string> {
   try {
     const genAI = getGeminiClient()
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
+    const model = genAI.getGenerativeModel({ 
+      model: 'gemini-2.5-flash', 
+      generationConfig: {
+        responseMimeType: 'text/plain'
+      }
+    })
     
     const prompt = `You write tiny rationales for DSA pattern choices. 1 sentence, <= 30 words, specific and practical.
 
@@ -44,7 +49,12 @@ Explain why this pattern applies in one sentence.`
 export async function gradePlan(problemSummary: string, userPlan: string, checklist: string[]): Promise<{ score_0_5: number; brief_feedback: string }> {
   try {
     const genAI = getGeminiClient()
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
+    const model = genAI.getGenerativeModel({ 
+      model: 'gemini-2.5-flash', 
+      generationConfig: {
+        responseMimeType: 'application/json'
+      }
+    })
     
     const prompt = `You are grading a 3–6 step DSA plan (no code). Score from 0–5 and give a brief action hint if steps miss key checklist items. Be terse and concrete.
 Return JSON only.

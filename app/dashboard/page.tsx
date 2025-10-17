@@ -6,12 +6,16 @@ import { Badge } from '@/components/ui/badge'
 import { COPY } from '@/content/copy'
 import { checkAuthAndRedirect } from '@/lib/auth-guard'
 import { getDueCount, getWeakestPatterns } from '@/lib/session-engine'
+import { ACTIVE_PATTERN } from '@/config/activePattern'
 
-export default async function DashboardPage() {
+export default async function AppPage() {
   const { user, profile } = await checkAuthAndRedirect()
   
   const dueCount = await getDueCount(user.id)
   const weakestPatterns = await getWeakestPatterns(user.id)
+  
+  // Calculate mastery percentage for the active pattern
+  const mastery = weakestPatterns.length > 0 ? weakestPatterns[0].mastery : 0
 
   return (
     <div className="min-h-screen bg-background">
@@ -29,15 +33,22 @@ export default async function DashboardPage() {
 
       <div className="relative z-10 container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-foreground">{COPY.dashboard.greeting}</h1>
-            <p className="text-muted-foreground">Ready to practice your coding patterns?</p>
-          </div>
+        <div className="flex flex-col justify-center items-center mb-8">
           <Badge variant="outline" className="text-lg px-4 py-2">
             {COPY.dashboard.streak(profile.streak)}
           </Badge>
+          <div>
+            <h1 className="text-3xl font-bold text-foreground">{COPY.dashboard.greeting}</h1>
+            <p className="text-muted-foreground">Ready to practice Two Pointers?</p>
+          </div>
         </div>
+
+        {/* Pattern Badge */}
+        {/* <div className="mb-8">
+          <Badge variant="secondary" className="text-lg px-6 py-3 bg-primary/20 text-primary border-primary/30">
+            {COPY.badges.pattern(ACTIVE_PATTERN)}
+          </Badge>
+        </div> */}
 
         {/* Main Content */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -46,7 +57,7 @@ export default async function DashboardPage() {
             <CardHeader>
               <CardTitle className="text-foreground">{COPY.dashboard.dueToday(dueCount)}</CardTitle>
               <CardDescription>
-                {dueCount > 0 ? 'Time to practice your coding patterns' : 'All caught up! Great job!'}
+                {dueCount > 0 ? 'Time to practice your Sliding Window skills' : 'All caught up! Great job!'}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -61,45 +72,45 @@ export default async function DashboardPage() {
             </CardContent>
           </Card>
 
-          {/* Weakest Patterns */}
-          <Card className="bg-card/50 backdrop-blur-xl border-border md:col-span-2 lg:col-span-1">
+          {/* Mastery Card */}
+          <Card className="bg-card/50 backdrop-blur-xl border-border">
             <CardHeader>
-              <CardTitle className="text-foreground">{COPY.dashboard.weakestPatterns}</CardTitle>
-              <CardDescription>Patterns to focus on</CardDescription>
+              <CardTitle className="text-foreground">{COPY.dashboard.mastery(mastery)}</CardTitle>
+              <CardDescription>Your Two Pointers mastery</CardDescription>
             </CardHeader>
             <CardContent>
-              {weakestPatterns.length > 0 ? (
-                <div className="space-y-3">
-                  {weakestPatterns.map((pattern, index) => (
-                    <div key={index} className="flex justify-between items-center">
-                      <span className="text-foreground font-medium">{pattern.pattern}</span>
-                      <Badge variant="secondary" className="text-xs">
-                        {pattern.mastery}%
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-muted-foreground text-sm">Complete some training sessions to see your patterns!</p>
-              )}
+              <div className="text-center">
+                <div className="text-3xl font-bold text-primary mb-2">{mastery}%</div>
+                <div className="text-sm text-muted-foreground">Based on your recent attempts</div>
+              </div>
             </CardContent>
           </Card>
 
-          {/* Stats Card */}
-          <Card className="bg-card/50 backdrop-blur-xl border-border md:col-span-2">
+          {/* Coming Soon Card */}
+          <Card className="bg-card/50 backdrop-blur-xl border-border md:col-span-2 lg:col-span-1">
             <CardHeader>
-              <CardTitle className="text-foreground">Your Progress</CardTitle>
-              <CardDescription>Your coding fitness journey</CardDescription>
+              <CardTitle className="text-foreground">{COPY.badges.comingSoon}</CardTitle>
+              <CardDescription>More patterns in development</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">{profile.streak}</div>
-                  <div className="text-sm text-muted-foreground">Day Streak</div>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground font-medium">Two Pointers</span>
+                  <Badge variant="outline" className="text-xs opacity-50">
+                    Soon
+                  </Badge>
                 </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">{profile.level}</div>
-                  <div className="text-sm text-muted-foreground">Level</div>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground font-medium">Binary Search</span>
+                  <Badge variant="outline" className="text-xs opacity-50">
+                    Soon
+                  </Badge>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground font-medium">Hashing</span>
+                  <Badge variant="outline" className="text-xs opacity-50">
+                    Soon
+                  </Badge>
                 </div>
               </div>
             </CardContent>
