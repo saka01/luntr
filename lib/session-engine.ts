@@ -1,6 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { calculateNextInterval, calculateNextDueDate } from './sm2'
+import { ACTIVE_PATTERN } from '../config/activePattern'
 
 async function getSupabaseClient() {
   const cookieStore = await cookies()
@@ -32,7 +33,7 @@ export async function getSessionCards(userId: string): Promise<SessionCard[]> {
   const supabase = await getSupabaseClient()
   const now = new Date().toISOString()
   
-  // Get cards due for review (up to 10)
+  // Get cards due for review (up to 10) - ONLY from active pattern
   const { data: dueCardsData } = await supabase
     .from('user_progress')
     .select(`
@@ -48,20 +49,22 @@ export async function getSessionCards(userId: string): Promise<SessionCard[]> {
       )
     `)
     .eq('user_id', userId)
+    .eq('cards.pattern', ACTIVE_PATTERN)
     .lte('next_due', now)
     .order('created_at', { ascending: true })
     .limit(10)
   
   const dueCards = dueCardsData?.map((item: any) => item.cards) || []
   
-  // If we have fewer than 10 cards, fill with new cards
+  // If we have fewer than 10 cards, fill with new cards from active pattern
   if (dueCards.length < 10) {
     const remaining = 10 - dueCards.length
     
-    // Get cards the user hasn't seen yet
+    // Get cards the user hasn't seen yet - ONLY from active pattern
     const { data: newCardsData } = await supabase
       .from('cards')
       .select('*')
+      .eq('pattern', ACTIVE_PATTERN)
       .not('id', 'in', `(${dueCards.map(card => card.id).join(',')})`)
       .order('difficulty', { ascending: true })
       .limit(remaining)
@@ -208,6 +211,7 @@ export async function getDueCount(userId: string): Promise<number> {
     .from('user_progress')
     .select('*', { count: 'exact', head: true })
     .eq('user_id', userId)
+    .eq('cards.pattern', ACTIVE_PATTERN)
     .lte('next_due', now)
   
   return count || 0
@@ -225,9 +229,10 @@ export async function getWeakestPatterns(userId: string): Promise<Array<{ patter
       )
     `)
     .eq('user_id', userId)
+    .eq('cards.pattern', ACTIVE_PATTERN)
     .not('last_grade', 'is', null)
   
-  // Group by pattern and calculate mastery
+  // Calculate mastery for the active pattern only
   const patternMastery = new Map<string, { totalGrade: number; count: number }>()
   
   if (userProgress) {
@@ -250,5 +255,4 @@ export async function getWeakestPatterns(userId: string): Promise<Array<{ patter
       mastery: Math.round((data.totalGrade / data.count) * 20) // Convert to percentage
     }))
     .sort((a, b) => a.mastery - b.mastery)
-    .slice(0, 3) // Top 3 weakest
 }

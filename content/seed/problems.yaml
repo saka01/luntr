@@ -1,44 +1,5 @@
 cards:
-  # Two Pointers Pattern
-  - slug: "two-pointers-array-sum"
-    pattern: "Two Pointers"
-    type: "mcq"
-    difficulty: "E"
-    prompt:
-      stem: "Given a sorted array and a target sum, find two numbers that add up to the target."
-      options:
-        - "Use nested loops to check all pairs"
-        - "Use two pointers starting from both ends"
-        - "Use a hash map to store complements"
-    answer:
-      correctIndex: 1
-      rationale: "Two pointers efficiently find pairs in sorted arrays by eliminating impossible combinations."
-  
-  - slug: "two-pointers-palindrome"
-    pattern: "Two Pointers"
-    type: "mcq"
-    difficulty: "M"
-    prompt:
-      stem: "Check if a string is a palindrome, ignoring case and non-alphanumeric characters."
-      options:
-        - "Reverse the string and compare"
-        - "Use two pointers moving inward from both ends"
-        - "Use a stack to track characters"
-    answer:
-      correctIndex: 1
-      rationale: "Two pointers efficiently validate palindromes by comparing characters from both ends simultaneously."
-  
-  - slug: "two-pointers-container-water"
-    pattern: "Two Pointers"
-    type: "plan"
-    difficulty: "H"
-    prompt:
-      stem: "Find the maximum area of water that can be contained between two vertical lines."
-    answer:
-      checklist: ["two pointers", "area calculation", "move smaller pointer", "track maximum"]
-      rationale: "Two pointers with area calculation and greedy movement of the smaller pointer."
-
-  # Sliding Window Pattern
+  # MCQ Cards (8 total)
   - slug: "sliding-window-max-sum"
     pattern: "Sliding Window"
     type: "mcq"
@@ -46,13 +7,14 @@ cards:
     prompt:
       stem: "Find the maximum sum of any contiguous subarray of size k."
       options:
-        - "Calculate sum for every possible subarray"
-        - "Use sliding window to maintain running sum"
-        - "Use prefix sums with two pointers"
+        - "Sliding Window"
+        - "Two Pointers"
+        - "Prefix Sum"
     answer:
-      correctIndex: 1
-      rationale: "Sliding window efficiently maintains the sum by adding new elements and removing old ones."
-  
+      correctIndex: 0
+      rationale: "Sliding Window efficiently maintains a fixed-size window while tracking maximum sum."
+    hints: null
+
   - slug: "sliding-window-longest-substring"
     pattern: "Sliding Window"
     type: "mcq"
@@ -60,97 +22,145 @@ cards:
     prompt:
       stem: "Find the length of the longest substring without repeating characters."
       options:
-        - "Check all possible substrings for uniqueness"
-        - "Use sliding window with character frequency tracking"
-        - "Use two pointers with a set to track seen characters"
+        - "Sliding Window"
+        - "Hash Map"
+        - "Binary Search"
     answer:
-      correctIndex: 1
-      rationale: "Sliding window with frequency tracking efficiently finds the longest unique substring."
-  
+      correctIndex: 0
+      rationale: "Sliding Window expands/contracts to maintain unique characters efficiently."
+    hints: null
+
+  - slug: "sliding-window-k-distinct"
+    pattern: "Sliding Window"
+    type: "mcq"
+    difficulty: "M"
+    prompt:
+      stem: "Find the longest substring with at most k distinct characters."
+      options:
+        - "Sliding Window"
+        - "Dynamic Programming"
+        - "Greedy"
+    answer:
+      correctIndex: 0
+      rationale: "Sliding Window tracks distinct characters while expanding/contracting window."
+    hints: null
+
+  - slug: "sliding-window-min-window"
+    pattern: "Sliding Window"
+    type: "mcq"
+    difficulty: "H"
+    prompt:
+      stem: "Find the minimum window substring containing all characters of another string."
+      options:
+        - "Sliding Window"
+        - "Backtracking"
+        - "Union Find"
+    answer:
+      correctIndex: 0
+      rationale: "Sliding Window finds minimum valid window by expanding then contracting."
+    hints: null
+
+  - slug: "sliding-window-fixed-size"
+    pattern: "Sliding Window"
+    type: "mcq"
+    difficulty: "E"
+    prompt:
+      stem: "Calculate the average of all contiguous subarrays of size k."
+      options:
+        - "Sliding Window"
+        - "Brute Force"
+        - "Divide and Conquer"
+    answer:
+      correctIndex: 0
+      rationale: "Sliding Window efficiently slides fixed-size window to calculate averages."
+    hints: null
+
+  - slug: "sliding-window-character-replacement"
+    pattern: "Sliding Window"
+    type: "mcq"
+    difficulty: "M"
+    prompt:
+      stem: "Find the longest substring after replacing at most k characters with any other character."
+      options:
+        - "Sliding Window"
+        - "Two Pointers"
+        - "Stack"
+    answer:
+      correctIndex: 0
+      rationale: "Sliding Window maintains valid window while tracking character frequencies."
+    hints: null
+
   - slug: "sliding-window-fruit-basket"
+    pattern: "Sliding Window"
+    type: "mcq"
+    difficulty: "M"
+    prompt:
+      stem: "Find the maximum number of fruits you can collect from trees with at most 2 different types."
+      options:
+        - "Sliding Window"
+        - "Greedy"
+        - "Priority Queue"
+    answer:
+      correctIndex: 0
+      rationale: "Sliding Window maintains window with at most 2 distinct fruit types."
+    hints: null
+
+  - slug: "sliding-window-max-freq"
+    pattern: "Sliding Window"
+    type: "mcq"
+    difficulty: "H"
+    prompt:
+      stem: "Find the maximum frequency of any element in a subarray of size k."
+      options:
+        - "Sliding Window"
+        - "Hash Map"
+        - "Sorting"
+    answer:
+      correctIndex: 0
+      rationale: "Sliding Window efficiently tracks frequency changes as window slides."
+    hints: null
+
+  # Plan Cards (4 total)
+  - slug: "sliding-window-plan-max-sum"
+    pattern: "Sliding Window"
+    type: "plan"
+    difficulty: "E"
+    prompt:
+      stem: "Design an approach to find the maximum sum of any contiguous subarray of size k."
+    answer:
+      checklist: ["expand", "windowLen", "maxFreq"]
+      rationale: "Use sliding window to maintain fixed-size window and track maximum sum."
+    hints: null
+
+  - slug: "sliding-window-plan-longest-substring"
+    pattern: "Sliding Window"
+    type: "plan"
+    difficulty: "M"
+    prompt:
+      stem: "Plan how to find the longest substring without repeating characters."
+    answer:
+      checklist: ["shrink", "freq", "expand"]
+      rationale: "Expand window until duplicate found, then shrink from left until valid."
+    hints: null
+
+  - slug: "sliding-window-plan-k-distinct"
+    pattern: "Sliding Window"
+    type: "plan"
+    difficulty: "M"
+    prompt:
+      stem: "Design a solution to find the longest substring with at most k distinct characters."
+    answer:
+      checklist: ["shrink", "freq", "maxFreq", "while condition"]
+      rationale: "Expand window while distinct count ≤ k, shrink when count exceeds k."
+    hints: null
+
+  - slug: "sliding-window-plan-min-window"
     pattern: "Sliding Window"
     type: "plan"
     difficulty: "H"
     prompt:
-      stem: "Find the maximum number of fruits you can collect from trees, where you can only have 2 different types."
+      stem: "Plan how to find the minimum window substring containing all characters of target string."
     answer:
-      checklist: ["sliding window", "frequency map", "shrink when >2 types", "track maximum"]
-      rationale: "Sliding window with frequency map to maintain at most 2 fruit types."
-
-  # Binary Search Pattern
-  - slug: "binary-search-sorted-array"
-    pattern: "Binary Search"
-    type: "mcq"
-    difficulty: "E"
-    prompt:
-      stem: "Search for a target value in a sorted array."
-      options:
-        - "Use linear search through the entire array"
-        - "Use binary search to eliminate half the array each time"
-        - "Use interpolation search for better average case"
-    answer:
-      correctIndex: 1
-      rationale: "Binary search efficiently finds targets in sorted arrays by repeatedly halving the search space."
-  
-  - slug: "binary-search-rotated-array"
-    pattern: "Binary Search"
-    type: "mcq"
-    difficulty: "M"
-    prompt:
-      stem: "Search for a target in a rotated sorted array (e.g., [4,5,6,7,0,1,2])."
-      options:
-        - "Use regular binary search on the entire array"
-        - "Find pivot point first, then search in appropriate half"
-        - "Use modified binary search that handles rotation"
-    answer:
-      correctIndex: 2
-      rationale: "Modified binary search handles rotation by comparing with both ends and adjusting search direction."
-  
-  - slug: "binary-search-minimum-rotated"
-    pattern: "Binary Search"
-    type: "plan"
-    difficulty: "H"
-    prompt:
-      stem: "Find the minimum element in a rotated sorted array."
-    answer:
-      checklist: ["binary search", "compare mid with ends", "check rotation", "narrow search"]
-      rationale: "Binary search with rotation detection to find the minimum element efficiently."
-
-  # Hashing Pattern
-  - slug: "hashing-two-sum"
-    pattern: "Hashing"
-    type: "mcq"
-    difficulty: "E"
-    prompt:
-      stem: "Find two numbers in an array that add up to a target sum."
-      options:
-        - "Use nested loops to check all pairs"
-        - "Use a hash map to store complements"
-        - "Sort the array and use two pointers"
-    answer:
-      correctIndex: 1
-      rationale: "Hash map provides O(1) lookup for complements, making the solution O(n) instead of O(n²)."
-  
-  - slug: "hashing-group-anagrams"
-    pattern: "Hashing"
-    type: "mcq"
-    difficulty: "M"
-    prompt:
-      stem: "Group strings that are anagrams of each other together."
-      options:
-        - "Compare each string with every other string"
-        - "Use sorted string as key in hash map"
-        - "Use character frequency count as key"
-    answer:
-      correctIndex: 1
-      rationale: "Using sorted strings as hash keys efficiently groups anagrams together."
-  
-  - slug: "hashing-subarray-sum"
-    pattern: "Hashing"
-    type: "plan"
-    difficulty: "H"
-    prompt:
-      stem: "Find if there exists a subarray with sum equal to k."
-    answer:
-      checklist: ["prefix sum", "hash map", "check complement", "handle edge case"]
-      rationale: "Prefix sum with hash map efficiently finds subarrays with target sum."
+      checklist: ["shrink", "freq", "expand", "while condition"]
+      rationale: "Expand until all characters found, then shrink to find minimum valid window."
+    hints: null

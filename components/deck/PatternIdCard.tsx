@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
+import { COPY } from "@/content/copy"
 
 interface SessionCard {
   id: string
@@ -68,7 +69,7 @@ export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
     if (userGrade === null) return
 
     const isCorrect = selectedAnswer === card.answer.correctIndex
-    onSubmit(selectedAnswer, { feedback, isCorrect })
+    onSubmit(selectedAnswer, { feedback, isCorrect, userGrade })
   }
 
   const isCorrect = selectedAnswer === card.answer.correctIndex
@@ -82,7 +83,7 @@ export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
             {card.difficulty}
           </Badge>
         </div>
-        <p className="text-muted-foreground">{card.prompt.stem}</p>
+        <p className="text-muted-foreground text-base">{card.prompt.stem}</p>
       </CardHeader>
       
       <CardContent className="space-y-6">
@@ -90,9 +91,9 @@ export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
           <>
             <RadioGroup value={selectedAnswer?.toString()} onValueChange={(value) => setSelectedAnswer(parseInt(value))}>
               {card.prompt.options.map((option: string, index: number) => (
-                <div key={index} className="flex items-center space-x-2">
-                  <RadioGroupItem value={index.toString()} id={`option-${index}`} />
-                  <Label htmlFor={`option-${index}`} className="text-foreground cursor-pointer">
+                <div key={index} className="flex items-center space-x-3">
+                  <RadioGroupItem value={index.toString()} id={`option-${index}`} className="w-5 h-5" />
+                  <Label htmlFor={`option-${index}`} className="text-foreground cursor-pointer text-base min-h-[44px] flex items-center">
                     {option}
                   </Label>
                 </div>
@@ -102,9 +103,9 @@ export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
             <Button 
               onClick={handleSubmit}
               disabled={selectedAnswer === null}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors min-h-[44px] text-base"
             >
-              Submit Answer
+              {COPY.session.submit}
             </Button>
           </>
         ) : (
@@ -112,7 +113,7 @@ export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
             <div className={`p-4 rounded-lg ${isCorrect ? 'bg-green-500/10 border border-green-500/20' : 'bg-red-500/10 border border-red-500/20'}`}>
               <div className="flex items-center space-x-2 mb-2">
                 <span className={`font-medium ${isCorrect ? 'text-green-400' : 'text-red-400'}`}>
-                  {isCorrect ? 'Correct!' : 'Not quite'}
+                  {isCorrect ? COPY.feedback.correct : COPY.feedback.incorrect}
                 </span>
               </div>
               <p className="text-sm text-muted-foreground">{feedback}</p>
@@ -120,14 +121,14 @@ export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
 
             <div className="space-y-4">
               <div>
-                <Label className="text-foreground font-medium">How confident did that feel?</Label>
+                <Label className="text-foreground font-medium text-base">{COPY.session.gradeTitle}</Label>
                 <p className="text-sm text-muted-foreground mb-3">Rate your confidence from 1 (very difficult) to 5 (very easy)</p>
                 <RadioGroup value={userGrade?.toString()} onValueChange={(value) => setUserGrade(parseInt(value))}>
-                  <div className="grid grid-cols-5 gap-2">
+                  <div className="grid grid-cols-5 gap-3">
                     {[1, 2, 3, 4, 5].map((grade) => (
-                      <div key={grade} className="flex items-center space-x-2">
-                        <RadioGroupItem value={grade.toString()} id={`grade-${grade}`} />
-                        <Label htmlFor={`grade-${grade}`} className="text-sm cursor-pointer">
+                      <div key={grade} className="flex flex-col items-center space-y-2">
+                        <RadioGroupItem value={grade.toString()} id={`grade-${grade}`} className="w-6 h-6" />
+                        <Label htmlFor={`grade-${grade}`} className="text-base cursor-pointer min-h-[44px] flex items-center justify-center">
                           {grade}
                         </Label>
                       </div>
@@ -139,9 +140,9 @@ export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
               <Button 
                 onClick={handleGradeSubmit}
                 disabled={userGrade === null}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors min-h-[44px] text-base"
               >
-                Continue
+                {COPY.session.next}
               </Button>
             </div>
           </>

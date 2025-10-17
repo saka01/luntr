@@ -96,7 +96,7 @@ export function PlanCard({ card, onSubmit }: PlanCardProps) {
                 placeholder="1. Analyze the problem...&#10;2. Choose data structure...&#10;3. Implement solution..."
                 value={userPlan}
                 onChange={(e) => setUserPlan(e.target.value)}
-                className="min-h-[120px] bg-input/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20"
+                className="min-h-[120px] bg-input/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20 text-base"
                 maxLength={400}
               />
               <p className="text-xs text-muted-foreground">
@@ -125,14 +125,14 @@ export function PlanCard({ card, onSubmit }: PlanCardProps) {
 
             <div className="space-y-4">
               <div>
-                <Label className="text-foreground font-medium">How confident did that feel?</Label>
+                <Label className="text-foreground font-medium text-base">{COPY.session.gradeTitle}</Label>
                 <p className="text-sm text-muted-foreground mb-3">Rate your confidence from 1 (very difficult) to 5 (very easy)</p>
                 <RadioGroup value={userGrade?.toString()} onValueChange={(value) => setUserGrade(parseInt(value))}>
-                  <div className="grid grid-cols-5 gap-2">
+                  <div className="grid grid-cols-5 gap-3">
                     {[1, 2, 3, 4, 5].map((grade) => (
-                      <div key={grade} className="flex items-center space-x-2">
-                        <RadioGroupItem value={grade.toString()} id={`grade-${grade}`} />
-                        <Label htmlFor={`grade-${grade}`} className="text-sm cursor-pointer">
+                      <div key={grade} className="flex flex-col items-center space-y-2">
+                        <RadioGroupItem value={grade.toString()} id={`grade-${grade}`} className="w-6 h-6" />
+                        <Label htmlFor={`grade-${grade}`} className="text-base cursor-pointer min-h-[44px] flex items-center justify-center">
                           {grade}
                         </Label>
                       </div>
@@ -144,9 +144,9 @@ export function PlanCard({ card, onSubmit }: PlanCardProps) {
               <Button 
                 onClick={handleGradeSubmit}
                 disabled={userGrade === null}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors min-h-[44px] text-base"
               >
-                Continue
+                {COPY.session.next}
               </Button>
             </div>
           </>

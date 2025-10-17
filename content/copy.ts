@@ -1,35 +1,39 @@
 export const COPY = {
-  appName: "Luntr",
+  appName: "Pattern Gym",
+  badges: { 
+    pattern: (p: string) => `Pattern: ${p}`, 
+    comingSoon: "More patterns coming soon" 
+  },
   nav: { 
     dashboard: "Dashboard", 
-    session: "Start Training", 
+    session: "Start Session", 
     signOut: "Sign out" 
   },
   onboarding: {
-    title: "Let's customize your coding workout",
-    levelLabel: "Your coding experience level",
+    title: "Let's personalize your training",
+    levelLabel: "Your current level",
     timeLabel: "Daily practice time",
-    start: "Start Training"
+    start: "Save & continue"
   },
   dashboard: {
-    greeting: "Ready to code?",
-    dueToday: (n: number) => `Patterns to practice: ${n}`,
-    startSession: "Start Training Session",
-    weakestPatterns: "Focus areas",
-    streak: (d: number) => `${d} day streak`
+    greeting: "Welcome back",
+    dueToday: (n: number) => `Cards due today: ${n}`,
+    startSession: "Start Session",
+    mastery: (pct: number) => `Mastery: ${pct}%`,
+    streak: (d: number) => `Streak: ${d} day${d === 1 ? "" : "s"}`
   },
   session: {
-    header: "Training Session",
-    progress: (i: number, total: number) => `Problem ${i} of ${total}`,
+    header: "Daily Session",
+    progress: (i: number, total: number) => `Card ${i} of ${total}`,
     submit: "Submit",
     next: "Next",
     gradeTitle: "How confident did that feel?",
-    completeTitle: "Great workout!",
+    completeTitle: "Session complete!",
     backToDashboard: "Back to Dashboard"
   },
   feedback: {
-    correct: "Nice work!",
-    incorrect: "Keep practicing",
-    planHintPrefix: "Tip:"
+    correct: "Correct",
+    incorrect: "Not quite",
+    planHintPrefix: "Hint:"
   }
 };

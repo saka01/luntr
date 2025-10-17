@@ -1,43 +1,32 @@
-// Fallback feedback system when LLM fails
-
-export function getFallbackMCQRationale(pattern: string): string {
-  const rationales: Record<string, string> = {
-    'Two Pointers': 'Two pointers efficiently eliminate impossible combinations by moving inward from both ends.',
-    'Sliding Window': 'Sliding window maintains optimal subarray properties by expanding and contracting boundaries.',
-    'Binary Search': 'Binary search eliminates half the search space each iteration in sorted data structures.',
-    'Hashing': 'Hash maps provide O(1) lookup for complements and frequency tracking in linear time.'
-  }
-  
-  return rationales[pattern] || 'This pattern efficiently solves the problem by optimizing the search space.'
-}
-
-export function getFallbackPlanGrade(userPlan: string, checklist: string[]): { score_0_5: number; brief_feedback: string } {
+export function checkPlanKeywords(userPlan: string, checklist: string[]): { score: number; feedback: string } {
   const planLower = userPlan.toLowerCase()
-  let score = 0
-  let missingKeywords: string[] = []
+  const missingKeywords: string[] = []
   
   // Check for each keyword in the checklist
   for (const keyword of checklist) {
-    const keywordLower = keyword.toLowerCase()
-    if (planLower.includes(keywordLower)) {
-      score += 1
-    } else {
+    if (!planLower.includes(keyword.toLowerCase())) {
       missingKeywords.push(keyword)
     }
   }
   
-  // Normalize score to 0-5 scale
-  const normalizedScore = Math.round((score / checklist.length) * 5)
+  // Calculate score based on missing keywords
+  const totalKeywords = checklist.length
+  const foundKeywords = totalKeywords - missingKeywords.length
+  const score = Math.round((foundKeywords / totalKeywords) * 5) // Scale to 0-5
   
-  let feedback = ''
+  // Generate feedback
   if (missingKeywords.length === 0) {
-    feedback = 'Good coverage of key concepts.'
+    return { score, feedback: "Good coverage." }
   } else {
-    feedback = `Hint: include "${missingKeywords[0]}" step.`
+    const hintKeyword = missingKeywords[0] // Use first missing keyword
+    return { score, feedback: `Hint: include "${hintKeyword}" step.` }
+  }
+}
+
+export function getMCQFallbackRationale(pattern: string): string {
+  const fallbacks: Record<string, string> = {
+    "Sliding Window": "Sliding Window efficiently maintains a window while processing data sequentially."
   }
   
-  return {
-    score_0_5: normalizedScore,
-    brief_feedback: feedback
-  }
+  return fallbacks[pattern] || "This pattern efficiently solves the given problem."
 }

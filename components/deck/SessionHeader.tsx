@@ -11,9 +11,9 @@ export function SessionHeader({ currentIndex, totalCards }: SessionHeaderProps) 
     <div className="flex justify-between items-center">
       <div>
         <h1 className="text-2xl font-bold text-foreground">{COPY.session.header}</h1>
-        <p className="text-muted-foreground">{COPY.session.progress(currentIndex, totalCards)}</p>
+        <p className="text-muted-foreground text-base">{COPY.session.progress(currentIndex, totalCards)}</p>
       </div>
-      <Badge variant="outline" className="text-lg px-4 py-2">
+      <Badge variant="outline" className="text-lg px-4 py-2 min-h-[44px] flex items-center">
         {currentIndex}/{totalCards}
       </Badge>
     </div>
