@@ -128,47 +128,47 @@ export const Header = () => {
                 onMouseLeave={handleFreeToolsMouseLeave}
               >
                 <div className="space-y-4">
-                  {/* Tax Calculator */}
+                  {/* Pattern Practice */}
                   <div className="group">
-                    <a href="/canada-income-tax-calculator" className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors cursor-pointer">
+                    <a href="/dashboard" className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors cursor-pointer">
                       <div className="w-8 h-8 flex items-center justify-center">
                         <svg className="w-5 h-5 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                         </svg>
                       </div>
                       <div>
-                        <h3 className="font-semibold text-foreground">Tax Calculator</h3>
-                        <p className="text-sm text-muted-foreground group-hover:text-foreground/80">Calculate your income tax</p>
+                        <h3 className="font-semibold text-foreground">Pattern Practice</h3>
+                        <p className="text-sm text-muted-foreground group-hover:text-foreground/80">Master coding patterns</p>
                       </div>
                     </a>
                   </div>
                   
-                  {/* T2125 Calculator */}
+                  {/* Algorithm Training */}
                   <div className="group">
-                    <a href="/canada-t2125-tax-calculator" className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors cursor-pointer">
+                    <a href="/session" className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors cursor-pointer">
                       <div className="w-8 h-8 flex items-center justify-center">
                         <svg className="w-5 h-5 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                       </div>
                       <div>
-                        <h3 className="font-semibold text-foreground">T2125 Calculator</h3>
-                        <p className="text-sm text-muted-foreground group-hover:text-foreground/80">Self-employment tax form</p>
+                        <h3 className="font-semibold text-foreground">Algorithm Training</h3>
+                        <p className="text-sm text-muted-foreground group-hover:text-foreground/80">Structured practice sessions</p>
                       </div>
                     </a>
                   </div>
                   
-                  {/* Deduction Finder */}
+                  {/* Progress Tracking */}
                   <div className="group">
-                    <a href="/deduction-finder" className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors cursor-pointer">
+                    <a href="/dashboard" className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors cursor-pointer">
                       <div className="w-8 h-8 flex items-center justify-center">
                         <svg className="w-5 h-5 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                       </div>
                       <div>
-                        <h3 className="font-semibold text-foreground">Deduction Finder</h3>
-                        <p className="text-sm text-muted-foreground group-hover:text-foreground/80">Find tax deductions</p>
+                        <h3 className="font-semibold text-foreground">Progress Tracking</h3>
+                        <p className="text-sm text-muted-foreground group-hover:text-foreground/80">Track your coding fitness</p>
                       </div>
                     </a>
                   </div>
@@ -313,13 +313,13 @@ export const Header = () => {
                       </svg>
                     </div>
                     <div>
-                      <div className="font-medium">Tax Calculator</div>
-                      <div className="text-sm text-muted-foreground group-hover:text-foreground/80">Calculate your income tax</div>
+                      <div className="font-medium">Pattern Practice</div>
+                      <div className="text-sm text-muted-foreground group-hover:text-foreground/80">Master coding patterns</div>
                     </div>
                   </a>
                   
                   <a
-                    href="/canada-t2125-tax-calculator"
+                    href="/session"
                     className="flex items-center gap-3 px-4 py-3 text-base text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50 group cursor-pointer"
                   >
                     <div className="w-6 h-6 flex items-center justify-center">
@@ -328,13 +328,13 @@ export const Header = () => {
                       </svg>
                     </div>
                     <div>
-                      <div className="font-medium">T2125 Calculator</div>
-                      <div className="text-sm text-muted-foreground group-hover:text-foreground/80">Self-employment tax form</div>
+                      <div className="font-medium">Algorithm Training</div>
+                      <div className="text-sm text-muted-foreground group-hover:text-foreground/80">Structured practice sessions</div>
                     </div>
                   </a>
                   
                   <a
-                    href="/deduction-finder"
+                    href="/dashboard"
                     className="flex items-center gap-3 px-4 py-3 text-base text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50 group cursor-pointer"
                   >
                     <div className="w-6 h-6 flex items-center justify-center">
@@ -343,8 +343,8 @@ export const Header = () => {
                       </svg>
                     </div>
                     <div>
-                      <div className="font-medium">Deduction Finder</div>
-                      <div className="text-sm text-muted-foreground group-hover:text-foreground/80">Find tax deductions</div>
+                      <div className="font-medium">Progress Tracking</div>
+                      <div className="text-sm text-muted-foreground group-hover:text-foreground/80">Track your coding fitness</div>
                     </div>
                   </a>
                 </div>

@@ -9,14 +9,78 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-        
 
-model Waitlist {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  firstName String?
-  source    String?  
-  created_at DateTime @default(now())
-
-  @@map("waitlist")
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  createdAt     DateTime @default(now())
+  profile       Profile?
+  progress      UserProgress[]
+  attempts      Attempt[]
 }
+
+model Profile {
+  userId       String  @id
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  level        Level
+  dailyMinutes Int
+  streak       Int      @default(0)
+  lastActive   DateTime?
+}
+
+enum Level {
+  Beginner
+  Intermediate
+  Advanced
+}
+
+model Card {
+  id         String     @id @default(cuid())
+  slug       String     @unique
+  pattern    String
+  type       CardType
+  difficulty Difficulty  @default(M)
+  prompt     Json       // mcq: { stem, options: [a,b,c] } | plan: { stem }
+  answer     Json       // mcq: { correctIndex, rationale } | plan: { checklist: [..], rationale }
+  hints      String?    // JSON stringified hints (optional)
+  progress   UserProgress[]
+  attempts   Attempt[]
+}
+
+enum CardType {
+  mcq
+  plan
+}
+
+enum Difficulty {
+  E
+  M
+  H
+}
+
+model UserProgress {
+  id           String   @id @default(cuid())
+  userId       String
+  cardId       String
+  ef           Float    @default(2.5)
+  reps         Int      @default(0)
+  intervalDays Int      @default(0)
+  nextDue      DateTime @default(now())
+  lastGrade    Int?
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  card         Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, cardId])
+}
+
+model Attempt {
+  id        String   @id @default(cuid())
+  userId    String
+  cardId    String
+  grade     Int
+  feedback  Json        // store LLM or fallback feedback
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  card      Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
+}
+

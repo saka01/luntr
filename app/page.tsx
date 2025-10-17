@@ -6,7 +6,6 @@ import { NewReleasePromo } from "@/components/new-release-promo"
 import { FAQSection } from "@/components/faq-section"
 import { PricingSection } from "@/components/pricing-section"
 import { StickyFooter } from "@/components/sticky-footer"
-import { DeductionFinderSection } from "@/components/deduction-finder-section"
 
 export default function Home() {
   return (
@@ -32,10 +31,7 @@ export default function Home() {
         <PricingSection />
       </div>
 
-      {/* Deduction Finder Section */}
-      <DeductionFinderSection />
-
-
+  
       <NewReleasePromo />
 
       {/* FAQ Section */}

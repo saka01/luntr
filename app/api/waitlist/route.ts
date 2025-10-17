@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { createServerClient } from '@supabase/ssr'
+import { cookies } from 'next/headers'
 import { z } from 'zod'
 
 const waitlistSchema = z.object({
@@ -8,16 +9,36 @@ const waitlistSchema = z.object({
   source: z.string().optional(),
 })
 
+async function getSupabaseClient() {
+  const cookieStore = await cookies()
+  
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value
+        },
+      },
+    }
+  )
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     console.log('Received waitlist data:', body)
     const validatedData = waitlistSchema.parse(body)
 
+    const supabase = await getSupabaseClient()
+
     // Check if email already exists
-    const existingEntry = await prisma.waitlist.findUnique({
-      where: { email: validatedData.email }
-    })
+    const { data: existingEntry } = await supabase
+      .from('waitlist')
+      .select('*')
+      .eq('email', validatedData.email)
+      .single()
 
     if (existingEntry) {
       return NextResponse.json(
@@ -27,16 +48,24 @@ export async function POST(request: NextRequest) {
     }
 
     // Create new waitlist entry
-    const waitlistEntry = await prisma.waitlist.create({
-      data: {
+    const { data: waitlistEntry, error: insertError } = await supabase
+      .from('waitlist')
+      .insert({
         email: validatedData.email,
-        firstName: validatedData.firstName,
+        first_name: validatedData.firstName,
         source: validatedData.source || 'unknown',
-      }
-    })
+      })
+      .select()
+      .single()
+
+    if (insertError) {
+      throw insertError
+    }
 
     // Get total count for position
-    const totalCount = await prisma.waitlist.count()
+    const { count: totalCount } = await supabase
+      .from('waitlist')
+      .select('*', { count: 'exact', head: true })
 
     return NextResponse.json({
       success: true,
@@ -44,7 +73,7 @@ export async function POST(request: NextRequest) {
         id: waitlistEntry.id,
         position: totalCount,
         email: waitlistEntry.email,
-        firstName: waitlistEntry.firstName,
+        firstName: waitlistEntry.first_name,
       }
     })
 
@@ -67,7 +96,11 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   try {
-    const count = await prisma.waitlist.count()
+    const supabase = await getSupabaseClient()
+    const { count } = await supabase
+      .from('waitlist')
+      .select('*', { count: 'exact', head: true })
+    
     return NextResponse.json({ count })
   } catch (error) {
     console.error('Waitlist count error:', error)

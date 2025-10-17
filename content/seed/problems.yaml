@@ -1,0 +1,156 @@
+cards:
+  # Two Pointers Pattern
+  - slug: "two-pointers-array-sum"
+    pattern: "Two Pointers"
+    type: "mcq"
+    difficulty: "E"
+    prompt:
+      stem: "Given a sorted array and a target sum, find two numbers that add up to the target."
+      options:
+        - "Use nested loops to check all pairs"
+        - "Use two pointers starting from both ends"
+        - "Use a hash map to store complements"
+    answer:
+      correctIndex: 1
+      rationale: "Two pointers efficiently find pairs in sorted arrays by eliminating impossible combinations."
+  
+  - slug: "two-pointers-palindrome"
+    pattern: "Two Pointers"
+    type: "mcq"
+    difficulty: "M"
+    prompt:
+      stem: "Check if a string is a palindrome, ignoring case and non-alphanumeric characters."
+      options:
+        - "Reverse the string and compare"
+        - "Use two pointers moving inward from both ends"
+        - "Use a stack to track characters"
+    answer:
+      correctIndex: 1
+      rationale: "Two pointers efficiently validate palindromes by comparing characters from both ends simultaneously."
+  
+  - slug: "two-pointers-container-water"
+    pattern: "Two Pointers"
+    type: "plan"
+    difficulty: "H"
+    prompt:
+      stem: "Find the maximum area of water that can be contained between two vertical lines."
+    answer:
+      checklist: ["two pointers", "area calculation", "move smaller pointer", "track maximum"]
+      rationale: "Two pointers with area calculation and greedy movement of the smaller pointer."
+
+  # Sliding Window Pattern
+  - slug: "sliding-window-max-sum"
+    pattern: "Sliding Window"
+    type: "mcq"
+    difficulty: "E"
+    prompt:
+      stem: "Find the maximum sum of any contiguous subarray of size k."
+      options:
+        - "Calculate sum for every possible subarray"
+        - "Use sliding window to maintain running sum"
+        - "Use prefix sums with two pointers"
+    answer:
+      correctIndex: 1
+      rationale: "Sliding window efficiently maintains the sum by adding new elements and removing old ones."
+  
+  - slug: "sliding-window-longest-substring"
+    pattern: "Sliding Window"
+    type: "mcq"
+    difficulty: "M"
+    prompt:
+      stem: "Find the length of the longest substring without repeating characters."
+      options:
+        - "Check all possible substrings for uniqueness"
+        - "Use sliding window with character frequency tracking"
+        - "Use two pointers with a set to track seen characters"
+    answer:
+      correctIndex: 1
+      rationale: "Sliding window with frequency tracking efficiently finds the longest unique substring."
+  
+  - slug: "sliding-window-fruit-basket"
+    pattern: "Sliding Window"
+    type: "plan"
+    difficulty: "H"
+    prompt:
+      stem: "Find the maximum number of fruits you can collect from trees, where you can only have 2 different types."
+    answer:
+      checklist: ["sliding window", "frequency map", "shrink when >2 types", "track maximum"]
+      rationale: "Sliding window with frequency map to maintain at most 2 fruit types."
+
+  # Binary Search Pattern
+  - slug: "binary-search-sorted-array"
+    pattern: "Binary Search"
+    type: "mcq"
+    difficulty: "E"
+    prompt:
+      stem: "Search for a target value in a sorted array."
+      options:
+        - "Use linear search through the entire array"
+        - "Use binary search to eliminate half the array each time"
+        - "Use interpolation search for better average case"
+    answer:
+      correctIndex: 1
+      rationale: "Binary search efficiently finds targets in sorted arrays by repeatedly halving the search space."
+  
+  - slug: "binary-search-rotated-array"
+    pattern: "Binary Search"
+    type: "mcq"
+    difficulty: "M"
+    prompt:
+      stem: "Search for a target in a rotated sorted array (e.g., [4,5,6,7,0,1,2])."
+      options:
+        - "Use regular binary search on the entire array"
+        - "Find pivot point first, then search in appropriate half"
+        - "Use modified binary search that handles rotation"
+    answer:
+      correctIndex: 2
+      rationale: "Modified binary search handles rotation by comparing with both ends and adjusting search direction."
+  
+  - slug: "binary-search-minimum-rotated"
+    pattern: "Binary Search"
+    type: "plan"
+    difficulty: "H"
+    prompt:
+      stem: "Find the minimum element in a rotated sorted array."
+    answer:
+      checklist: ["binary search", "compare mid with ends", "check rotation", "narrow search"]
+      rationale: "Binary search with rotation detection to find the minimum element efficiently."
+
+  # Hashing Pattern
+  - slug: "hashing-two-sum"
+    pattern: "Hashing"
+    type: "mcq"
+    difficulty: "E"
+    prompt:
+      stem: "Find two numbers in an array that add up to a target sum."
+      options:
+        - "Use nested loops to check all pairs"
+        - "Use a hash map to store complements"
+        - "Sort the array and use two pointers"
+    answer:
+      correctIndex: 1
+      rationale: "Hash map provides O(1) lookup for complements, making the solution O(n) instead of O(n²)."
+  
+  - slug: "hashing-group-anagrams"
+    pattern: "Hashing"
+    type: "mcq"
+    difficulty: "M"
+    prompt:
+      stem: "Group strings that are anagrams of each other together."
+      options:
+        - "Compare each string with every other string"
+        - "Use sorted string as key in hash map"
+        - "Use character frequency count as key"
+    answer:
+      correctIndex: 1
+      rationale: "Using sorted strings as hash keys efficiently groups anagrams together."
+  
+  - slug: "hashing-subarray-sum"
+    pattern: "Hashing"
+    type: "plan"
+    difficulty: "H"
+    prompt:
+      stem: "Find if there exists a subarray with sum equal to k."
+    answer:
+      checklist: ["prefix sum", "hash map", "check complement", "handle edge case"]
+      rationale: "Prefix sum with hash map efficiently finds subarrays with target sum."

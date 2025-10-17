@@ -5,36 +5,35 @@ import { GeistMono } from "geist/font/mono"
 import "./globals.css"
 import { Header } from "@/components/header"
 import { ThemeProvider } from "@/components/theme-provider"
+import { AuthSync } from "@/components/auth-sync"
 
 export const metadata: Metadata = {
-  title: "Tallo | Unlock Missed Tax Deductions for Creators",
+  title: "Luntr | Pattern Gym for Coding Practice",
   description:
-    "Tallo helps Canadian creators uncover missed T2125 tax deductions through intelligent automation and client self-review workflows — built in Canada for Canadians.",
+    "Luntr helps developers master coding patterns through spaced repetition and AI-powered feedback. Build your coding fitness with structured practice sessions.",
   keywords: [
-    "T2125 tax deductions for creators",
-    "Canadian creators",
-    "creators",
-    "creator taxes",
-    "self-employed tax Canada",
-    "tax automation software for creators",
-    "creators firms Canada",
-    "CRA compliance",
-    "deduction finder for creators",
-    "Tallo",
+    "coding patterns",
+    "algorithm practice",
+    "coding interview prep",
+    "spaced repetition",
+    "coding fitness",
+    "algorithm training",
+    "coding patterns practice",
+    "Luntr",
   ],
   openGraph: {
-    title: "Tallo | Built in Canada for Creators",
+    title: "Luntr | Pattern Gym for Coding Practice",
     description:
-      "Uncover missed tax deductions for creators with intelligent automation. Backed by CPAs. Built in Canada for Canadians.",
-    url: "https://tallo.ca",
-    siteName: "Tallo",
-    locale: "en_CA",
+      "Master coding patterns through structured practice sessions with AI-powered feedback and spaced repetition.",
+    url: "https://luntr.dev",
+    siteName: "Luntr",
+    locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Tallo | Unlock Missed Tax Deductions for Creators",
-    description: "Helping Canadian accountants find more for their clients — powered by intelligent tax automation. Built in Canada for Canadians.",
+    title: "Luntr | Pattern Gym for Coding Practice",
+    description: "Master coding patterns through structured practice sessions with AI-powered feedback and spaced repetition.",
   },
 }
 
@@ -61,6 +60,7 @@ html {
           enableSystem
           disableTransitionOnChange
         >
+          <AuthSync />
           <Header />
           {children}
         </ThemeProvider>

@@ -46,7 +46,7 @@ export default function Hero() {
             className="mt-auto pb-8"
           >
             <div className="text-center">
-              <p className="text-xs font-bold tracking-wider text-muted-foreground mb-6 uppercase">Built for 🇨🇦 <span className="text-primary">Canadian creators</span> on</p>
+              <p className="text-xs font-bold tracking-wider text-muted-foreground mb-6 uppercase">Built for <span className="text-primary">developers</span> mastering</p>
               <div className="flex items-center justify-center gap-4">
                 {/* YouTube */}
                 <div>
@@ -126,7 +126,7 @@ export default function Hero() {
               <h1 id="main-title" className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
               {/* You <span className="text-primary italic">create</span>. <br/>We help you <span className="italic text-primary">keep more</span> of what you earn.  */}
               
-              Stop <strong>losing</strong> <i className="italic font-thin">thousands</i> in taxes <em className="italic">every year</em>
+              Master <strong>coding patterns</strong> with <i className="italic font-thin">spaced repetition</i> and <em className="italic">AI feedback</em>
               </h1>
             </motion.div>
 
@@ -137,7 +137,7 @@ export default function Hero() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mx-auto mb-12 max-w-2xl text-lg text-muted-foreground"
             >
-Tallo is the simplest way to uncover and track tax write-offs. Every lens, app, subscription, trip, and client meal counts. 
+Luntr is the simplest way to master coding patterns. Practice with structured sessions, get AI feedback, and build your coding fitness through spaced repetition. 
             </motion.p>
 
             <motion.div
@@ -185,7 +185,7 @@ Tallo is the simplest way to uncover and track tax write-offs. Every lens, app, 
                           <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
                           <path d="M2 12h20"></path>
                         </svg>
-                        Get Early Access
+                        Start Training
                       </p>
                     </div>
                     <div className="text-muted-foreground group-hover:ml-4 ease-in-out transition-all size-[24px] flex items-center justify-center rounded-full border-2 border-border">
