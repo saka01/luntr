@@ -125,6 +125,12 @@ export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
                   {isCorrect ? COPY.feedback.correct : COPY.feedback.incorrect}
                 </span>
               </div>
+              {!isCorrect && selectedAnswer !== null && (
+                <div className="mb-3 p-3 bg-red-500/5 border border-red-500/10 rounded-md">
+                  <p className="text-sm text-red-300 font-medium mb-1">Your answer:</p>
+                  <p className="text-sm text-red-200">{card.prompt.options[selectedAnswer]}</p>
+                </div>
+              )}
               {isGrading ? (
                 <div className="flex items-center justify-center space-x-2 py-2">
                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
