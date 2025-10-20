@@ -131,10 +131,33 @@ export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
                   {isCorrect ? COPY.feedback.correct : COPY.feedback.incorrect}
                 </span>
               </div>
-              {!isCorrect && selectedAnswer !== null && (
-                <div className="mb-3 p-3 bg-red-500/5 border border-red-500/10 rounded-md">
-                  <p className="text-sm text-red-300 font-medium mb-1">Your answer:</p>
-                  <p className="text-sm text-red-200">{card.prompt.options[selectedAnswer]}</p>
+              {selectedAnswer !== null && (
+                <div className="space-y-3">
+                  {/* User's answer */}
+                  <div className={`p-3 mb-3 rounded-md border ${
+                    isCorrect 
+                      ? 'bg-green-500/5 border-green-500/10' 
+                      : 'bg-red-500/5 border-red-500/10'
+                  }`}>
+                    <p className={`text-sm font-medium mb-1 ${
+                      isCorrect ? 'text-green-300' : 'text-red-300'
+                    }`}>
+                      Your answer:
+                    </p>
+                    <p className={`text-sm ${
+                      isCorrect ? 'text-green-200' : 'text-red-200'
+                    }`}>
+                      {card.prompt.options[selectedAnswer]}
+                    </p>
+                  </div>
+
+                  {/* Correct answer - only show when wrong */}
+                  {!isCorrect && (
+                    <div className="p-3 bg-green-500/5 border border-green-500/10 rounded-md mb-3">
+                      <p className="text-sm text-green-300 font-medium mb-1">Correct answer:</p>
+                      <p className="text-sm text-green-200">{card.prompt.options[card.answer.correctIndex]}</p>
+                    </div>
+                  )}
                 </div>
               )}
               {isGrading ? (

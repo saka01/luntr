@@ -23,7 +23,7 @@ export async function generateMCQRationale(pattern: string, problemSummary: stri
       }
     })
     
-    const prompt = `You write tiny rationales for DSA pattern choices. 1 sentence, <= 30 words, specific and practical.
+    const prompt = `You write tiny rationales for DSA pattern choices. 1 sentence, <= 30 words, specific, small words for learners and practical.
 
 Pattern: ${pattern}
 Problem: ${problemSummary}

@@ -143,7 +143,7 @@ export default function SessionPage() {
   return (
     <div className="h-full bg-background overflow-hidden">
 
-      <div className="relative z-10 h-full max-h-screen flex flex-col container mx-auto px-4 py-8 gap-12 overflow-hidden">
+      <div className="relative z-10 h-full max-h-screen flex flex-col container mx-auto px-4 py-8 gap-4 overflow-hidden">
         <SessionHeader 
           currentIndex={currentCardIndex + 1}
           totalCards={cards.length}
