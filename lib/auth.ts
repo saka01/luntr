@@ -8,6 +8,7 @@ export interface AuthUser {
 }
 
 export const auth = {
+
   // Sign up with magic email link
   async signUp(email: string, name?: string) {
     const { data, error } = await supabase.auth.signInWithOtp({
@@ -21,7 +22,7 @@ export const auth = {
     })
     return { data, error }
   },
-
+  
   // Sign in with magic email link
   async signIn(email: string) {
     const { data, error } = await supabase.auth.signInWithOtp({
