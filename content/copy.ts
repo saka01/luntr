@@ -27,7 +27,7 @@ export const COPY = {
     progress: (i: number, total: number) => `Card ${i} of ${total}`,
     submit: "Submit",
     next: "Next",
-    gradeTitle: "How confident did that feel?",
+    gradeTitle: "Litework",
     completeTitle: "Session complete!",
     backToDashboard: "Back to Dashboard"
   },

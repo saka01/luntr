@@ -163,6 +163,7 @@
 
 body {
   letter-spacing: var(--tracking-normal);
+  overflow-x: hidden;
 }
 
 /* Added custom text selection styling with orange background and dark text */
@@ -198,6 +199,7 @@ body {
   html {
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
   }
 }
 

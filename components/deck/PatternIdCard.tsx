@@ -81,6 +81,12 @@ export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
     onSubmit(selectedAnswer, { feedback, isCorrect, userGrade })
   }
 
+  const handleGradeClick = (grade: number) => {
+    const isCorrect = selectedAnswer === card.answer.correctIndex
+    setUserGrade(grade)
+    onSubmit(selectedAnswer, { feedback, isCorrect, userGrade: grade })
+  }
+
   const isCorrect = selectedAnswer === card.answer.correctIndex
 
   return (
@@ -144,29 +150,36 @@ export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
 
             <div className="space-y-4">
               <div>
-                <Label className="text-foreground font-medium text-base">{COPY.session.gradeTitle}</Label>
-                <p className="text-sm text-muted-foreground mb-3">Rate your confidence from 1 (very difficult) to 5 (very easy)</p>
-                <RadioGroup value={userGrade?.toString()} onValueChange={(value) => setUserGrade(parseInt(value))}>
-                  <div className="grid grid-cols-5 gap-3">
-                    {[1, 2, 3, 4, 5].map((grade) => (
-                      <div key={grade} className="flex flex-col items-center space-y-2">
-                        <RadioGroupItem value={grade.toString()} id={`grade-${grade}`} className="w-6 h-6" />
-                        <Label htmlFor={`grade-${grade}`} className="text-base cursor-pointer min-h-[44px] flex items-center justify-center">
-                          {grade}
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                </RadioGroup>
+                  <Label className="text-foreground font-medium text-base mb-3 text-center italic">How ya feelin'?</Label>
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { value: 1, label: "Litework" },
+                    { value: 3, label: "6' 7\"" },
+                    { value: 5, label: "Tuff" }
+                  ].map((grade) => (
+                    <button
+                      key={grade.value}
+                      onClick={() => handleGradeClick(grade.value)}
+                      disabled={isGrading}
+                      className={`
+                        relative p-4 rounded-xl border-2 transition-all duration-200 min-h-[80px] flex items-center justify-center text-center
+                        ${userGrade === grade.value 
+                          ? 'border-primary bg-primary/10 text-primary shadow-md scale-105' 
+                          : 'border-border bg-card hover:border-primary/50 hover:bg-primary/5 text-foreground hover:shadow-sm'
+                        }
+                      `}
+                    >
+                      <span className="font-medium text-sm leading-tight">
+                        {grade.label}
+                      </span>
+                      {userGrade === grade.value && (
+                        <div className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full"></div>
+                      )}
+                    </button>
+                  ))}
+                </div>
               </div>
 
-              <Button 
-                onClick={handleGradeSubmit}
-                disabled={userGrade === null}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors min-h-[44px] text-base"
-              >
-                {COPY.session.next}
-              </Button>
             </div>
           </>
         )}
