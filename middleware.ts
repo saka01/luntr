@@ -54,14 +54,15 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  // Allow auth callback route to handle authentication
+  // Allow auth callback routes to handle authentication without interference
   if (request.nextUrl.pathname.startsWith('/auth/callback')) {
     return response
   }
+
+  // Refresh session to ensure we have the latest auth state
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
   // Protect dashboard routes
   if (request.nextUrl.pathname.startsWith('/dashboard')) {

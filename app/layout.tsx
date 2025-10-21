@@ -5,7 +5,6 @@ import { GeistMono } from "geist/font/mono"
 import "./globals.css"
 import { Header } from "@/components/header"
 import { ThemeProvider } from "@/components/theme-provider"
-import { AuthSync } from "@/components/auth-sync"
 
 export const metadata: Metadata = {
   title: "Luntr | Pattern Gym for Coding Practice",
@@ -67,7 +66,6 @@ html {
           enableSystem
           disableTransitionOnChange
         >
-          <AuthSync />
           <Header />
           {children}
         </ThemeProvider>
