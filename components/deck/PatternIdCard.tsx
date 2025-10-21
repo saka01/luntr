@@ -6,17 +6,9 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
+import { Timer } from "@/components/ui/timer"
 import { COPY } from "@/content/copy"
-
-interface SessionCard {
-  id: string
-  slug: string
-  pattern: string
-  type: 'mcq' | 'plan'
-  difficulty: 'E' | 'M' | 'H'
-  prompt: any
-  answer: any
-}
+import { SessionCard } from "@/lib/session-engine"
 
 interface PatternIdCardProps {
   card: SessionCard
@@ -26,65 +18,65 @@ interface PatternIdCardProps {
 export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [isSubmitted, setIsSubmitted] = useState(false)
-  const [feedback, setFeedback] = useState<string>("")
+  const [feedback, setFeedback] = useState<any>(null)
   const [userGrade, setUserGrade] = useState<number | null>(null)
-  const [isGrading, setIsGrading] = useState(false)
+  const [timeMs, setTimeMs] = useState(0)
+  const [timedOut, setTimedOut] = useState(false)
+  const [startTime] = useState(Date.now())
 
   // Reset state when card changes
   useEffect(() => {
     setSelectedAnswer(null)
     setIsSubmitted(false)
-    setFeedback("")
+    setFeedback(null)
     setUserGrade(null)
-    setIsGrading(false)
+    setTimeMs(0)
+    setTimedOut(false)
   }, [card.id])
 
   const handleSubmit = async () => {
     if (selectedAnswer === null) return
 
+    const elapsed = Date.now() - startTime
+    setTimeMs(elapsed)
     setIsSubmitted(true)
-    setIsGrading(true)
 
-    try {
-      // Get AI feedback
-      const response = await fetch('/api/ai/grade', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          mode: 'mcq',
-          pattern: card.pattern,
-          problemSummary: card.prompt.stem,
-        }),
-      })
-
-      if (response.ok) {
-        const result = await response.json()
-        setFeedback(result.rationale)
-      } else {
-        // Use stored rationale as fallback
-        setFeedback(card.answer.rationale)
-      }
-    } catch (error) {
-      console.error('Error getting feedback:', error)
-      setFeedback(card.answer.rationale)
-    } finally {
-      setIsGrading(false)
-    }
+    // Evaluate locally
+    const isCorrect = selectedAnswer === card.answer.correctIndex
+    setFeedback({
+      correct: isCorrect,
+      correctIndex: card.answer.correctIndex,
+      rationale: card.answer.rationale
+    })
   }
 
-  const handleGradeSubmit = () => {
-    if (userGrade === null) return
+  const handleTimeout = () => {
+    const elapsed = Date.now() - startTime
+    setTimeMs(elapsed)
+    setTimedOut(true)
+    setIsSubmitted(true)
+    setFeedback({
+      correct: false,
+      timedOut: true,
+      rationale: "Time's up! Don't worry, you can try again."
+    })
+  }
 
-    const isCorrect = selectedAnswer === card.answer.correctIndex
-    onSubmit(selectedAnswer, { feedback, isCorrect, userGrade })
+  const handleUserInteraction = () => {
+    // User interacted, so timeout will be treated as grade 3 instead of 5
   }
 
   const handleGradeClick = (grade: number) => {
-    const isCorrect = selectedAnswer === card.answer.correctIndex
-    setUserGrade(grade)
-    onSubmit(selectedAnswer, { feedback, isCorrect, userGrade: grade })
+    const finalGrade = timedOut && !userGrade ? 3 : grade // Downgrade timeout to 3 if user interacted
+    setUserGrade(finalGrade)
+    
+    onSubmit({
+      type: 'mcq',
+      choice: selectedAnswer,
+      timeMs,
+      timedOut,
+      grade: finalGrade
+    }, feedback)
   }
 
   const isCorrect = selectedAnswer === card.answer.correctIndex
@@ -93,10 +85,18 @@ export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
     <Card className="bg-card/50 backdrop-blur-xl border-border">
       <CardHeader>
         <div className="flex justify-between items-start mb-2">
-          <CardTitle className="text-xl text-foreground">{card.pattern}</CardTitle>
-          <Badge variant="outline" className="text-xs">
-            {card.difficulty}
-          </Badge>
+          {/* <CardTitle className="text-xl text-foreground">{card.pattern}</CardTitle> */}
+          <div className="flex items-center gap-2">
+            <Badge variant="outline" className="text-xs">
+              {card.difficulty}
+            </Badge>
+            <Timer
+              cardType="mcq"
+              estSeconds={card.estSeconds}
+              onTimeout={handleTimeout}
+              onUserInteraction={handleUserInteraction}
+            />
+          </div>
         </div>
         <p className="text-muted-foreground text-base">{card.prompt.stem}</p>
       </CardHeader>
@@ -125,55 +125,51 @@ export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
           </>
         ) : (
           <>
-            <div className={`p-4 rounded-lg ${isCorrect ? 'bg-green-500/10 border border-green-500/20' : 'bg-red-500/10 border border-red-500/20'}`}>
+            <div className={`p-4 rounded-lg ${
+              feedback.correct ? 'bg-green-500/10 border border-green-500/20' : 'bg-red-500/10 border border-red-500/20'
+            }`}>
               <div className="flex items-center space-x-2 mb-2">
-                <span className={`font-medium ${isCorrect ? 'text-green-400' : 'text-red-400'}`}>
-                  {isCorrect ? COPY.feedback.correct : COPY.feedback.incorrect}
+                <span className={`font-medium ${
+                  feedback.correct ? 'text-green-400' : 'text-red-400'
+                }`}>
+                  {feedback.correct ? COPY.feedback.correct : feedback.timedOut ? 'Time\'s up!' : COPY.feedback.incorrect}
                 </span>
               </div>
               {selectedAnswer !== null && (
                 <div className="space-y-3">
                   {/* User's answer */}
                   <div className={`p-3 mb-3 rounded-md border ${
-                    isCorrect 
+                    feedback.correct 
                       ? 'bg-green-500/5 border-green-500/10' 
                       : 'bg-red-500/5 border-red-500/10'
                   }`}>
                     <p className={`text-sm font-medium mb-1 ${
-                      isCorrect ? 'text-green-300' : 'text-red-300'
+                      feedback.correct ? 'text-green-300' : 'text-red-300'
                     }`}>
                       Your answer:
                     </p>
                     <p className={`text-sm ${
-                      isCorrect ? 'text-green-200' : 'text-red-200'
+                      feedback.correct ? 'text-green-200' : 'text-red-200'
                     }`}>
                       {card.prompt.options[selectedAnswer]}
                     </p>
                   </div>
 
                   {/* Correct answer - only show when wrong */}
-                  {!isCorrect && (
+                  {!feedback.correct && (
                     <div className="p-3 bg-green-500/5 border border-green-500/10 rounded-md mb-3">
                       <p className="text-sm text-green-300 font-medium mb-1">Correct answer:</p>
-                      <p className="text-sm text-green-200">{card.prompt.options[card.answer.correctIndex]}</p>
+                      <p className="text-sm text-green-200">{card.prompt.options[feedback.correctIndex]}</p>
                     </div>
                   )}
                 </div>
               )}
-              {isGrading ? (
-                <div className="flex items-center justify-center space-x-2 py-2">
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground">{feedback}</p>
-              )}
+              <p className="text-sm text-muted-foreground">{feedback.rationale}</p>
             </div>
 
             <div className="space-y-4">
               <div>
-                  <Label className="text-foreground font-medium text-base mb-3 text-center italic">How ya feelin'?</Label>
+                <p className="text-sm text-muted-foreground mb-3 text-center">How did that feel?</p>
                 <div className="grid grid-cols-3 gap-3">
                   {[
                     { value: 1, label: "Too easy" },
@@ -183,7 +179,6 @@ export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
                     <button
                       key={grade.value}
                       onClick={() => handleGradeClick(grade.value)}
-                      disabled={isGrading}
                       className={`
                         relative p-4 rounded-xl border-2 transition-all duration-200 min-h-[80px] flex items-center justify-center text-center
                         ${userGrade === grade.value 
@@ -202,7 +197,6 @@ export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
                   ))}
                 </div>
               </div>
-
             </div>
           </>
         )}

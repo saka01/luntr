@@ -11,8 +11,17 @@ async function getSupabaseClient() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value
+        getAll() {
+          return cookieStore.getAll()
+        },
+        setAll(cookiesToSet) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              cookieStore.set(name, value, options)
+            })
+          } catch {
+            // Handle errors silently
+          }
         },
       },
     }
@@ -23,18 +32,22 @@ export interface SessionCard {
   id: string
   slug: string
   pattern: string
-  type: 'mcq' | 'plan'
+  type: 'mcq' | 'plan' | 'order' | 'fitb' | 'insight'
   difficulty: 'E' | 'M' | 'H'
   prompt: any
   answer: any
+  subtype?: string
+  tags?: string
+  estSeconds?: number
 }
 
-export async function getSessionCards(userId: string): Promise<SessionCard[]> {
-  const supabase = await getSupabaseClient()
-  const now = new Date().toISOString()
-  
-  // Get cards due for review (up to 10) - ONLY from active pattern
-  const { data: dueCardsData } = await supabase
+export async function getSessionCards(userId: string, size: number = 10, excludeCardIds: string[] = []): Promise<SessionCard[]> {
+  try {
+    const supabase = await getSupabaseClient()
+    const now = new Date().toISOString()
+    
+    // Get cards due for review - ONLY from active pattern
+  let dueCardsQuery = supabase
     .from('user_progress')
     .select(`
       card_id,
@@ -45,64 +58,184 @@ export async function getSessionCards(userId: string): Promise<SessionCard[]> {
         type,
         difficulty,
         prompt,
-        answer
+        answer,
+        subtype,
+        tags,
+        est_seconds
       )
     `)
     .eq('user_id', userId)
     .eq('cards.pattern', ACTIVE_PATTERN)
     .lte('next_due', now)
     .order('created_at', { ascending: true })
-    .limit(10)
+    .limit(Math.ceil(size * 0.6))
+  
+  // Only add the not.in filter if there are excluded card IDs
+  if (excludeCardIds.length > 0) {
+    dueCardsQuery = dueCardsQuery.not('card_id', 'in', `(${excludeCardIds.join(',')})`)
+  }
+  
+  const { data: dueCardsData } = await dueCardsQuery
   
   const dueCards = dueCardsData?.map((item: any) => item.cards) || []
   
-  // If we have fewer than 10 cards, fill with new cards from active pattern
-  if (dueCards.length < 10) {
-    const remaining = 10 - dueCards.length
-    
-    // Get cards the user hasn't seen yet - ONLY from active pattern
-    const { data: newCardsData } = await supabase
+  // Get recent misses (last 48 hours)
+  const since = new Date(Date.now() - 48 * 3600 * 1000).toISOString()
+  let recentMissesQuery = supabase
+    .from('attempts')
+    .select(`
+      card_id,
+      cards!inner (
+        id,
+        slug,
+        pattern,
+        type,
+        difficulty,
+        prompt,
+        answer,
+        subtype,
+        tags,
+        est_seconds
+      )
+    `)
+    .eq('user_id', userId)
+    .eq('cards.pattern', ACTIVE_PATTERN)
+    .gte('created_at', since)
+    .or('grade.eq.5,timed_out.eq.true')
+    .limit(Math.ceil(size * 0.2))
+  
+  // Only add the not.in filter if there are excluded card IDs
+  if (excludeCardIds.length > 0) {
+    recentMissesQuery = recentMissesQuery.not('card_id', 'in', `(${excludeCardIds.join(',')})`)
+  }
+  
+  const { data: recentMissesData } = await recentMissesQuery
+  
+  const recentMisses = (recentMissesData?.map((item: any) => item.cards) || [])
+    .filter(card => !excludeCardIds.includes(card.id))
+  
+  // Get new cards (no progress entry)
+  // First get all card IDs that user has progress for
+  const { data: userCardIds } = await supabase
+    .from('user_progress')
+    .select('card_id')
+    .eq('user_id', userId)
+  
+  const userCardIdSet = new Set(userCardIds?.map(p => p.card_id) || [])
+  
+  let newCardsQuery = supabase
+    .from('cards')
+    .select('*')
+    .eq('pattern', ACTIVE_PATTERN)
+    .order('difficulty', { ascending: true })
+    .limit(Math.min(3, Math.floor(size / 3)))
+  
+  // Only add the not.in filter if there are excluded card IDs
+  if (excludeCardIds.length > 0) {
+    newCardsQuery = newCardsQuery.not('id', 'in', `(${excludeCardIds.join(',')})`)
+  }
+  
+  const { data: newCardsData } = await newCardsQuery
+  
+  // Filter out cards that user already has progress for and excluded cards
+  const newCards = (newCardsData || []).filter(card => 
+    !userCardIdSet.has(card.id) && !excludeCardIds.includes(card.id)
+  )
+  
+  // Combine and deduplicate
+  const allCards = [...dueCards, ...recentMisses, ...newCards]
+  const seen = new Set<string>()
+  let uniqueCards = allCards.filter(card => {
+    if (seen.has(card.id)) return false
+    seen.add(card.id)
+    return true
+  })
+  
+  // If we don't have enough cards and no due cards, prioritize new cards
+  if (uniqueCards.length < size && dueCards.length === 0) {
+    // Get more new cards to fill the session
+    let additionalQuery = supabase
       .from('cards')
       .select('*')
       .eq('pattern', ACTIVE_PATTERN)
-      .not('id', 'in', `(${dueCards.map(card => card.id).join(',')})`)
       .order('difficulty', { ascending: true })
-      .limit(remaining)
+      .limit(size - uniqueCards.length)
     
-    const newCards = newCardsData || []
-    dueCards.push(...newCards)
+    // Only add not.in filters if there are items to exclude
+    if (uniqueCards.length > 0) {
+      additionalQuery = additionalQuery.not('id', 'in', `(${uniqueCards.map(c => c.id).join(',')})`)
+    }
+    if (excludeCardIds.length > 0) {
+      additionalQuery = additionalQuery.not('id', 'in', `(${excludeCardIds.join(',')})`)
+    }
+    
+    const additionalNewCards = await additionalQuery
+    
+    const additionalCards = (additionalNewCards.data || []).filter(card => 
+      !userCardIdSet.has(card.id) && !excludeCardIds.includes(card.id)
+    )
+    
+    uniqueCards = [...uniqueCards, ...additionalCards].slice(0, size)
+  } else {
+    uniqueCards = uniqueCards.slice(0, size)
   }
   
-  return dueCards.map(card => ({
-    id: card.id,
-    slug: card.slug,
-    pattern: card.pattern,
-    type: card.type as 'mcq' | 'plan',
-    difficulty: card.difficulty as 'E' | 'M' | 'H',
-    prompt: card.prompt,
-    answer: card.answer
-  }))
+    return uniqueCards.map(card => ({
+      id: card.id,
+      slug: card.slug,
+      pattern: card.pattern,
+      type: card.type as 'mcq' | 'plan' | 'order' | 'fitb' | 'insight',
+      difficulty: card.difficulty as 'E' | 'M' | 'H',
+      prompt: card.prompt,
+      answer: card.answer,
+      subtype: card.subtype,
+      tags: card.tags,
+      estSeconds: card.est_seconds
+    }))
+  } catch (error) {
+    console.error('Error in getSessionCards:', error)
+    throw error
+  }
 }
 
 export async function submitCardAttempt(
   userId: string,
   cardId: string,
   grade: number,
-  feedback: any
+  feedback: any,
+  timeMs: number = 0,
+  timedOut: boolean = false,
+  attemptData?: {
+    choice?: number;
+    order?: number[];
+    text?: string;
+    blanks?: string[];
+  }
 ) {
   const supabase = await getSupabaseClient()
   
-  // Save the attempt
+  // Save the attempt with new fields
+  const attemptRecord: any = {
+    user_id: userId,
+    card_id: cardId,
+    grade,
+    feedback,
+    time_ms: timeMs,
+    timed_out: timedOut
+  }
+
+  if (attemptData) {
+    if (attemptData.choice !== undefined) attemptRecord.choice = attemptData.choice;
+    if (attemptData.order !== undefined) attemptRecord.order = attemptData.order;
+    if (attemptData.text !== undefined) attemptRecord.text = attemptData.text;
+    if (attemptData.blanks !== undefined) attemptRecord.blanks = attemptData.blanks;
+  }
+
   await supabase
     .from('attempts')
-    .insert({
-      user_id: userId,
-      card_id: cardId,
-      grade,
-      feedback
-    })
+    .insert(attemptRecord)
   
-  // Update or create user progress
+  // Update or create user progress with new SRS algorithm
   const { data: existingProgress } = await supabase
     .from('user_progress')
     .select('*')
@@ -111,8 +244,8 @@ export async function submitCardAttempt(
     .single()
   
   if (existingProgress) {
-    // Update existing progress with SM-2
-    const newParams = calculateNextInterval(grade, {
+    // Use new SRS algorithm (1/3/5 grading)
+    const newParams = calculateNextIntervalNew(grade, {
       ef: existingProgress.ef,
       reps: existingProgress.reps,
       intervalDays: existingProgress.interval_days
@@ -133,7 +266,7 @@ export async function submitCardAttempt(
       .eq('card_id', cardId)
   } else {
     // Create new progress entry
-    const newParams = calculateNextInterval(grade, {
+    const newParams = calculateNextIntervalNew(grade, {
       ef: 2.5,
       reps: 0,
       intervalDays: 1
@@ -153,6 +286,40 @@ export async function submitCardAttempt(
         last_grade: grade
       })
   }
+}
+
+// New SRS algorithm for 1/3/5 grading
+function calculateNextIntervalNew(grade: number, params: { ef: number; reps: number; intervalDays: number }) {
+  const { ef, reps, intervalDays } = params
+  
+  // Map to Anki-like quality where higher is better
+  const q = 6 - grade; // 1->5(best), 3->3, 5->1(worst)
+  let newEf = ef;
+  let newReps = reps;
+  let newIntervalDays = intervalDays;
+
+  if (q <= 1) { // Too Confusing (grade 5)
+    newReps = 0;
+    newIntervalDays = 0;           // show again today
+    newEf = Math.max(1.3, ef - 0.2);
+  } else if (q === 3) { // Just Right (grade 3)
+    newReps = reps + 1;
+    if (newReps === 1) newIntervalDays = 1;
+    else if (newReps === 2) newIntervalDays = 3;
+    else newIntervalDays = Math.max(1, Math.round(intervalDays * ef));
+  } else { // Too Easy (grade 1)
+    newReps = reps + 1;
+    newEf = ef + 0.1;
+    if (newReps === 1) newIntervalDays = 3;
+    else if (newReps === 2) newIntervalDays = 6;
+    else newIntervalDays = Math.max(1, Math.round(intervalDays * ef * 1.3));
+  }
+
+  return {
+    ef: newEf,
+    reps: newReps,
+    intervalDays: newIntervalDays
+  };
 }
 
 export async function updateStreak(userId: string) {

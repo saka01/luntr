@@ -2,10 +2,15 @@ import { NextResponse } from 'next/server'
 import { getSessionCards } from '@/lib/session-engine'
 import { currentUserId } from '@/lib/auth-guard'
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const userId = await currentUserId()
-    const cards = await getSessionCards(userId)
+    const { searchParams } = new URL(request.url)
+    
+    const size = searchParams.get('size') ? parseInt(searchParams.get('size')!) : 10
+    const excludeIds = searchParams.get('excludeIds')?.split(',') || []
+    
+    const cards = await getSessionCards(userId, size, excludeIds)
     
     return NextResponse.json(cards)
   } catch (error) {

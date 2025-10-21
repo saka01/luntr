@@ -40,9 +40,12 @@ model Card {
   pattern    String
   type       CardType
   difficulty Difficulty  @default(M)
-  prompt     Json       // mcq: { stem, options: [a,b,c] } | plan: { stem }
-  answer     Json       // mcq: { correctIndex, rationale } | plan: { checklist: [..], rationale }
-  hints      String?    // JSON stringified hints (optional)
+  prompt     Json
+  answer     Json
+  hints      String?
+  subtype    String?        // "recognition" | "edge" | "complexity" | "impl"
+  tags       String?        // JSON string
+  estSeconds Int?
   progress   UserProgress[]
   attempts   Attempt[]
 }
@@ -50,6 +53,9 @@ model Card {
 enum CardType {
   mcq
   plan
+  order
+  fitb
+  insight
 }
 
 enum Difficulty {
@@ -77,10 +83,22 @@ model Attempt {
   id        String   @id @default(cuid())
   userId    String
   cardId    String
-  grade     Int
-  feedback  Json        // store LLM or fallback feedback
+  grade     Int                    // 1 | 3 | 5
+  feedback  Json
   createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  card      Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  timeMs    Int       @default(0)
+  timedOut  Boolean   @default(false)
+
+  choice    Int?      // mcq
+  order     Int[]     // order
+  text      String?   // plan or concatenated fitb
+  blanks    String[]  // fitb multi
+  correct   Boolean?  // computed where applicable
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  card      Card      @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
 }
 

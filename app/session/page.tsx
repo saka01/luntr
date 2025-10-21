@@ -7,36 +7,39 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { COPY } from "@/content/copy"
 import { PatternIdCard } from "@/components/deck/PatternIdCard"
 import { PlanCard } from "@/components/deck/PlanCard"
+import { OrderCard } from "@/components/deck/OrderCard"
+import { FitbCard } from "@/components/deck/FitbCard"
+import { InsightCard } from "@/components/deck/InsightCard"
 import { SessionHeader } from "@/components/deck/SessionHeader"
 import { SessionFooter } from "@/components/deck/SessionFooter"
-
-interface SessionCard {
-  id: string
-  slug: string
-  pattern: string
-  type: 'mcq' | 'plan'
-  difficulty: 'E' | 'M' | 'H'
-  prompt: any
-  answer: any
-}
+import { SessionCard } from "@/lib/session-engine"
 
 export default function SessionPage() {
   const [cards, setCards] = useState<SessionCard[]>([])
   const [currentCardIndex, setCurrentCardIndex] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [sessionComplete, setSessionComplete] = useState(false)
+  const [sessionSize, setSessionSize] = useState(10)
+  const [completedCardIds, setCompletedCardIds] = useState<string[]>([])
+  const [isAddingCards, setIsAddingCards] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
     loadSessionCards()
   }, [])
 
-  const loadSessionCards = async () => {
+  const loadSessionCards = async (size?: number, excludeIds?: string[]) => {
     try {
-      const response = await fetch('/api/session/cards')
+      const params = new URLSearchParams()
+      if (size) params.append('size', size.toString())
+      if (excludeIds && excludeIds.length > 0) params.append('excludeIds', excludeIds.join(','))
+      
+      const response = await fetch(`/api/session/cards?${params.toString()}`)
       if (response.ok) {
         const sessionCards = await response.json()
         setCards(sessionCards)
+        setCurrentCardIndex(0)
+        setSessionComplete(false)
       } else {
         console.error('Failed to load session cards')
       }
@@ -44,6 +47,17 @@ export default function SessionPage() {
       console.error('Error loading session cards:', error)
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const handleAddMoreCards = async () => {
+    setIsAddingCards(true)
+    try {
+      const newSize = sessionSize + 10
+      setSessionSize(newSize)
+      await loadSessionCards(newSize, completedCardIds)
+    } finally {
+      setIsAddingCards(false)
     }
   }
 
@@ -64,6 +78,9 @@ export default function SessionPage() {
       })
 
       if (response.ok) {
+        // Add to completed cards
+        setCompletedCardIds(prev => [...prev, currentCard.id])
+        
         // Move to next card or complete session
         if (currentCardIndex < cards.length - 1) {
           setCurrentCardIndex(currentCardIndex + 1)
@@ -124,14 +141,24 @@ export default function SessionPage() {
           </CardHeader>
           <CardContent className="text-center">
             <p className="text-muted-foreground mb-6">
-              No patterns are due for practice right now. Check back later!
+              No patterns are due for practice right now. You can add more cards to practice or check back later!
             </p>
-            <Button 
-              onClick={handleBackToDashboard}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors"
-            >
-              {COPY.session.backToDashboard}
-            </Button>
+            <div className="space-y-3">
+              <Button 
+                onClick={handleAddMoreCards}
+                disabled={isAddingCards}
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors disabled:opacity-50"
+              >
+                {isAddingCards ? 'Loading Cards...' : 'Add 10 More Cards'}
+              </Button>
+              <Button 
+                onClick={handleBackToDashboard}
+                variant="outline"
+                className="w-full bg-card/50 hover:bg-card/70 border-border font-medium py-3 rounded-xl transition-colors"
+              >
+                {COPY.session.backToDashboard}
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -149,27 +176,53 @@ export default function SessionPage() {
           totalCards={cards.length}
         />
 
-            {/* <SessionFooter 
-            key={currentCard.id}
-              currentIndex={currentCardIndex + 1}
-              totalCards={cards.length}
-            /> */}
-        {/* <div className="flex-1 flex items-center justify-center h-10"> */}
-          <div className="max-w-2xl w-full h-fit">
-            {currentCard.type === 'mcq' ? (
-              <PatternIdCard
+        <div className="max-w-2xl w-full h-fit">
+          {currentCard.type === 'mcq' ? (
+            <PatternIdCard
               key={currentCard.id}
-                card={currentCard}
-                onSubmit={handleCardSubmit}
-              />
-            ) : (
-              <PlanCard
-                card={currentCard}
-                onSubmit={handleCardSubmit}
-              />
-            )}
+              card={currentCard}
+              onSubmit={handleCardSubmit}
+            />
+          ) : currentCard.type === 'plan' ? (
+            <PlanCard
+              key={currentCard.id}
+              card={currentCard}
+              onSubmit={handleCardSubmit}
+            />
+          ) : currentCard.type === 'order' ? (
+            <OrderCard
+              key={currentCard.id}
+              card={currentCard}
+              onSubmit={handleCardSubmit}
+            />
+          ) : currentCard.type === 'fitb' ? (
+            <FitbCard
+              key={currentCard.id}
+              card={currentCard}
+              onSubmit={handleCardSubmit}
+            />
+          ) : currentCard.type === 'insight' ? (
+            <InsightCard
+              key={currentCard.id}
+              card={currentCard}
+              onSubmit={handleCardSubmit}
+            />
+          ) : null}
+        </div>
+
+        {/* Add More Cards Button - only show if we have cards and not at the end */}
+        {cards.length > 0 && currentCardIndex < cards.length - 1 && (
+          <div className="flex justify-center mt-4">
+            <Button
+              onClick={handleAddMoreCards}
+              disabled={isAddingCards}
+              variant="outline"
+              className="bg-card/50 hover:bg-card/70 border-border disabled:opacity-50"
+            >
+              {isAddingCards ? 'Loading Cards...' : 'Add 10 More Cards'}
+            </Button>
           </div>
-        {/* </div> */}
+        )}
 
       </div>
     </div>

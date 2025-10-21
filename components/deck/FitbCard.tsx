@@ -4,20 +4,18 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Textarea } from "@/components/ui/textarea"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Timer } from "@/components/ui/timer"
-import { COPY } from "@/content/copy"
 import { SessionCard } from "@/lib/session-engine"
 
-interface PlanCardProps {
+interface FitbCardProps {
   card: SessionCard
   onSubmit: (answer: any, feedback: any) => void
 }
 
-export function PlanCard({ card, onSubmit }: PlanCardProps) {
-  const [userPlan, setUserPlan] = useState("")
+export function FitbCard({ card, onSubmit }: FitbCardProps) {
+  const [blanks, setBlanks] = useState<string[]>([])
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [feedback, setFeedback] = useState<any>(null)
   const [userGrade, setUserGrade] = useState<number | null>(null)
@@ -25,38 +23,38 @@ export function PlanCard({ card, onSubmit }: PlanCardProps) {
   const [timedOut, setTimedOut] = useState(false)
   const [startTime] = useState(Date.now())
 
-  // Reset state when card changes
+  // Initialize blanks array
   useEffect(() => {
-    setUserPlan("")
+    setBlanks(new Array(card.prompt.blanks).fill(''))
     setIsSubmitted(false)
     setFeedback(null)
     setUserGrade(null)
     setTimeMs(0)
     setTimedOut(false)
-  }, [card.id])
+  }, [card.id, card.prompt.blanks])
+
+  const updateBlank = (index: number, value: string) => {
+    const newBlanks = [...blanks]
+    newBlanks[index] = value
+    setBlanks(newBlanks)
+  }
 
   const handleSubmit = async () => {
-    if (!userPlan.trim()) return
-
     const elapsed = Date.now() - startTime
     setTimeMs(elapsed)
     setIsSubmitted(true)
 
-    // Evaluate locally using the plan evaluation logic
+    // Evaluate locally
     const norm = (s: string) => s.trim().toLowerCase()
-    const lines = userPlan.split('\n').map(norm).filter(Boolean)
-    const covered = card.answer.checklist.map((item: string) => {
-      const terms = norm(item).split(/\s+/).slice(0, 3).join(' ')
-      return lines.some(l => l.includes(terms))
-    })
-    const coverage = covered.filter(Boolean).length / card.answer.checklist.length
-    const missing = card.answer.checklist.filter((_: any, i: number) => !covered[i])
-    const correct = coverage >= 0.7
+    const ok = blanks.map((b, i) => 
+      (card.answer.solutions[i] || []).map(norm).includes(norm(b))
+    )
+    const correct = ok.every(Boolean)
 
     setFeedback({
       correct,
-      coverage,
-      missing,
+      ok,
+      accepted: card.answer.solutions,
       rationale: card.answer.rationale
     })
   }
@@ -82,60 +80,69 @@ export function PlanCard({ card, onSubmit }: PlanCardProps) {
     setUserGrade(finalGrade)
     
     onSubmit({
-      type: 'plan',
-      text: userPlan,
+      type: 'fitb',
+      blanks: blanks,
       timeMs,
       timedOut,
       grade: finalGrade
     }, feedback)
   }
 
+  // Split the stem by blanks markers (assuming format like "The ___ is ___")
+  const stemParts = card.prompt.stem.split('___')
+
   return (
     <Card className="bg-card/50 backdrop-blur-xl border-border">
       <CardHeader>
-        <div className="flex justify-between items-end mb-2">
+        <div className="flex justify-between items-start mb-2">
           {/* <CardTitle className="text-xl text-foreground">{card.pattern}</CardTitle> */}
           <div className="flex items-center gap-2">
             <Badge variant="outline" className="text-xs">
               {card.difficulty}
             </Badge>
             <Timer
-              cardType="plan"
+              cardType="fitb"
               estSeconds={card.estSeconds}
               onTimeout={handleTimeout}
               onUserInteraction={handleUserInteraction}
             />
           </div>
         </div>
-        <p className="text-muted-foreground">{card.prompt.stem}</p>
       </CardHeader>
       
       <CardContent className="space-y-6">
         {!isSubmitted ? (
           <>
-            <div className="space-y-2">
-              <Label htmlFor="plan" className="text-foreground font-medium">
-                Write your coding approach (2-5 steps):
+            <div className="space-y-4">
+              <Label className="text-foreground font-medium">
+                Fill in the blanks:
               </Label>
-              <Textarea
-                id="plan"
-                placeholder="1. Analyze the problem...&#10;2. Choose data structure...&#10;3. Implement solution..."
-                value={userPlan}
-                onChange={(e) => setUserPlan(e.target.value)}
-                className="min-h-[120px] bg-input/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20 text-base"
-                maxLength={400}
-              />
-              <p className="text-xs text-muted-foreground">
-                {userPlan.length}/400 characters
-              </p>
+              
+              {/* Render the stem with input fields */}
+              <div className="space-y-3">
+                {stemParts.map((part: string, index: number) => (
+                  <div key={index} className="flex items-center gap-2 flex-wrap">
+                    <span className="text-foreground">{part}</span>
+                    {index < stemParts.length - 1 && (
+                      <Input
+                        value={blanks[index] || ''}
+                        onChange={(e) => updateBlank(index, e.target.value)}
+                        placeholder={`Blank ${index + 1}`}
+                        className="w-32 inline-block"
+                        autoFocus={index === 0}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
 
             <Button 
               onClick={handleSubmit}
-              disabled={!userPlan.trim()}
+              disabled={blanks.some(b => !b.trim())}
               className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors"
             >
-              Submit Plan
+              Submit Answers
             </Button>
           </>
         ) : (
@@ -147,28 +154,36 @@ export function PlanCard({ card, onSubmit }: PlanCardProps) {
                 <span className={`font-medium ${
                   feedback.correct ? 'text-green-400' : 'text-red-400'
                 }`}>
-                  {feedback.correct ? 'Great plan!' : feedback.timedOut ? 'Time\'s up!' : 'Good attempt, but missing some steps'}
+                  {feedback.correct ? 'All correct!' : feedback.timedOut ? 'Time\'s up!' : 'Some answers need work'}
                 </span>
               </div>
               
-              {feedback.coverage !== undefined && (
-                <div className="mb-3">
-                  <p className="text-sm text-muted-foreground mb-2">
-                    Coverage: {Math.round(feedback.coverage * 100)}% ({Math.round(feedback.coverage * card.answer.checklist.length)}/{card.answer.checklist.length} steps covered)
-                  </p>
-                  
-                  {feedback.missing && feedback.missing.length > 0 && (
-                    <div className="p-3 bg-yellow-500/5 border border-yellow-500/10 rounded-md">
-                      <p className="text-sm text-yellow-300 font-medium mb-1">Missing steps:</p>
-                      <ul className="text-sm text-yellow-200 space-y-1">
-                        {feedback.missing.map((step: string, index: number) => (
-                          <li key={index}>• {step}</li>
-                        ))}
-                      </ul>
+              {/* Show which blanks were correct/incorrect */}
+              <div className="space-y-2 mb-3">
+                {blanks.map((blank, index) => (
+                  <div key={index} className={`p-2 rounded border ${
+                    feedback.ok[index] 
+                      ? 'bg-green-500/5 border-green-500/10' 
+                      : 'bg-red-500/5 border-red-500/10'
+                  }`}>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium">
+                        Blank {index + 1}:
+                      </span>
+                      <span className={`text-sm ${
+                        feedback.ok[index] ? 'text-green-300' : 'text-red-300'
+                      }`}>
+                        "{blank}"
+                      </span>
+                      {!feedback.ok[index] && (
+                        <span className="text-xs text-muted-foreground">
+                          (Accepted: {feedback.accepted[index]?.join(', ') || 'none'})
+                        </span>
+                      )}
                     </div>
-                  )}
-                </div>
-              )}
+                  </div>
+                ))}
+              </div>
               
               <p className="text-sm text-muted-foreground">{feedback.rationale}</p>
             </div>

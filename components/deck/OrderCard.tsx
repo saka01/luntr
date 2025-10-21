@@ -4,20 +4,18 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Textarea } from "@/components/ui/textarea"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Timer } from "@/components/ui/timer"
-import { COPY } from "@/content/copy"
 import { SessionCard } from "@/lib/session-engine"
 
-interface PlanCardProps {
+interface OrderCardProps {
   card: SessionCard
   onSubmit: (answer: any, feedback: any) => void
 }
 
-export function PlanCard({ card, onSubmit }: PlanCardProps) {
-  const [userPlan, setUserPlan] = useState("")
+export function OrderCard({ card, onSubmit }: OrderCardProps) {
+  const [order, setOrder] = useState<number[]>([])
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [feedback, setFeedback] = useState<any>(null)
   const [userGrade, setUserGrade] = useState<number | null>(null)
@@ -25,9 +23,10 @@ export function PlanCard({ card, onSubmit }: PlanCardProps) {
   const [timedOut, setTimedOut] = useState(false)
   const [startTime] = useState(Date.now())
 
-  // Reset state when card changes
+  // Initialize order with shuffled indices
   useEffect(() => {
-    setUserPlan("")
+    const indices = Array.from({ length: card.prompt.steps.length }, (_, i) => i)
+    setOrder([...indices].sort(() => Math.random() - 0.5))
     setIsSubmitted(false)
     setFeedback(null)
     setUserGrade(null)
@@ -35,28 +34,34 @@ export function PlanCard({ card, onSubmit }: PlanCardProps) {
     setTimedOut(false)
   }, [card.id])
 
-  const handleSubmit = async () => {
-    if (!userPlan.trim()) return
+  const moveStep = (fromIndex: number, toIndex: number) => {
+    const newOrder = [...order]
+    const [movedItem] = newOrder.splice(fromIndex, 1)
+    newOrder.splice(toIndex, 0, movedItem)
+    setOrder(newOrder)
+  }
 
+  const handleSubmit = async () => {
     const elapsed = Date.now() - startTime
     setTimeMs(elapsed)
     setIsSubmitted(true)
 
-    // Evaluate locally using the plan evaluation logic
-    const norm = (s: string) => s.trim().toLowerCase()
-    const lines = userPlan.split('\n').map(norm).filter(Boolean)
-    const covered = card.answer.checklist.map((item: string) => {
-      const terms = norm(item).split(/\s+/).slice(0, 3).join(' ')
-      return lines.some(l => l.includes(terms))
-    })
-    const coverage = covered.filter(Boolean).length / card.answer.checklist.length
-    const missing = card.answer.checklist.filter((_: any, i: number) => !covered[i])
-    const correct = coverage >= 0.7
+    // Evaluate locally
+    const isCorrect = JSON.stringify(order) === JSON.stringify(card.answer.order)
+    let firstMismatch: number | null = null
+    
+    if (!isCorrect) {
+      for (let i = 0; i < order.length; i++) {
+        if (order[i] !== card.answer.order[i]) {
+          firstMismatch = i
+          break
+        }
+      }
+    }
 
     setFeedback({
-      correct,
-      coverage,
-      missing,
+      correct: isCorrect,
+      firstMismatch,
       rationale: card.answer.rationale
     })
   }
@@ -82,8 +87,8 @@ export function PlanCard({ card, onSubmit }: PlanCardProps) {
     setUserGrade(finalGrade)
     
     onSubmit({
-      type: 'plan',
-      text: userPlan,
+      type: 'order',
+      order: order,
       timeMs,
       timedOut,
       grade: finalGrade
@@ -93,14 +98,14 @@ export function PlanCard({ card, onSubmit }: PlanCardProps) {
   return (
     <Card className="bg-card/50 backdrop-blur-xl border-border">
       <CardHeader>
-        <div className="flex justify-between items-end mb-2">
+        <div className="flex justify-between items-start mb-2">
           {/* <CardTitle className="text-xl text-foreground">{card.pattern}</CardTitle> */}
           <div className="flex items-center gap-2">
             <Badge variant="outline" className="text-xs">
               {card.difficulty}
             </Badge>
             <Timer
-              cardType="plan"
+              cardType="order"
               estSeconds={card.estSeconds}
               onTimeout={handleTimeout}
               onUserInteraction={handleUserInteraction}
@@ -114,28 +119,37 @@ export function PlanCard({ card, onSubmit }: PlanCardProps) {
         {!isSubmitted ? (
           <>
             <div className="space-y-2">
-              <Label htmlFor="plan" className="text-foreground font-medium">
-                Write your coding approach (2-5 steps):
+              <Label className="text-foreground font-medium">
+                Drag to reorder the steps:
               </Label>
-              <Textarea
-                id="plan"
-                placeholder="1. Analyze the problem...&#10;2. Choose data structure...&#10;3. Implement solution..."
-                value={userPlan}
-                onChange={(e) => setUserPlan(e.target.value)}
-                className="min-h-[120px] bg-input/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20 text-base"
-                maxLength={400}
-              />
-              <p className="text-xs text-muted-foreground">
-                {userPlan.length}/400 characters
-              </p>
+              <div className="space-y-2">
+                {order.map((stepIndex, index) => (
+                  <div
+                    key={`${stepIndex}-${index}`}
+                    className="flex items-center gap-3 p-3 bg-input/30 border border-border rounded-lg cursor-move hover:bg-input/50 transition-colors"
+                    draggable
+                    onDragStart={(e) => e.dataTransfer.setData('text/plain', index.toString())}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={(e) => {
+                      e.preventDefault()
+                      const fromIndex = parseInt(e.dataTransfer.getData('text/plain'))
+                      moveStep(fromIndex, index)
+                    }}
+                  >
+                    <div className="w-6 h-6 bg-primary/20 text-primary rounded-full flex items-center justify-center text-sm font-medium">
+                      {index + 1}
+                    </div>
+                    <span className="text-foreground">{card.prompt.steps[stepIndex]}</span>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <Button 
               onClick={handleSubmit}
-              disabled={!userPlan.trim()}
               className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors"
             >
-              Submit Plan
+              Submit Order
             </Button>
           </>
         ) : (
@@ -147,26 +161,21 @@ export function PlanCard({ card, onSubmit }: PlanCardProps) {
                 <span className={`font-medium ${
                   feedback.correct ? 'text-green-400' : 'text-red-400'
                 }`}>
-                  {feedback.correct ? 'Great plan!' : feedback.timedOut ? 'Time\'s up!' : 'Good attempt, but missing some steps'}
+                  {feedback.correct ? 'Correct!' : feedback.timedOut ? 'Time\'s up!' : 'Not quite right'}
                 </span>
               </div>
               
-              {feedback.coverage !== undefined && (
+              {feedback.firstMismatch !== null && (
                 <div className="mb-3">
                   <p className="text-sm text-muted-foreground mb-2">
-                    Coverage: {Math.round(feedback.coverage * 100)}% ({Math.round(feedback.coverage * card.answer.checklist.length)}/{card.answer.checklist.length} steps covered)
+                    First mismatch at step {feedback.firstMismatch + 1}:
                   </p>
-                  
-                  {feedback.missing && feedback.missing.length > 0 && (
-                    <div className="p-3 bg-yellow-500/5 border border-yellow-500/10 rounded-md">
-                      <p className="text-sm text-yellow-300 font-medium mb-1">Missing steps:</p>
-                      <ul className="text-sm text-yellow-200 space-y-1">
-                        {feedback.missing.map((step: string, index: number) => (
-                          <li key={index}>• {step}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  <div className="p-2 bg-red-500/5 border border-red-500/10 rounded text-sm">
+                    Your order: {order[feedback.firstMismatch] + 1}
+                  </div>
+                  <div className="p-2 bg-green-500/5 border border-green-500/10 rounded text-sm mt-1">
+                    Correct order: {card.answer.order[feedback.firstMismatch] + 1}
+                  </div>
                 </div>
               )}
               
