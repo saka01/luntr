@@ -9,8 +9,9 @@ export async function GET(request: Request) {
     
     const size = searchParams.get('size') ? parseInt(searchParams.get('size')!) : 10
     const excludeIds = searchParams.get('excludeIds')?.split(',') || []
+    const pattern = searchParams.get('pattern') || 'two-pointers' // Default to two pointers
     
-    const cards = await getSessionCards(userId, size, excludeIds)
+    const cards = await getSessionCards(userId, size, excludeIds, pattern)
     
     return NextResponse.json(cards)
   } catch (error) {

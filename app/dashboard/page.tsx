@@ -39,7 +39,7 @@ export default async function AppPage() {
           </Badge>
           <div>
             <h1 className="text-3xl font-bold text-foreground">{COPY.dashboard.greeting}</h1>
-            <p className="text-muted-foreground">Ready to practice Two Pointers?</p>
+            <p className="text-muted-foreground">Ready to practice your patterns?</p>
           </div>
         </div>
 
@@ -61,12 +61,11 @@ export default async function AppPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Link href="/session">
+              <Link href="/patterns">
                 <Button 
                   className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors"
-                  disabled={dueCount === 0}
                 >
-                  {COPY.dashboard.startSession}
+                  {dueCount > 0 ? COPY.dashboard.startSession : 'Start Practice Session'}
                 </Button>
               </Link>
             </CardContent>

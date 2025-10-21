@@ -41,12 +41,23 @@ export interface SessionCard {
   estSeconds?: number
 }
 
-export async function getSessionCards(userId: string, size: number = 10, excludeCardIds: string[] = []): Promise<SessionCard[]> {
+export async function getSessionCards(userId: string, size: number = 10, excludeCardIds: string[] = [], pattern: string = 'two-pointers'): Promise<SessionCard[]> {
   try {
     const supabase = await getSupabaseClient()
     const now = new Date().toISOString()
     
-    // Get cards due for review - ONLY from active pattern
+    // Handle "all" pattern by not filtering by pattern
+    // Map pattern IDs to actual pattern names in the database
+    let patternFilter: string | undefined
+    if (pattern === 'all') {
+      patternFilter = undefined
+    } else if (pattern === 'two-pointers') {
+      patternFilter = 'Two Pointers' // Map to the actual pattern name in the database
+    } else {
+      patternFilter = pattern
+    }
+    
+    // Get cards due for review
   let dueCardsQuery = supabase
     .from('user_progress')
     .select(`
@@ -65,10 +76,14 @@ export async function getSessionCards(userId: string, size: number = 10, exclude
       )
     `)
     .eq('user_id', userId)
-    .eq('cards.pattern', ACTIVE_PATTERN)
     .lte('next_due', now)
     .order('created_at', { ascending: true })
     .limit(Math.ceil(size * 0.6))
+  
+  // Add pattern filter if not "all"
+  if (patternFilter) {
+    dueCardsQuery = dueCardsQuery.eq('cards.pattern', patternFilter)
+  }
   
   // Only add the not.in filter if there are excluded card IDs
   if (excludeCardIds.length > 0) {
@@ -99,10 +114,14 @@ export async function getSessionCards(userId: string, size: number = 10, exclude
       )
     `)
     .eq('user_id', userId)
-    .eq('cards.pattern', ACTIVE_PATTERN)
     .gte('created_at', since)
     .or('grade.eq.5,timed_out.eq.true')
     .limit(Math.ceil(size * 0.2))
+  
+  // Add pattern filter if not "all"
+  if (patternFilter) {
+    recentMissesQuery = recentMissesQuery.eq('cards.pattern', patternFilter)
+  }
   
   // Only add the not.in filter if there are excluded card IDs
   if (excludeCardIds.length > 0) {
@@ -126,9 +145,13 @@ export async function getSessionCards(userId: string, size: number = 10, exclude
   let newCardsQuery = supabase
     .from('cards')
     .select('*')
-    .eq('pattern', ACTIVE_PATTERN)
     .order('difficulty', { ascending: true })
     .limit(Math.min(3, Math.floor(size / 3)))
+  
+  // Add pattern filter if not "all"
+  if (patternFilter) {
+    newCardsQuery = newCardsQuery.eq('pattern', patternFilter)
+  }
   
   // Only add the not.in filter if there are excluded card IDs
   if (excludeCardIds.length > 0) {

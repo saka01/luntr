@@ -22,9 +22,14 @@ export default function SessionPage() {
   const [sessionSize, setSessionSize] = useState(10)
   const [completedCardIds, setCompletedCardIds] = useState<string[]>([])
   const [isAddingCards, setIsAddingCards] = useState(false)
+  const [selectedPattern, setSelectedPattern] = useState<string>('two-pointers')
   const router = useRouter()
 
   useEffect(() => {
+    // Get pattern from URL params
+    const urlParams = new URLSearchParams(window.location.search)
+    const pattern = urlParams.get('pattern') || 'two-pointers'
+    setSelectedPattern(pattern)
     loadSessionCards()
   }, [])
 
@@ -33,6 +38,7 @@ export default function SessionPage() {
       const params = new URLSearchParams()
       if (size) params.append('size', size.toString())
       if (excludeIds && excludeIds.length > 0) params.append('excludeIds', excludeIds.join(','))
+      params.append('pattern', selectedPattern)
       
       const response = await fetch(`/api/session/cards?${params.toString()}`)
       if (response.ok) {
