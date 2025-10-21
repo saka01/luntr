@@ -1,7 +1,7 @@
 // Utility functions for working with the new card system
 
-import { CardType } from './cards/types';
-import { defaultEstSeconds } from './cards/timer';
+import { CardType } from './types';
+import { defaultEstSeconds } from './timer';
 
 export function getCardTimerSeconds(card: { type: CardType; estSeconds?: number }) {
   return card.estSeconds ?? defaultEstSeconds(card.type);

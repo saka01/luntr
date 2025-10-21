@@ -6,6 +6,6 @@ export function defaultEstSeconds(cardType: CardType) {
     case 'fitb': return 75;
     case 'order': return 90;
     case 'plan': return 120;
-    case 'insight': return 5;
+    case 'insight': return 0;
   }
 }
