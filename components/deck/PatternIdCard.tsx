@@ -176,9 +176,9 @@ export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
                   <Label className="text-foreground font-medium text-base mb-3 text-center italic">How ya feelin'?</Label>
                 <div className="grid grid-cols-3 gap-3">
                   {[
-                    { value: 1, label: "Litework" },
-                    { value: 3, label: "6' 7\"" },
-                    { value: 5, label: "Tuff" }
+                    { value: 1, label: "Too easy" },
+                    { value: 3, label: "Just right" },
+                    { value: 5, label: "Too confusing" }
                   ].map((grade) => (
                     <button
                       key={grade.value}
