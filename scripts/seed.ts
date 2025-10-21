@@ -20,6 +20,28 @@ async function seed() {
     
     // Insert new cards
     for (const cardData of data.cards) {
+      // Set estSeconds based on card type
+      let estSeconds: number
+      switch (cardData.type) {
+        case 'mcq':
+          estSeconds = 60
+          break
+        case 'fitb':
+          estSeconds = 75
+          break
+        case 'order':
+          estSeconds = 90
+          break
+        case 'plan':
+          estSeconds = 120
+          break
+        case 'insight':
+          estSeconds = 0
+          break
+        default:
+          estSeconds = 60
+      }
+
       await prisma.card.create({
         data: {
           slug: cardData.slug,
@@ -28,6 +50,9 @@ async function seed() {
           difficulty: cardData.difficulty,
           prompt: cardData.prompt,
           answer: cardData.answer,
+          estSeconds: estSeconds,
+          subtype: cardData.subtype || null,
+          tags: cardData.tags || null,
         }
       })
     }
