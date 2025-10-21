@@ -71,8 +71,8 @@ export default function AuthCallbackClient() {
             setStatus('success')
             // Clear the hash from URL
             window.history.replaceState({}, document.title, window.location.pathname)
-            // Success! Redirect to dashboard
-            setTimeout(() => router.push('/dashboard'), 1000)
+            // Success! Redirect to onboarding for new users
+            setTimeout(() => router.push('/onboarding'), 1000)
           } else {
             console.error('User not authenticated after setting session')
             setStatus('error')

@@ -30,7 +30,7 @@ export default function OnboardingPage() {
       })
       
       if (response.ok) {
-        router.push('/app')
+        router.push('/dashboard')
       } else {
         console.error('Failed to save profile')
       }
