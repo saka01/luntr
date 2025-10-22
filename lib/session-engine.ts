@@ -142,11 +142,12 @@ export async function getSessionCards(userId: string, size: number = 10, exclude
   
   const userCardIdSet = new Set(userCardIds?.map(p => p.card_id) || [])
   
+  // Get new cards (no progress entry) - remove artificial limits
   let newCardsQuery = supabase
     .from('cards')
     .select('*')
     .order('difficulty', { ascending: true })
-    .limit(Math.min(3, Math.floor(size / 3)))
+    .limit(size) // Allow up to full session size for new cards
   
   // Add pattern filter if not "all"
   if (patternFilter) {
@@ -174,33 +175,80 @@ export async function getSessionCards(userId: string, size: number = 10, exclude
     return true
   })
   
-  // If we don't have enough cards and no due cards, prioritize new cards
-  if (uniqueCards.length < size && dueCards.length === 0) {
-    // Get more new cards to fill the session
-    let additionalQuery = supabase
-      .from('cards')
-      .select('*')
-      .eq('pattern', ACTIVE_PATTERN)
-      .order('difficulty', { ascending: true })
+  // Always try to fill the session to the requested size
+  if (uniqueCards.length < size) {
+    // Get previously seen cards that aren't due yet to fill the session
+    let seenCardsQuery = supabase
+      .from('user_progress')
+      .select(`
+        card_id,
+        cards!inner (
+          id,
+          slug,
+          pattern,
+          type,
+          difficulty,
+          prompt,
+          answer,
+          subtype,
+          tags,
+          est_seconds
+        )
+      `)
+      .eq('user_id', userId)
+      .gt('next_due', now)
+      .order('next_due', { ascending: true })
       .limit(size - uniqueCards.length)
     
-    // Only add not.in filters if there are items to exclude
-    if (uniqueCards.length > 0) {
-      additionalQuery = additionalQuery.not('id', 'in', `(${uniqueCards.map(c => c.id).join(',')})`)
+    // Add pattern filter if not "all"
+    if (patternFilter) {
+      seenCardsQuery = seenCardsQuery.eq('cards.pattern', patternFilter)
     }
+    
+    // Only add the not.in filter if there are excluded card IDs
     if (excludeCardIds.length > 0) {
-      additionalQuery = additionalQuery.not('id', 'in', `(${excludeCardIds.join(',')})`)
+      seenCardsQuery = seenCardsQuery.not('card_id', 'in', `(${excludeCardIds.join(',')})`)
     }
     
-    const additionalNewCards = await additionalQuery
+    const { data: seenCardsData } = await seenCardsQuery
+    const seenCards = seenCardsData?.map((item: any) => item.cards) || []
     
-    const additionalCards = (additionalNewCards.data || []).filter(card => 
-      !userCardIdSet.has(card.id) && !excludeCardIds.includes(card.id)
-    )
+    // Add seen cards that aren't already in uniqueCards
+    const additionalSeenCards = seenCards.filter(card => !seen.has(card.id))
+    uniqueCards = [...uniqueCards, ...additionalSeenCards]
     
-    uniqueCards = [...uniqueCards, ...additionalCards].slice(0, size)
-  } else {
-    uniqueCards = uniqueCards.slice(0, size)
+    // If still not enough cards, get any remaining cards (even if user has seen them recently)
+    if (uniqueCards.length < size) {
+      let anyCardsQuery = supabase
+        .from('cards')
+        .select('*')
+        .order('difficulty', { ascending: true })
+        .limit(size - uniqueCards.length)
+      
+      if (patternFilter) {
+        anyCardsQuery = anyCardsQuery.eq('pattern', patternFilter)
+      }
+      
+      if (uniqueCards.length > 0) {
+        anyCardsQuery = anyCardsQuery.not('id', 'in', `(${uniqueCards.map(c => c.id).join(',')})`)
+      }
+      if (excludeCardIds.length > 0) {
+        anyCardsQuery = anyCardsQuery.not('id', 'in', `(${excludeCardIds.join(',')})`)
+      }
+      
+      const { data: anyCardsData } = await anyCardsQuery
+      const anyCards = anyCardsData || []
+      
+      uniqueCards = [...uniqueCards, ...anyCards].slice(0, size)
+    }
+  }
+  
+  // Final slice to ensure we don't exceed requested size
+  uniqueCards = uniqueCards.slice(0, size)
+  
+  // Log warning if we couldn't provide the full requested amount
+  if (uniqueCards.length < size) {
+    console.warn(`getSessionCards: Only ${uniqueCards.length} cards available (requested ${size}). User: ${userId}, Pattern: ${pattern}`)
   }
   
     return uniqueCards.map(card => ({
