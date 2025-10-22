@@ -71,6 +71,19 @@ export default function AuthCallbackClient() {
             setStatus('success')
             // Clear the hash from URL
             window.history.replaceState({}, document.title, window.location.pathname)
+            
+            // Update streak on login
+            try {
+              await fetch('/api/session/update-streak', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              })
+            } catch (error) {
+              console.error('Failed to update streak on login:', error)
+            }
+            
             // Success! Redirect to onboarding for new users
             setTimeout(() => router.push('/onboarding'), 1000)
           } else {

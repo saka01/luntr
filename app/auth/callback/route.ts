@@ -35,6 +35,18 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(`${origin}/login?error=auth_callback_error`)
     }
     
+    // Update streak on login for PKCE flow
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        // Import updateStreak function
+        const { updateStreak } = await import('@/lib/session-engine')
+        await updateStreak(user.id)
+      }
+    } catch (error) {
+      console.error('Failed to update streak on PKCE login:', error)
+    }
+    
     return response
   }
 

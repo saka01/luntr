@@ -40,7 +40,19 @@ export default function LoginPage() {
     }
   }
 
-  const handleOtpSuccess = () => {
+  const handleOtpSuccess = async () => {
+    // Update streak on successful OTP verification
+    try {
+      await fetch('/api/session/update-streak', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    } catch (error) {
+      console.error('Failed to update streak on OTP login:', error)
+    }
+    
     router.push('/dashboard')
   }
 
