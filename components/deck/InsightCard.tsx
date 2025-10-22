@@ -46,11 +46,11 @@ export function InsightCard({ card, onSubmit }: InsightCardProps) {
           <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/20">
             <div className="space-y-3">
               <div className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-blue-500/20 text-blue-500 rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0 mt-0.5">
+                {/* <div className="w-6 h-6 text-blue-500 rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0 mt-0.5">
                   💡
-                </div>
+                </div> */}
                 <div>
-                  <h4 className="font-medium text-blue-400 mb-2">Key Insight</h4>
+                  {/* <h4 className="font-medium text-blue-400 mb-2">Key Insight</h4> */}
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     {card.answer.rationale}
                   </p>

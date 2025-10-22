@@ -41,10 +41,24 @@ export interface SessionCard {
   estSeconds?: number
 }
 
+// Helper function to shuffle array using Fisher-Yates algorithm
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
+}
+
 export async function getSessionCards(userId: string, size: number = 10, excludeCardIds: string[] = [], pattern: string = 'two-pointers'): Promise<SessionCard[]> {
   try {
     const supabase = await getSupabaseClient()
     const now = new Date().toISOString()
+    
+    // Normalize exclude list: drop empty values and precompute PostgREST IN list (quoted)
+    const normalizedExcludeIds = (excludeCardIds || []).filter(id => !!id && id.trim().length > 0)
+    const toInList = (ids: string[]) => `(${ids.map(id => `"${id}"`).join(',')})`
     
     // Handle "all" pattern by not filtering by pattern
     // Map pattern IDs to actual pattern names in the database
@@ -57,28 +71,28 @@ export async function getSessionCards(userId: string, size: number = 10, exclude
       patternFilter = pattern
     }
     
-    // Get cards due for review
-  let dueCardsQuery = supabase
-    .from('user_progress')
-    .select(`
-      card_id,
-      cards!inner (
-        id,
-        slug,
-        pattern,
-        type,
-        difficulty,
-        prompt,
-        answer,
-        subtype,
-        tags,
-        est_seconds
-      )
-    `)
-    .eq('user_id', userId)
-    .lte('next_due', now)
-    .order('created_at', { ascending: true })
-    .limit(Math.ceil(size * 0.6))
+    // Get cards due for review - order by next_due to prioritize most overdue cards
+    let dueCardsQuery = supabase
+      .from('user_progress')
+      .select(`
+        card_id,
+        cards!inner (
+          id,
+          slug,
+          pattern,
+          type,
+          difficulty,
+          prompt,
+          answer,
+          subtype,
+          tags,
+          est_seconds
+        )
+      `)
+      .eq('user_id', userId)
+      .lte('next_due', now)
+      .order('next_due', { ascending: true }) // Most overdue first
+      .limit(Math.ceil(size * 0.6))
   
   // Add pattern filter if not "all"
   if (patternFilter) {
@@ -86,15 +100,15 @@ export async function getSessionCards(userId: string, size: number = 10, exclude
   }
   
   // Only add the not.in filter if there are excluded card IDs
-  if (excludeCardIds.length > 0) {
-    dueCardsQuery = dueCardsQuery.not('card_id', 'in', `(${excludeCardIds.join(',')})`)
+  if (normalizedExcludeIds.length > 0) {
+    dueCardsQuery = dueCardsQuery.not('card_id', 'in', toInList(normalizedExcludeIds))
   }
   
   const { data: dueCardsData } = await dueCardsQuery
   
   const dueCards = dueCardsData?.map((item: any) => item.cards) || []
   
-  // Get recent misses (last 48 hours)
+  // Get recent misses (last 48 hours) - order by most recent attempts first
   const since = new Date(Date.now() - 48 * 3600 * 1000).toISOString()
   let recentMissesQuery = supabase
     .from('attempts')
@@ -116,6 +130,7 @@ export async function getSessionCards(userId: string, size: number = 10, exclude
     .eq('user_id', userId)
     .gte('created_at', since)
     .or('grade.eq.5,timed_out.eq.true')
+    .order('created_at', { ascending: false }) // Most recent misses first
     .limit(Math.ceil(size * 0.2))
   
   // Add pattern filter if not "all"
@@ -124,8 +139,8 @@ export async function getSessionCards(userId: string, size: number = 10, exclude
   }
   
   // Only add the not.in filter if there are excluded card IDs
-  if (excludeCardIds.length > 0) {
-    recentMissesQuery = recentMissesQuery.not('card_id', 'in', `(${excludeCardIds.join(',')})`)
+  if (normalizedExcludeIds.length > 0) {
+    recentMissesQuery = recentMissesQuery.not('card_id', 'in', toInList(normalizedExcludeIds))
   }
   
   const { data: recentMissesData } = await recentMissesQuery
@@ -142,12 +157,12 @@ export async function getSessionCards(userId: string, size: number = 10, exclude
   
   const userCardIdSet = new Set(userCardIds?.map(p => p.card_id) || [])
   
-  // Get new cards (no progress entry) - remove artificial limits
+  // Get new cards (no progress entry) - randomize selection for better distribution
   let newCardsQuery = supabase
     .from('cards')
     .select('*')
     .order('difficulty', { ascending: true })
-    .limit(size) // Allow up to full session size for new cards
+    .limit(size * 2) // Get more cards to allow for randomization
   
   // Add pattern filter if not "all"
   if (patternFilter) {
@@ -155,25 +170,33 @@ export async function getSessionCards(userId: string, size: number = 10, exclude
   }
   
   // Only add the not.in filter if there are excluded card IDs
-  if (excludeCardIds.length > 0) {
-    newCardsQuery = newCardsQuery.not('id', 'in', `(${excludeCardIds.join(',')})`)
+  if (normalizedExcludeIds.length > 0) {
+    newCardsQuery = newCardsQuery.not('id', 'in', toInList(normalizedExcludeIds))
   }
   
   const { data: newCardsData } = await newCardsQuery
   
   // Filter out cards that user already has progress for and excluded cards
   const newCards = (newCardsData || []).filter(card => 
-    !userCardIdSet.has(card.id) && !excludeCardIds.includes(card.id)
+    !userCardIdSet.has(card.id) && !normalizedExcludeIds.includes(card.id)
   )
   
-  // Combine and deduplicate
-  const allCards = [...dueCards, ...recentMisses, ...newCards]
+  // Shuffle each category for better distribution
+  const shuffledDueCards = shuffleArray(dueCards)
+  const shuffledRecentMisses = shuffleArray(recentMisses)
+  const shuffledNewCards = shuffleArray(newCards)
+  
+  // Combine and deduplicate while preserving randomization
+  const allCards = [...shuffledDueCards, ...shuffledRecentMisses, ...shuffledNewCards]
   const seen = new Set<string>()
   let uniqueCards = allCards.filter(card => {
     if (seen.has(card.id)) return false
     seen.add(card.id)
     return true
   })
+  
+  // Shuffle the final selection to ensure random distribution
+  uniqueCards = shuffleArray(uniqueCards)
   
   // Always try to fill the session to the requested size
   if (uniqueCards.length < size) {
@@ -198,7 +221,7 @@ export async function getSessionCards(userId: string, size: number = 10, exclude
       .eq('user_id', userId)
       .gt('next_due', now)
       .order('next_due', { ascending: true })
-      .limit(size - uniqueCards.length)
+      .limit((size - uniqueCards.length) * 2) // Get more to allow randomization
     
     // Add pattern filter if not "all"
     if (patternFilter) {
@@ -206,16 +229,17 @@ export async function getSessionCards(userId: string, size: number = 10, exclude
     }
     
     // Only add the not.in filter if there are excluded card IDs
-    if (excludeCardIds.length > 0) {
-      seenCardsQuery = seenCardsQuery.not('card_id', 'in', `(${excludeCardIds.join(',')})`)
+    if (normalizedExcludeIds.length > 0) {
+      seenCardsQuery = seenCardsQuery.not('card_id', 'in', toInList(normalizedExcludeIds))
     }
     
     const { data: seenCardsData } = await seenCardsQuery
     const seenCards = seenCardsData?.map((item: any) => item.cards) || []
     
-    // Add seen cards that aren't already in uniqueCards
+    // Add seen cards that aren't already in uniqueCards, then shuffle
     const additionalSeenCards = seenCards.filter(card => !seen.has(card.id))
-    uniqueCards = [...uniqueCards, ...additionalSeenCards]
+    const shuffledAdditionalSeenCards = shuffleArray(additionalSeenCards)
+    uniqueCards = [...uniqueCards, ...shuffledAdditionalSeenCards]
     
     // If still not enough cards, get any remaining cards (even if user has seen them recently)
     if (uniqueCards.length < size) {
@@ -230,21 +254,26 @@ export async function getSessionCards(userId: string, size: number = 10, exclude
       }
       
       if (uniqueCards.length > 0) {
-        anyCardsQuery = anyCardsQuery.not('id', 'in', `(${uniqueCards.map(c => c.id).join(',')})`)
+        anyCardsQuery = anyCardsQuery.not('id', 'in', toInList(uniqueCards.map(c => c.id)))
       }
-      if (excludeCardIds.length > 0) {
-        anyCardsQuery = anyCardsQuery.not('id', 'in', `(${excludeCardIds.join(',')})`)
+      if (normalizedExcludeIds.length > 0) {
+        anyCardsQuery = anyCardsQuery.not('id', 'in', toInList(normalizedExcludeIds))
       }
       
       const { data: anyCardsData } = await anyCardsQuery
       const anyCards = anyCardsData || []
       
-      uniqueCards = [...uniqueCards, ...anyCards].slice(0, size)
+      // Shuffle any remaining cards and add them
+      const shuffledAnyCards = shuffleArray(anyCards)
+      uniqueCards = [...uniqueCards, ...shuffledAnyCards].slice(0, size)
     }
   }
   
   // Final slice to ensure we don't exceed requested size
   uniqueCards = uniqueCards.slice(0, size)
+  
+  // Final shuffle to randomize session order
+  uniqueCards = shuffleArray(uniqueCards)
   
   // Log warning if we couldn't provide the full requested amount
   if (uniqueCards.length < size) {
