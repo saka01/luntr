@@ -1,18 +1,80 @@
-import { redirect } from 'next/navigation'
+"use client"
+
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { COPY } from '@/content/copy'
-import { checkAuthAndRedirect } from '@/lib/auth-guard'
-import { getDueCount, getWeakestPatterns } from '@/lib/session-engine'
-import { ACTIVE_PATTERN } from '@/config/activePattern'
+import { createBrowserClient } from '@supabase/ssr'
+import { motion } from 'framer-motion'
 
-export default async function AppPage() {
-  const { user, profile } = await checkAuthAndRedirect()
-  
-  const dueCount = await getDueCount(user.id)
-  const weakestPatterns = await getWeakestPatterns(user.id)
+export default function AppPage() {
+  const [user, setUser] = useState<any>(null)
+  const [profile, setProfile] = useState<any>(null)
+  const [dueCount, setDueCount] = useState(0)
+  const [weakestPatterns, setWeakestPatterns] = useState<any[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const router = useRouter()
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        // Check auth
+        const { data: { user }, error } = await supabase.auth.getUser()
+        if (error || !user) {
+          router.push('/login')
+          return
+        }
+
+        // Get profile
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('user_id', user.id)
+          .single()
+        
+        if (!profile) {
+          router.push('/onboarding')
+          return
+        }
+
+        // Get session data
+        const dueResponse = await fetch(`/api/session/due-count?userId=${user.id}`)
+        const weakestResponse = await fetch(`/api/session/weakest-patterns?userId=${user.id}`)
+        
+        const dueCount = dueResponse.ok ? await dueResponse.json() : 0
+        const weakestPatterns = weakestResponse.ok ? await weakestResponse.json() : []
+        
+        setUser(user)
+        setProfile(profile)
+        setDueCount(dueCount)
+        setWeakestPatterns(weakestPatterns)
+      } catch (error) {
+        console.error('Error loading dashboard data:', error)
+        router.push('/login')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    
+    loadData()
+  }, [router, supabase])
+
+  if (isLoading) {
+    return (
+      <div className="h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-foreground text-lg">Loading...</div>
+        </div>
+      </div>
+    )
+  }
   
   // Calculate mastery percentage for the active pattern
   const mastery = weakestPatterns.length > 0 ? weakestPatterns[0].mastery : 0
@@ -27,9 +89,62 @@ export default async function AppPage() {
         }}
       />
 
-      {/* Decorative elements */}
-      <div className="absolute top-20 left-20 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 right-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+      {/* Floating motion elements */}
+      <motion.div 
+        className="absolute top-20 left-20 w-72 h-72 bg-primary/10 rounded-full blur-3xl"
+        animate={{ 
+          y: [0, -20, 0],
+          x: [0, 10, 0],
+          scale: [1, 1.05, 1]
+        }}
+        transition={{ 
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
+      <motion.div 
+        className="absolute bottom-20 right-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl"
+        animate={{ 
+          y: [0, 15, 0],
+          x: [0, -8, 0],
+          scale: [1, 0.98, 1]
+        }}
+        transition={{ 
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 1
+        }}
+      />
+      
+      {/* Small floating dots */}
+      <motion.div 
+        className="absolute top-32 right-32 w-4 h-4 bg-primary/20 rounded-full"
+        animate={{ 
+          y: [0, -30, 0],
+          opacity: [0.2, 0.6, 0.2]
+        }}
+        transition={{ 
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 0.5
+        }}
+      />
+      <motion.div 
+        className="absolute top-48 left-48 w-2 h-2 bg-primary/30 rounded-full"
+        animate={{ 
+          y: [0, -25, 0],
+          opacity: [0.3, 0.7, 0.3]
+        }}
+        transition={{ 
+          duration: 3.5,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 1.2
+        }}
+      />
 
       <div className="relative z-10 container mx-auto px-4 py-8">
         {/* Header */}
@@ -51,7 +166,12 @@ export default async function AppPage() {
         </div> */}
 
         {/* Main Content */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <motion.div 
+          className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
           {/* Due Cards Card */}
           <Card className="bg-card/50 backdrop-blur-xl border-border">
             <CardHeader>
@@ -114,7 +234,7 @@ export default async function AppPage() {
               </div>
             </CardContent>
           </Card>
-        </div>
+        </motion.div>
       </div>
     </div>
   )

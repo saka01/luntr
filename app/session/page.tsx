@@ -13,6 +13,7 @@ import { InsightCard } from "@/components/deck/InsightCard"
 import { SessionHeader } from "@/components/deck/SessionHeader"
 import { SessionFooter } from "@/components/deck/SessionFooter"
 import { SessionCard } from "@/lib/session-engine"
+import { motion } from "framer-motion"
 
 export default function SessionPage() {
   const [cards, setCards] = useState<SessionCard[]>([])
@@ -214,7 +215,13 @@ export default function SessionPage() {
         />
 
 
-        <div className="max-w-2xl w-full h-fit">
+        <motion.div 
+          className="max-w-2xl w-full h-fit"
+          key={currentCardIndex}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3 }}
+        >
           {currentCard.type === 'mcq' ? (
             <PatternIdCard
               key={currentCard.id}
@@ -254,7 +261,7 @@ export default function SessionPage() {
               onSubmit={handleCardSubmit}
             />
           ) : null}
-        </div>
+        </motion.div>
 
 
       </div>

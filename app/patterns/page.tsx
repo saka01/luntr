@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Lock, CheckCircle } from "lucide-react"
 import { PATTERN_CONFIGS, getActivePattern, getAvailablePatterns, getLockedPatterns } from "@/config/patterns"
+import { motion } from "framer-motion"
 
 export default function PatternsPage() {
   const [selectedPattern, setSelectedPattern] = useState<string | null>(null)
@@ -27,7 +28,55 @@ export default function PatternsPage() {
   }
 
   return (
-    <div className="bg-background h-full">
+    <div className="bg-background h-full relative overflow-hidden">
+      {/* Background gradient */}
+      <div
+        className="absolute inset-0 z-0"
+        style={{
+          background: "radial-gradient(ellipse 50% 35% at 50% 0%, rgba(226, 232, 240, 0.08), transparent 60%), #000000",
+        }}
+      />
+
+      {/* Floating motion elements */}
+      <motion.div 
+        className="absolute top-20 right-20 w-3 h-3 bg-primary/20 rounded-full"
+        animate={{ 
+          y: [0, -20, 0],
+          opacity: [0.2, 0.6, 0.2]
+        }}
+        transition={{ 
+          duration: 3,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 0.3
+        }}
+      />
+      <motion.div 
+        className="absolute top-40 left-20 w-2 h-2 bg-primary/25 rounded-full"
+        animate={{ 
+          y: [0, -15, 0],
+          opacity: [0.25, 0.7, 0.25]
+        }}
+        transition={{ 
+          duration: 2.5,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 1.2
+        }}
+      />
+      <motion.div 
+        className="absolute bottom-20 left-40 w-4 h-4 bg-primary/15 rounded-full"
+        animate={{ 
+          y: [0, -25, 0],
+          opacity: [0.15, 0.5, 0.15]
+        }}
+        transition={{ 
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 0.8
+        }}
+      />
 
       <div className="relative z-10 container mx-auto px-4 py-8 bg-background">
         {/* Header */}
@@ -67,7 +116,12 @@ export default function PatternsPage() {
         </Card>
 
         {/* Individual Patterns */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <motion.div 
+          className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
           {Object.values(PATTERN_CONFIGS).map((pattern) => {
             const isActive = pattern.name === activePatternName
             const isAvailable = pattern.status === 'active'
@@ -122,7 +176,7 @@ export default function PatternsPage() {
               </Card>
             )
           })}
-        </div>
+        </motion.div>
       </div>
     </div>
   )
