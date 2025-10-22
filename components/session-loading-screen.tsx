@@ -86,17 +86,11 @@ export function SessionLoadingScreen() {
               <h1 className="text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent mb-2">
                 Tallo
               </h1>
-              <p className="text-muted-foreground text-lg">
-                Your coding practice session
-              </p>
             </div>
 
             {/* Progress section */}
             <div className="mb-8">
-              <div className="flex justify-between items-center mb-3">
-                <span className="text-sm font-medium text-muted-foreground">Loading Progress</span>
-                <span className="text-sm font-mono text-primary">{Math.round(progress)}%</span>
-              </div>
+   
               
               {/* Progress bar */}
               <div className="w-full bg-muted/30 rounded-full h-3 overflow-hidden">
@@ -107,25 +101,6 @@ export function SessionLoadingScreen() {
                   transition={{ duration: 0.5, ease: "easeOut" }}
                 />
               </div>
-            </div>
-
-            {/* Animated loading dots */}
-            <div className="flex justify-center mb-6">
-              {[0, 1, 2].map((i) => (
-                <motion.div
-                  key={i}
-                  className="w-2 h-2 bg-primary rounded-full mx-1"
-                  animate={{
-                    scale: [1, 1.5, 1],
-                    opacity: [0.5, 1, 0.5]
-                  }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Infinity,
-                    delay: i * 0.2
-                  }}
-                />
-              ))}
             </div>
 
             {/* Motivational message */}
@@ -163,32 +138,6 @@ export function SessionLoadingScreen() {
             </AnimatePresence>
           </CardContent>
         </Card>
-
-        {/* Floating elements for visual interest - only render on client */}
-        {isClient && (
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            {[...Array(6)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-2 h-2 bg-primary/20 rounded-full"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                }}
-                animate={{
-                  y: [0, -20, 0],
-                  opacity: [0.2, 0.8, 0.2],
-                  scale: [1, 1.5, 1]
-                }}
-                transition={{
-                  duration: 3 + Math.random() * 2,
-                  repeat: Infinity,
-                  delay: Math.random() * 2
-                }}
-              />
-            ))}
-          </div>
-        )}
       </div>
     </div>
   )

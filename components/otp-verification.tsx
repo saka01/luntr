@@ -122,7 +122,7 @@ export function OtpVerification({
         </p>
       </div>
 
-      <div className="flex justify-center space-x-2">
+      <div className="flex justify-center space-x-1 sm:space-x-2 px-2 sm:px-0">
         {Array.from({ length: 6 }, (_, index) => (
           <Input
             key={index}
@@ -138,7 +138,7 @@ export function OtpVerification({
             onChange={(e) => handleOtpChange(e.target.value, index)}
             onKeyDown={(e) => handleKeyDown(e, index)}
             onPaste={index === 0 ? handlePaste : undefined}
-            className="w-12 h-12 text-center text-lg font-mono bg-input/50 border-border text-foreground focus:border-primary focus:ring-primary/20"
+            className="w-10 h-10 sm:w-12 sm:h-12 text-center text-base sm:text-lg font-mono bg-input/50 border-border text-foreground focus:border-primary focus:ring-primary/20"
             disabled={isLoading}
           />
         ))}

@@ -73,7 +73,20 @@ export function FitbCard({ card, onSubmit, timedOut = false, userInteracted = fa
   }
 
   const handleGradeClick = (grade: number) => {
-    const finalGrade = timedOut && !userInteracted ? 5 : (timedOut && userInteracted ? 3 : grade)
+    setUserGrade(grade)
+    
+    onSubmit({
+      type: 'fitb',
+      blanks: blanks,
+      timeMs,
+      timedOut,
+      grade: grade
+    }, feedback)
+  }
+
+  const handleNext = () => {
+    // Automatically set grade to "Too confusing" (5) for timeouts
+    const finalGrade = timedOut ? 5 : 3 // Default to "Just right" if somehow called without timeout
     setUserGrade(finalGrade)
     
     onSubmit({
@@ -174,37 +187,48 @@ export function FitbCard({ card, onSubmit, timedOut = false, userInteracted = fa
               <p className="text-sm text-muted-foreground">{feedback.rationale}</p>
             </div>
 
-            <div className="space-y-4">
-              <div>
-                <p className="text-sm text-muted-foreground mb-3 text-center">How did that feel?</p>
-                <div className="grid grid-cols-3 gap-3">
-                  {[
-                    { value: 1, label: "Too easy" },
-                    { value: 3, label: "Just right" },
-                    { value: 5, label: "Too confusing" }
-                  ].map((grade) => (
-                    <button
-                      key={grade.value}
-                      onClick={() => handleGradeClick(grade.value)}
-                      className={`
-                        relative p-4 rounded-xl border-2 transition-all duration-200 min-h-[80px] flex items-center justify-center text-center
-                        ${userGrade === grade.value 
-                          ? 'border-primary bg-primary/10 text-primary shadow-md scale-105' 
-                          : 'border-border bg-card hover:border-primary/50 hover:bg-primary/5 text-foreground hover:shadow-sm'
-                        }
-                      `}
-                    >
-                      <span className="font-medium text-sm leading-tight">
-                        {grade.label}
-                      </span>
-                      {userGrade === grade.value && (
-                        <div className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full"></div>
-                      )}
-                    </button>
-                  ))}
+            {timedOut ? (
+              <div className="space-y-4">
+                <Button 
+                  onClick={handleNext}
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors"
+                >
+                  Next
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div>
+                  <p className="text-sm text-muted-foreground mb-3 text-center">How did that feel?</p>
+                  <div className="grid grid-cols-3 gap-3">
+                    {[
+                      { value: 1, label: "Too easy" },
+                      { value: 3, label: "Just right" },
+                      { value: 5, label: "Too confusing" }
+                    ].map((grade) => (
+                      <button
+                        key={grade.value}
+                        onClick={() => handleGradeClick(grade.value)}
+                        className={`
+                          relative p-4 rounded-xl border-2 transition-all duration-200 min-h-[80px] flex items-center justify-center text-center
+                          ${userGrade === grade.value 
+                            ? 'border-primary bg-primary/10 text-primary shadow-md scale-105' 
+                            : 'border-border bg-card hover:border-primary/50 hover:bg-primary/5 text-foreground hover:shadow-sm'
+                          }
+                        `}
+                      >
+                        <span className="font-medium text-sm leading-tight">
+                          {grade.label}
+                        </span>
+                        {userGrade === grade.value && (
+                          <div className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full"></div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </>
         )}
       </CardContent>

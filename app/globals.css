@@ -164,6 +164,7 @@
 body {
   letter-spacing: var(--tracking-normal);
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 /* Added custom text selection styling with orange background and dark text */
@@ -277,6 +278,18 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+  }
+  
+  /* Prevent horizontal scrolling on mobile */
+  * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Smooth scrolling for mobile */
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
   }
 }
 

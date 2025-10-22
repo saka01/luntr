@@ -12,11 +12,6 @@ export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [user, setUser] = useState<User | null>(null)
 
-  // Hide header on session page
-  if (pathname === '/session') {
-    return null
-  }
-
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 100)
@@ -37,6 +32,11 @@ export const Header = () => {
 
     return () => subscription.unsubscribe()
   }, [])
+
+  // Hide header on session page
+  if (pathname === '/session') {
+    return null
+  }
 
   const handleLogout = async () => {
     await auth.signOut()

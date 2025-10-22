@@ -77,37 +77,32 @@ export default function LoginPage() {
 
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <div className="min-h-screen bg-background flex flex-col justify-start pt-8 sm:pt-16 p-4 overflow-x-hidden">
       <Link
         href="/"
-        className="absolute top-6 left-6 z-20 text-muted-foreground hover:text-primary transition-colors duration-200 flex items-center space-x-2"
+        className="absolute top-6 left-4 sm:left-6 z-20 text-muted-foreground hover:text-primary transition-colors duration-200 flex items-center space-x-2"
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>
-        <span>Back to Home</span>
+        <span className="hidden sm:inline">Back to Home</span>
       </Link>
 
       {/* Background gradient matching app design */}
       <div className="absolute inset-0 z-0 theme-glow" />
 
-      {/* Decorative elements */}
-      <div className="absolute top-20 left-20 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 right-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+      {/* Decorative elements - constrained to prevent overflow */}
+      <div className="absolute top-32 left-4 sm:left-20 w-48 sm:w-72 h-48 sm:h-72 bg-primary/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-20 right-4 sm:right-20 w-64 sm:w-96 h-64 sm:h-96 bg-primary/5 rounded-full blur-3xl" />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative z-10 w-full max-w-md"
+        className="relative z-10 w-full max-w-md mx-auto px-2 sm:px-0"
       >
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="flex justify-center items-center mb-8 h-16">
-            <Link href="/">
-              <Logo className="text-primary w-48 h-22" />
-            </Link>
-          </div>
           <h1 className="text-3xl font-bold text-foreground mb-2">Welcome back</h1>
           <p className="text-muted-foreground">Sign in to your Tallo account to continue</p>
         </div>
