@@ -138,7 +138,7 @@ export function OtpVerification({
             onChange={(e) => handleOtpChange(e.target.value, index)}
             onKeyDown={(e) => handleKeyDown(e, index)}
             onPaste={index === 0 ? handlePaste : undefined}
-            className="w-12 h-12 text-center text-lg font-mono border-border focus:border-primary focus:ring-primary/20"
+            className="w-12 h-12 text-center text-lg font-mono bg-input/50 border-border text-foreground focus:border-primary focus:ring-primary/20"
             disabled={isLoading}
           />
         ))}

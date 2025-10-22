@@ -69,7 +69,7 @@ export default function AppPage() {
 
   if (isLoading) {
     return (
-      <div className="h-screen bg-gradient-to-br from-background via-background to-muted/20 flex items-center justify-center">
+      <div className="h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <motion.div
             className="inline-block mb-6"
@@ -105,12 +105,7 @@ export default function AppPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Background gradient */}
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          background: "radial-gradient(ellipse 50% 35% at 50% 0%, rgba(226, 232, 240, 0.12), transparent 60%), #000000",
-        }}
-      />
+      <div className="absolute inset-0 z-0 theme-glow" />
 
       {/* Floating motion elements */}
       <motion.div 
