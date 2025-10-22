@@ -14,6 +14,7 @@ import { SessionHeader } from "@/components/deck/SessionHeader"
 import { SessionFooter } from "@/components/deck/SessionFooter"
 import { SessionCard } from "@/lib/session-engine"
 import { motion } from "framer-motion"
+import { SessionLoadingScreen } from "../../components/session-loading-screen"
 
 export default function SessionPage() {
   const [cards, setCards] = useState<SessionCard[]>([])
@@ -122,13 +123,7 @@ export default function SessionPage() {
   }
 
   if (isLoading) {
-    return (
-      <div className="h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-foreground text-lg">Loading your session...</div>
-        </div>
-      </div>
-    )
+    return <SessionLoadingScreen />
   }
 
   if (sessionComplete) {
