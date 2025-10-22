@@ -13,14 +13,14 @@ export function FAQSection() {
 
   const faqs = [
     {
-      question: "How does Luntr's spaced repetition system work?",
+      question: "How does Tallo's spaced repetition system work?",
       answer:
-        "Luntr uses the scientifically-proven SM2 algorithm to optimize your learning schedule. Problems are presented at increasing intervals based on your performance - easy problems appear less frequently, while challenging ones are shown more often until you master them.",
+        "Tallo uses the scientifically-proven SM2 algorithm to optimize your learning schedule. Problems are presented at increasing intervals based on your performance - easy problems appear less frequently, while challenging ones are shown more often until you master them.",
     },
     {
-      question: "What programming languages and topics does Luntr cover?",
+      question: "What programming languages and topics does Tallo cover?",
       answer:
-        "Luntr covers a wide range of programming languages including Python, JavaScript, Java, C++, and more. We focus on fundamental algorithms, data structures, coding patterns, and problem-solving techniques that are essential for technical interviews and real-world development.",
+        "Tallo covers a wide range of programming languages including Python, JavaScript, Java, C++, and more. We focus on fundamental algorithms, data structures, coding patterns, and problem-solving techniques that are essential for technical interviews and real-world development.",
     },
     {
       question: "How does the AI grading system work?",
@@ -30,12 +30,12 @@ export function FAQSection() {
     {
       question: "Can I track my progress and see my improvement over time?",
       answer:
-        "Yes! Luntr provides detailed analytics on your coding fitness, including accuracy rates, problem difficulty progression, time-to-solution trends, and personalized insights. You can see exactly how you're improving and identify areas that need more focus.",
+        "Yes! Tallo provides detailed analytics on your coding fitness, including accuracy rates, problem difficulty progression, time-to-solution trends, and personalized insights. You can see exactly how you're improving and identify areas that need more focus.",
     },
     {
-      question: "Is Luntr suitable for beginners or only experienced programmers?",
+      question: "Is Tallo suitable for beginners or only experienced programmers?",
       answer:
-        "Luntr is designed for all skill levels. Our adaptive system starts with easier problems and gradually increases difficulty based on your performance. Whether you're just learning to code or preparing for senior-level interviews, Luntr adjusts to your level.",
+        "Tallo is designed for all skill levels. Our adaptive system starts with easier problems and gradually increases difficulty based on your performance. Whether you're just learning to code or preparing for senior-level interviews, Tallo adjusts to your level.",
     },
   ]
 

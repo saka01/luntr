@@ -25,7 +25,7 @@ export function NewReleasePromo() {
           <div className="relative z-10">
             <div className="mt-8 text-center">
               <h2 className="text-4xl font-bold text-primary-foreground mb-6">Practice. Retain. Land the Offer.</h2>
-              <p className="text-primary-foreground/60 mb-8">Luntr helps you master DSA patterns for technical interviews.</p>
+              <p className="text-primary-foreground/60 mb-8">Tallo helps you master DSA patterns for technical interviews.</p>
               <svg
                 width="100"
                 height="50"
@@ -97,13 +97,13 @@ export function NewReleasePromo() {
               }}
               aria-hidden="true"
             >
-              Luntr
+              Tallo
             </h1>
             <h1
               className="absolute inset-x-0 mt-[120px] text-center text-[100px] font-semibold text-primary sm:mt-[30px] sm:text-[190px] pointer-events-none"
               aria-hidden="true"
             >
-              Luntr
+              Tallo
             </h1>
           </div>
         </div>

@@ -21,7 +21,7 @@ export default function Hero() {
     // Initialize AddToHomeScreen when component mounts
     if (typeof window !== 'undefined' && window.AddToHomeScreen) {
       window.AddToHomeScreenInstance = window.AddToHomeScreen({
-        appName: 'Luntr',
+        appName: 'Tallo',
         appNameDisplay: 'standalone',
         appIconUrl: '/apple-touch-icon.png',
         assetUrl: 'https://cdn.jsdelivr.net/gh/philfung/add-to-homescreen@3.4/dist/assets/img/',
@@ -97,8 +97,8 @@ export default function Hero() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mx-auto mb-12 max-w-2xl text-lg text-muted-foreground"
             >
-{/* Luntr is the simplest way to master coding patterns. Practice with structured sessions, get AI feedback, and build your coding fitness through spaced repetition.  */}
-Luntr helps you remember and apply coding patterns using the same cognitive science behind language mastery and elite memory training.
+{/* Tallo is the simplest way to master coding patterns. Practice with structured sessions, get AI feedback, and build your coding fitness through spaced repetition.  */}
+Tallo helps you remember and apply coding patterns using the same cognitive science behind language mastery and elite memory training.
             </motion.p>
 
             <motion.div

@@ -7,9 +7,9 @@ import { Header } from "@/components/header"
 import { ThemeProvider } from "@/components/theme-provider"
 
 export const metadata: Metadata = {
-  title: "Luntr | Pattern Gym for Coding Practice",
+  title: "Tallo | Pattern Gym for Coding Practice",
   description:
-    "Luntr helps developers master coding patterns through spaced repetition and AI-powered feedback. Build your coding fitness with structured practice sessions.",
+    "Tallo helps developers master coding patterns through spaced repetition and AI-powered feedback. Build your coding fitness with structured practice sessions.",
   keywords: [
     "coding patterns",
     "algorithm practice",
@@ -18,20 +18,20 @@ export const metadata: Metadata = {
     "coding fitness",
     "algorithm training",
     "coding patterns practice",
-    "Luntr",
+    "Tallo",
   ],
   openGraph: {
-    title: "Luntr | Pattern Gym for Coding Practice",
+    title: "Tallo | Pattern Gym for Coding Practice",
     description:
       "Master coding patterns through structured practice sessions with AI-powered feedback and spaced repetition.",
-    url: "https://luntr.dev",
-    siteName: "Luntr",
+    url: "https://Tallo.dev",
+    siteName: "Tallo",
     locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Luntr | Pattern Gym for Coding Practice",
+    title: "Tallo | Pattern Gym for Coding Practice",
     description: "Master coding patterns through structured practice sessions with AI-powered feedback and spaced repetition.",
   },
 }

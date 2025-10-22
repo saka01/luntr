@@ -29,7 +29,7 @@ export default function Loading() {
           animate={{ opacity: [0.7, 1, 0.7] }}
           transition={{ duration: 2, repeat: Infinity }}
         >
-          Luntr
+          Tallo
         </motion.h2>
 
         {/* Loading dots */}
