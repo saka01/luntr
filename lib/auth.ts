@@ -10,12 +10,13 @@ export interface AuthUser {
 export const auth = {
 
   // Sign up with OTP
-  async signUp(email: string, name?: string) {
+  async signUp(email: string, name?: string, metadata?: any) {
     const { data, error } = await supabase.auth.signInWithOtp({
       email,
       options: {
         data: {
           name: name || '',
+          ...metadata,
         },
         // No emailRedirectTo needed for OTP
       },

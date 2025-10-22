@@ -23,9 +23,16 @@ export async function POST(request: NextRequest) {
     if (userError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
-    const { level, dailyMinutes } = await request.json()
+    const { level, dailyMinutes, primaryLanguage, learningGoal, timezone } = await request.json()
     
-    console.log('Onboarding data:', { userId: user.id, level, dailyMinutes })
+    console.log('Onboarding data:', { 
+      userId: user.id, 
+      level, 
+      dailyMinutes, 
+      primaryLanguage, 
+      learningGoal, 
+      timezone 
+    })
 
     // Create or update profile
     const { error } = await supabase
@@ -34,6 +41,9 @@ export async function POST(request: NextRequest) {
         user_id: user.id,
         level,
         daily_minutes: dailyMinutes,
+        primary_language: primaryLanguage,
+        learning_goal: learningGoal,
+        timezone,
         streak: 0,
       })
 

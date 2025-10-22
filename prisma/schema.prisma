@@ -20,12 +20,15 @@ model User {
 }
 
 model Profile {
-  userId       String  @id @map("user_id")
-  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  level        Level
-  dailyMinutes Int     @map("daily_minutes")
-  streak       Int      @default(0)
-  lastActive   DateTime? @map("last_active")
+  userId          String  @id @map("user_id")
+  user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  level           Level
+  dailyMinutes    Int     @map("daily_minutes")
+  streak          Int     @default(0)
+  lastActive      DateTime? @map("last_active")
+  primaryLanguage String? @map("primary_language")
+  learningGoal    String? @map("learning_goal")
+  timezone        String?
 }
 
 enum Level {

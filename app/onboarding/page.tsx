@@ -10,6 +10,9 @@ import { COPY } from "@/content/copy"
 export default function OnboardingPage() {
   const [level, setLevel] = useState<"Beginner" | "Intermediate" | "Advanced">("Beginner")
   const [dailyMinutes, setDailyMinutes] = useState<5 | 10 | 20>(10)
+  const [primaryLanguage, setPrimaryLanguage] = useState("JavaScript")
+  const [learningGoal, setLearningGoal] = useState("Interview Preparation")
+  const [timezone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
@@ -26,6 +29,9 @@ export default function OnboardingPage() {
         body: JSON.stringify({
           level,
           dailyMinutes,
+          primaryLanguage,
+          learningGoal,
+          timezone,
         }),
       })
       
@@ -44,12 +50,7 @@ export default function OnboardingPage() {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       {/* Background gradient matching app design */}
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          background: "radial-gradient(ellipse 50% 35% at 50% 0%, rgba(226, 232, 240, 0.12), transparent 60%), #000000",
-        }}
-      />
+      <div className="absolute inset-0 z-0 theme-glow" />
 
       {/* Decorative elements */}
       <div className="absolute top-20 left-20 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
@@ -93,6 +94,45 @@ export default function OnboardingPage() {
                   <SelectItem value="5">5 minutes</SelectItem>
                   <SelectItem value="10">10 minutes</SelectItem>
                   <SelectItem value="20">20 minutes</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="primaryLanguage" className="text-foreground">
+                Primary Programming Language
+              </Label>
+              <Select value={primaryLanguage} onValueChange={setPrimaryLanguage}>
+                <SelectTrigger className="bg-input/50 border-border text-foreground focus:border-primary focus:ring-primary/20">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="JavaScript">JavaScript</SelectItem>
+                  <SelectItem value="Python">Python</SelectItem>
+                  <SelectItem value="Java">Java</SelectItem>
+                  <SelectItem value="C++">C++</SelectItem>
+                  <SelectItem value="TypeScript">TypeScript</SelectItem>
+                  <SelectItem value="Go">Go</SelectItem>
+                  <SelectItem value="Rust">Rust</SelectItem>
+                  <SelectItem value="Other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="learningGoal" className="text-foreground">
+                Learning Goal
+              </Label>
+              <Select value={learningGoal} onValueChange={setLearningGoal}>
+                <SelectTrigger className="bg-input/50 border-border text-foreground focus:border-primary focus:ring-primary/20">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Interview Preparation">Interview Preparation</SelectItem>
+                  <SelectItem value="Skill Improvement">Skill Improvement</SelectItem>
+                  <SelectItem value="Career Advancement">Career Advancement</SelectItem>
+                  <SelectItem value="Personal Interest">Personal Interest</SelectItem>
+                  <SelectItem value="Academic Study">Academic Study</SelectItem>
                 </SelectContent>
               </Select>
             </div>

@@ -15,7 +15,8 @@ import { auth } from "@/lib/auth"
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
   })
   const [isLoading, setIsLoading] = useState(false)
@@ -37,7 +38,7 @@ export default function SignupPage() {
     setIsLoading(true)
 
     try {
-      const { data, error } = await auth.signUp(formData.email, formData.name)
+      const { data, error } = await auth.signUp(formData.email, `${formData.firstName} ${formData.lastName}`)
       
       if (error) {
         setError(error.message)
@@ -63,7 +64,7 @@ export default function SignupPage() {
     setIsLoading(true)
     setError("")
     try {
-      const { error } = await auth.signUp(formData.email, formData.name)
+      const { error } = await auth.signUp(formData.email, `${formData.firstName} ${formData.lastName}`)
       if (error) {
         setError(error.message)
       }
@@ -133,20 +134,37 @@ export default function SignupPage() {
             />
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="name" className="text-foreground">
-                  Full Name
-                </Label>
-                <Input
-                  id="name"
-                  name="name"
-                  type="text"
-                  placeholder="Enter your full name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="bg-input/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20"
-                  required
-                />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="firstName" className="text-foreground">
+                    First Name
+                  </Label>
+                  <Input
+                    id="firstName"
+                    name="firstName"
+                    type="text"
+                    placeholder="John"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    className="bg-input/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="lastName" className="text-foreground">
+                    Last Name
+                  </Label>
+                  <Input
+                    id="lastName"
+                    name="lastName"
+                    type="text"
+                    placeholder="Doe"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    className="bg-input/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20"
+                    required
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">
@@ -164,6 +182,7 @@ export default function SignupPage() {
                   required
                 />
               </div>
+
 
               <div className="flex items-start space-x-2">
                 <input
