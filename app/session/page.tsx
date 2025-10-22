@@ -126,12 +126,22 @@ export default function SessionPage() {
             <p className="text-muted-foreground mb-6">
               Great job! You've completed your coding workout.
             </p>
-            <Button 
-              onClick={handleBackToDashboard}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors"
-            >
-              {COPY.session.backToDashboard}
-            </Button>
+            <div className="space-y-3">
+              <Button 
+                onClick={handleAddMoreCards}
+                disabled={isAddingCards}
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors disabled:opacity-50"
+              >
+                {isAddingCards ? 'Loading Cards...' : 'Add 10 more'}
+              </Button>
+              <Button 
+                onClick={handleBackToDashboard}
+                variant="outline"
+                className="w-full bg-card/50 hover:bg-card/70 border-border font-medium py-3 rounded-xl transition-colors"
+              >
+                {COPY.session.backToDashboard}
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -216,19 +226,6 @@ export default function SessionPage() {
           ) : null}
         </div>
 
-        {/* Add More Cards Button - only show if we have cards and not at the end */}
-        {cards.length > 0 && currentCardIndex < cards.length - 1 && (
-          <div className="flex justify-center mt-4">
-            <Button
-              onClick={handleAddMoreCards}
-              disabled={isAddingCards}
-              variant="outline"
-              className="bg-card/50 hover:bg-card/70 border-border disabled:opacity-50"
-            >
-              {isAddingCards ? 'Loading Cards...' : 'Add 10 More Cards'}
-            </Button>
-          </div>
-        )}
 
       </div>
     </div>
