@@ -4,8 +4,6 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Label } from "@/components/ui/label"
 import { COPY } from "@/content/copy"
 import { SessionCard } from "@/lib/session-engine"
 
@@ -90,16 +88,25 @@ export function PatternIdCard({ card, onSubmit, timedOut = false, userInteracted
       <CardContent className="space-y-6">
         {!isSubmitted ? (
           <>
-            <RadioGroup value={selectedAnswer?.toString()} onValueChange={(value) => setSelectedAnswer(parseInt(value))}>
+            <div className="space-y-3">
               {card.prompt.options.map((option: string, index: number) => (
-                <div key={index} className="flex items-center space-x-3">
-                  <RadioGroupItem value={index.toString()} id={`option-${index}`} className="w-5 h-5" />
-                  <Label htmlFor={`option-${index}`} className="text-foreground cursor-pointer text-base min-h-[44px] flex items-center">
+                <button
+                  key={index}
+                  onClick={() => setSelectedAnswer(index)}
+                  className={`
+                    w-full p-4 rounded-xl border-2 transition-all duration-200 text-left
+                    ${selectedAnswer === index
+                      ? 'border-primary bg-primary/10 text-primary shadow-md scale-[1.02]'
+                      : 'border-border bg-card hover:border-primary/50 hover:bg-primary/5 text-foreground hover:shadow-sm'
+                    }
+                  `}
+                >
+                  <span className="text-base font-medium leading-relaxed">
                     {option}
-                  </Label>
-                </div>
+                  </span>
+                </button>
               ))}
-            </RadioGroup>
+            </div>
 
             <Button 
               onClick={handleSubmit}
