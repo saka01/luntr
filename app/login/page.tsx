@@ -11,19 +11,19 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Logo } from "@/components/logo"
 import { auth } from "@/lib/auth"
+import { OtpVerification } from "@/components/otp-verification"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
-  const [success, setSuccess] = useState(false)
+  const [showOtp, setShowOtp] = useState(false)
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     setError("")
-    setSuccess(false)
 
     try {
       const { data, error } = await auth.signIn(email)
@@ -31,10 +31,33 @@ export default function LoginPage() {
       if (error) {
         setError(error.message)
       } else {
-        setSuccess(true)
+        setShowOtp(true)
       }
     } catch (err) {
       setError("An unexpected error occurred")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleOtpSuccess = () => {
+    router.push('/dashboard')
+  }
+
+  const handleOtpError = (errorMessage: string) => {
+    setError(errorMessage)
+  }
+
+  const handleResendOtp = async () => {
+    setIsLoading(true)
+    setError("")
+    try {
+      const { error } = await auth.signIn(email)
+      if (error) {
+        setError(error.message)
+      }
+    } catch (err) {
+      setError("Failed to resend code")
     } finally {
       setIsLoading(false)
     }
@@ -94,35 +117,41 @@ export default function LoginPage() {
               {error}
             </div>
           )}
-          {success && (
-            <div className="mb-4 p-3 bg-green-500/10 border border-green-500/20 rounded-lg text-green-400 text-sm">
-              Check your email for a magic link to sign in!
-            </div>
-          )}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-foreground">
-                Email
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="bg-input/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20"
-                required
-              />
-            </div>
+          
+          {showOtp ? (
+            <OtpVerification
+              email={email}
+              onSuccess={handleOtpSuccess}
+              onError={handleOtpError}
+              onResend={handleResendOtp}
+              isSignUp={false}
+            />
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-foreground">
+                  Email
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="bg-input/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20"
+                  required
+                />
+              </div>
 
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors"
-            >
-              {isLoading ? "Sending magic link..." : "Send magic link"}
-            </Button>
-          </form>
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors"
+              >
+                {isLoading ? "Sending code..." : "Send verification code"}
+              </Button>
+            </form>
+          )}
 
           <div className="mt-6 text-center">
             <p className="text-muted-foreground">

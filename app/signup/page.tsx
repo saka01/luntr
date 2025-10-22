@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Logo } from "@/components/logo"
+import { OtpVerification } from "@/components/otp-verification"
 import { auth } from "@/lib/auth"
 
 export default function SignupPage() {
@@ -19,7 +20,7 @@ export default function SignupPage() {
   })
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
-  const [success, setSuccess] = useState(false)
+  const [showOtp, setShowOtp] = useState(false)
   const router = useRouter()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +33,6 @@ export default function SignupPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
-    setSuccess(false)
 
     setIsLoading(true)
 
@@ -42,10 +42,33 @@ export default function SignupPage() {
       if (error) {
         setError(error.message)
       } else {
-        setSuccess(true)
+        setShowOtp(true)
       }
     } catch (err) {
       setError("An unexpected error occurred")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleOtpSuccess = () => {
+    router.push('/onboarding')
+  }
+
+  const handleOtpError = (errorMessage: string) => {
+    setError(errorMessage)
+  }
+
+  const handleResendOtp = async () => {
+    setIsLoading(true)
+    setError("")
+    try {
+      const { error } = await auth.signUp(formData.email, formData.name)
+      if (error) {
+        setError(error.message)
+      }
+    } catch (err) {
+      setError("Failed to resend code")
     } finally {
       setIsLoading(false)
     }
@@ -99,71 +122,77 @@ export default function SignupPage() {
               {error}
             </div>
           )}
-          {success && (
-            <div className="mb-4 p-3 bg-green-500/10 border border-green-500/20 rounded-lg text-green-400 text-sm">
-              Check your email for a magic link to complete your signup!
-            </div>
+          
+          {showOtp ? (
+            <OtpVerification
+              email={formData.email}
+              onSuccess={handleOtpSuccess}
+              onError={handleOtpError}
+              onResend={handleResendOtp}
+              isSignUp={true}
+            />
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="name" className="text-white">
+                  Full Name
+                </Label>
+                <Input
+                  id="name"
+                  name="name"
+                  type="text"
+                  placeholder="Enter your full name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="bg-zinc-800/50 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-[#e78a53] focus:ring-[#e78a53]/20"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-white">
+                  Email
+                </Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="bg-zinc-800/50 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-[#e78a53] focus:ring-[#e78a53]/20"
+                  required
+                />
+              </div>
+
+              <div className="flex items-start space-x-2">
+                <input
+                  type="checkbox"
+                  id="terms"
+                  className="mt-1 rounded border-zinc-700 bg-zinc-800 text-[#e78a53] focus:ring-[#e78a53]/20"
+                  required
+                />
+                <label htmlFor="terms" className="text-sm text-zinc-300">
+                  I agree to the{" "}
+                  <Link href="#" className="text-[#e78a53] hover:text-[#e78a53]/80">
+                    Terms of Service
+                  </Link>{" "}
+                  and{" "}
+                  <Link href="#" className="text-[#e78a53] hover:text-[#e78a53]/80">
+                    Privacy Policy
+                  </Link>
+                </label>
+              </div>
+
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-[#e78a53] hover:bg-[#e78a53]/90 text-white font-medium py-3 rounded-xl transition-colors"
+              >
+                {isLoading ? "Sending code..." : "Create account"}
+              </Button>
+            </form>
           )}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="name" className="text-white">
-                Full Name
-              </Label>
-              <Input
-                id="name"
-                name="name"
-                type="text"
-                placeholder="Enter your full name"
-                value={formData.name}
-                onChange={handleChange}
-                className="bg-zinc-800/50 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-[#e78a53] focus:ring-[#e78a53]/20"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-white">
-                Email
-              </Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="Enter your email"
-                value={formData.email}
-                onChange={handleChange}
-                className="bg-zinc-800/50 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-[#e78a53] focus:ring-[#e78a53]/20"
-                required
-              />
-            </div>
-
-            <div className="flex items-start space-x-2">
-              <input
-                type="checkbox"
-                id="terms"
-                className="mt-1 rounded border-zinc-700 bg-zinc-800 text-[#e78a53] focus:ring-[#e78a53]/20"
-                required
-              />
-              <label htmlFor="terms" className="text-sm text-zinc-300">
-                I agree to the{" "}
-                <Link href="#" className="text-[#e78a53] hover:text-[#e78a53]/80">
-                  Terms of Service
-                </Link>{" "}
-                and{" "}
-                <Link href="#" className="text-[#e78a53] hover:text-[#e78a53]/80">
-                  Privacy Policy
-                </Link>
-              </label>
-            </div>
-
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-[#e78a53] hover:bg-[#e78a53]/90 text-white font-medium py-3 rounded-xl transition-colors"
-            >
-              {isLoading ? "Sending magic link..." : "Create account"}
-            </Button>
-          </form>
 
           <div className="mt-6 text-center">
             <p className="text-zinc-400">

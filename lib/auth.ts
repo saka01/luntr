@@ -9,7 +9,7 @@ export interface AuthUser {
 
 export const auth = {
 
-  // Sign up with magic email link
+  // Sign up with OTP
   async signUp(email: string, name?: string) {
     const { data, error } = await supabase.auth.signInWithOtp({
       email,
@@ -17,20 +17,32 @@ export const auth = {
         data: {
           name: name || '',
         },
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        // No emailRedirectTo needed for OTP
       },
     })
     return { data, error }
   },
   
-  // Sign in with magic email link
+  // Sign in with OTP
   async signIn(email: string) {
     const { data, error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        // No emailRedirectTo needed for OTP
       },
     })
+    return { data, error }
+  },
+
+  // Verify OTP code
+  async verifyOtp(email: string, token: string) {
+    console.log('Verifying OTP for email:', email, 'token:', token)
+    const { data, error } = await supabase.auth.verifyOtp({
+      email,
+      token,
+      type: 'email',
+    })
+    console.log('OTP verification result:', { data, error })
     return { data, error }
   },
 
@@ -57,3 +69,4 @@ export const auth = {
     return supabase.auth.onAuthStateChange(callback)
   },
 }
+
