@@ -59,9 +59,9 @@ export default function SessionPage() {
   const handleAddMoreCards = async () => {
     setIsAddingCards(true)
     try {
-      const newSize = sessionSize + 10
-      setSessionSize(newSize)
-      await loadSessionCards(newSize, completedCardIds)
+      await loadSessionCards(sessionSize, completedCardIds)
+    } catch (error) {
+      console.error('Error adding more cards:', error)
     } finally {
       setIsAddingCards(false)
     }
@@ -69,7 +69,6 @@ export default function SessionPage() {
 
   const handleCardSubmit = async (answer: any, feedback: any) => {
     const currentCard = cards[currentCardIndex]
-    
     try {
       const response = await fetch('/api/session/submit', {
         method: 'POST',

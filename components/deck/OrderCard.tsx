@@ -8,14 +8,21 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Timer } from "@/components/ui/timer"
 import { SessionCard } from "@/lib/session-engine"
+import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd'
 
 interface OrderCardProps {
   card: SessionCard
   onSubmit: (answer: any, feedback: any) => void
 }
 
+interface StepItem {
+  id: string
+  content: string
+  index: number
+}
+
 export function OrderCard({ card, onSubmit }: OrderCardProps) {
-  const [order, setOrder] = useState<number[]>([])
+  const [steps, setSteps] = useState<StepItem[]>([])
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [feedback, setFeedback] = useState<any>(null)
   const [userGrade, setUserGrade] = useState<number | null>(null)
@@ -23,10 +30,17 @@ export function OrderCard({ card, onSubmit }: OrderCardProps) {
   const [timedOut, setTimedOut] = useState(false)
   const [startTime] = useState(Date.now())
 
-  // Initialize order with shuffled indices
+  // Initialize steps with shuffled order
   useEffect(() => {
-    const indices = Array.from({ length: card.prompt.steps.length }, (_, i) => i)
-    setOrder([...indices].sort(() => Math.random() - 0.5))
+    const stepItems: StepItem[] = card.prompt.steps.map((step: string, index: number) => ({
+      id: `step-${index}`,
+      content: step,
+      index: index
+    }))
+    
+    // Shuffle the steps
+    const shuffled = [...stepItems].sort(() => Math.random() - 0.5)
+    setSteps(shuffled)
     setIsSubmitted(false)
     setFeedback(null)
     setUserGrade(null)
@@ -34,11 +48,19 @@ export function OrderCard({ card, onSubmit }: OrderCardProps) {
     setTimedOut(false)
   }, [card.id])
 
-  const moveStep = (fromIndex: number, toIndex: number) => {
-    const newOrder = [...order]
-    const [movedItem] = newOrder.splice(fromIndex, 1)
-    newOrder.splice(toIndex, 0, movedItem)
-    setOrder(newOrder)
+  const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) return
+
+    const newSteps = Array.from(steps)
+    const [reorderedItem] = newSteps.splice(result.source.index, 1)
+    newSteps.splice(result.destination.index, 0, reorderedItem)
+
+    setSteps(newSteps)
+    
+    // Success haptic feedback
+    if ('vibrate' in navigator) {
+      navigator.vibrate([50, 50, 50])
+    }
   }
 
   const handleSubmit = async () => {
@@ -46,13 +68,16 @@ export function OrderCard({ card, onSubmit }: OrderCardProps) {
     setTimeMs(elapsed)
     setIsSubmitted(true)
 
+    // Convert current order to indices
+    const currentOrder = steps.map(step => step.index)
+    
     // Evaluate locally
-    const isCorrect = JSON.stringify(order) === JSON.stringify(card.answer.order)
+    const isCorrect = JSON.stringify(currentOrder) === JSON.stringify(card.answer.order)
     let firstMismatch: number | null = null
     
     if (!isCorrect) {
-      for (let i = 0; i < order.length; i++) {
-        if (order[i] !== card.answer.order[i]) {
+      for (let i = 0; i < currentOrder.length; i++) {
+        if (currentOrder[i] !== card.answer.order[i]) {
           firstMismatch = i
           break
         }
@@ -86,9 +111,11 @@ export function OrderCard({ card, onSubmit }: OrderCardProps) {
     const finalGrade = timedOut && !userGrade ? 3 : grade // Downgrade timeout to 3 if user interacted
     setUserGrade(finalGrade)
     
+    const currentOrder = steps.map(step => step.index)
+    
     onSubmit({
       type: 'order',
-      order: order,
+      order: currentOrder,
       timeMs,
       timedOut,
       grade: finalGrade
@@ -99,7 +126,6 @@ export function OrderCard({ card, onSubmit }: OrderCardProps) {
     <Card className="bg-card/50 backdrop-blur-xl border-border">
       <CardHeader>
         <div className="flex justify-between items-start mb-2">
-          {/* <CardTitle className="text-xl text-foreground">{card.pattern}</CardTitle> */}
           <div className="flex items-center gap-2">
             <Badge variant="outline" className="text-xs">
               {card.difficulty}
@@ -122,27 +148,51 @@ export function OrderCard({ card, onSubmit }: OrderCardProps) {
               <Label className="text-foreground font-medium">
                 Drag to reorder the steps:
               </Label>
-              <div className="space-y-2">
-                {order.map((stepIndex, index) => (
-                  <div
-                    key={`${stepIndex}-${index}`}
-                    className="flex items-center gap-3 p-3 bg-input/30 border border-border rounded-lg cursor-move hover:bg-input/50 transition-colors"
-                    draggable
-                    onDragStart={(e) => e.dataTransfer.setData('text/plain', index.toString())}
-                    onDragOver={(e) => e.preventDefault()}
-                    onDrop={(e) => {
-                      e.preventDefault()
-                      const fromIndex = parseInt(e.dataTransfer.getData('text/plain'))
-                      moveStep(fromIndex, index)
-                    }}
-                  >
-                    <div className="w-6 h-6 bg-primary/20 text-primary rounded-full flex items-center justify-center text-sm font-medium">
-                      {index + 1}
+              <DragDropContext onDragEnd={handleDragEnd}>
+                <Droppable droppableId="steps">
+                  {(provided, snapshot) => (
+                    <div
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                      className={`space-y-2 p-2 rounded-lg transition-colors ${
+                        snapshot.isDraggingOver ? 'bg-primary/5' : ''
+                      }`}
+                    >
+                      {steps.map((step, index) => (
+                        <Draggable key={step.id} draggableId={step.id} index={index}>
+                          {(provided, snapshot) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              className={`
+                                flex items-center gap-3 p-4 bg-input/30 border border-border rounded-lg transition-all duration-200 h-fit
+                                ${snapshot.isDragging ? 'opacity-20 rotate-2 shadow-2xl bg-primary/10 border-primary/50 z-10' : 'hover:bg-input/50'}
+                                select-none cursor-grab active:cursor-grabbing
+                              `}
+                            >
+                              <div className="w-8 h-8 bg-primary/20 text-primary rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0">
+                                {index + 1}
+                              </div>
+                              <span className="text-foreground text-sm leading-relaxed flex-1">
+                                {step.content}
+                              </span>
+                              <div 
+                                {...provided.dragHandleProps}
+                                className="flex-shrink-0 text-muted-foreground/50 cursor-grab active:cursor-grabbing"
+                              >
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                  <path d="M8 6h8M8 12h8M8 18h8"/>
+                                </svg>
+                              </div>
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
                     </div>
-                    <span className="text-foreground">{card.prompt.steps[stepIndex]}</span>
-                  </div>
-                ))}
-              </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
             </div>
 
             <Button 
@@ -171,7 +221,7 @@ export function OrderCard({ card, onSubmit }: OrderCardProps) {
                     First mismatch at step {feedback.firstMismatch + 1}:
                   </p>
                   <div className="p-2 bg-red-500/5 border border-red-500/10 rounded text-sm">
-                    Your order: {order[feedback.firstMismatch] + 1}
+                    Your order: {steps[feedback.firstMismatch]?.index + 1}
                   </div>
                   <div className="p-2 bg-green-500/5 border border-green-500/10 rounded text-sm mt-1">
                     Correct order: {card.answer.order[feedback.firstMismatch] + 1}
