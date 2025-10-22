@@ -6,13 +6,14 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Timer } from "@/components/ui/timer"
 import { SessionCard } from "@/lib/session-engine"
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd'
 
 interface OrderCardProps {
   card: SessionCard
   onSubmit: (answer: any, feedback: any) => void
+  timedOut?: boolean
+  userInteracted?: boolean
 }
 
 interface StepItem {
@@ -21,13 +22,12 @@ interface StepItem {
   index: number
 }
 
-export function OrderCard({ card, onSubmit }: OrderCardProps) {
+export function OrderCard({ card, onSubmit, timedOut = false, userInteracted = false }: OrderCardProps) {
   const [steps, setSteps] = useState<StepItem[]>([])
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [feedback, setFeedback] = useState<any>(null)
   const [userGrade, setUserGrade] = useState<number | null>(null)
   const [timeMs, setTimeMs] = useState(0)
-  const [timedOut, setTimedOut] = useState(false)
   const [startTime] = useState(Date.now())
 
   // Initialize steps with shuffled order
@@ -45,8 +45,21 @@ export function OrderCard({ card, onSubmit }: OrderCardProps) {
     setFeedback(null)
     setUserGrade(null)
     setTimeMs(0)
-    setTimedOut(false)
   }, [card.id])
+
+  // Handle timeout from parent
+  useEffect(() => {
+    if (timedOut && !isSubmitted) {
+      const elapsed = Date.now() - startTime
+      setTimeMs(elapsed)
+      setIsSubmitted(true)
+      setFeedback({
+        correct: false,
+        timedOut: true,
+        rationale: "Time's up! Don't worry, you can try again."
+      })
+    }
+  }, [timedOut, isSubmitted, startTime])
 
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return
@@ -91,24 +104,8 @@ export function OrderCard({ card, onSubmit }: OrderCardProps) {
     })
   }
 
-  const handleTimeout = () => {
-    const elapsed = Date.now() - startTime
-    setTimeMs(elapsed)
-    setTimedOut(true)
-    setIsSubmitted(true)
-    setFeedback({
-      correct: false,
-      timedOut: true,
-      rationale: "Time's up! Don't worry, you can try again."
-    })
-  }
-
-  const handleUserInteraction = () => {
-    // User interacted, so timeout will be treated as grade 3 instead of 5
-  }
-
   const handleGradeClick = (grade: number) => {
-    const finalGrade = timedOut && !userGrade ? 3 : grade // Downgrade timeout to 3 if user interacted
+    const finalGrade = timedOut && !userInteracted ? 5 : (timedOut && userInteracted ? 3 : grade)
     setUserGrade(finalGrade)
     
     const currentOrder = steps.map(step => step.index)
@@ -126,17 +123,6 @@ export function OrderCard({ card, onSubmit }: OrderCardProps) {
     <Card className="bg-card/50 backdrop-blur-xl border-border">
       <CardHeader>
         <div className="flex justify-between items-start mb-2">
-          <div className="flex items-center gap-2">
-            <Badge variant="outline" className="text-xs">
-              {card.difficulty}
-            </Badge>
-            <Timer
-              cardType="order"
-              estSeconds={card.estSeconds}
-              onTimeout={handleTimeout}
-              onUserInteraction={handleUserInteraction}
-            />
-          </div>
         </div>
         <p className="text-muted-foreground">{card.prompt.stem}</p>
       </CardHeader>

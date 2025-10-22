@@ -36,9 +36,6 @@ export function InsightCard({ card, onSubmit }: InsightCardProps) {
       <CardHeader>
         <div className="flex justify-between items-start mb-2">
           {/* <CardTitle className="text-xl text-foreground">{card.pattern}</CardTitle> */}
-          <Badge variant="outline" className="text-xs">
-            {card.difficulty}
-          </Badge>
         </div>
         <p className="text-muted-foreground text-lg font-medium">{card.prompt.stem}</p>
       </CardHeader>

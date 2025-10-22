@@ -13,19 +13,19 @@ datasource db {
 model User {
   id            String   @id @default(cuid())
   email         String   @unique
-  createdAt     DateTime @default(now())
+  createdAt     DateTime @map("created_at") @default(now())
   profile       Profile?
   progress      UserProgress[]
   attempts      Attempt[]
 }
 
 model Profile {
-  userId       String  @id
+  userId       String  @id @map("user_id")
   user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   level        Level
-  dailyMinutes Int
+  dailyMinutes Int     @map("daily_minutes")
   streak       Int      @default(0)
-  lastActive   DateTime?
+  lastActive   DateTime? @map("last_active")
 }
 
 enum Level {
@@ -43,9 +43,10 @@ model Card {
   prompt     Json
   answer     Json
   hints      String?
+  createdAt  DateTime?  @map("created_at") @default(now())
   subtype    String?        // "recognition" | "edge" | "complexity" | "impl"
   tags       String?        // JSON string
-  estSeconds Int?
+  estSeconds Int?           @map("est_seconds")
   progress   UserProgress[]
   attempts   Attempt[]
 }
@@ -66,13 +67,13 @@ enum Difficulty {
 
 model UserProgress {
   id           String   @id @default(cuid())
-  userId       String
-  cardId       String
+  userId       String   @map("user_id")
+  cardId       String   @map("card_id")
   ef           Float    @default(2.5)
   reps         Int      @default(0)
-  intervalDays Int      @default(0)
-  nextDue      DateTime @default(now())
-  lastGrade    Int?
+  intervalDays Int      @map("interval_days") @default(0)
+  nextDue      DateTime @map("next_due") @default(now())
+  lastGrade    Int?     @map("last_grade")
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   card         Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
 
@@ -81,14 +82,14 @@ model UserProgress {
 
 model Attempt {
   id        String   @id @default(cuid())
-  userId    String
-  cardId    String
+  userId    String   @map("user_id")
+  cardId    String   @map("card_id")
   grade     Int                    // 1 | 3 | 5
   feedback  Json
-  createdAt DateTime @default(now())
+  createdAt DateTime @map("created_at") @default(now())
 
-  timeMs    Int       @default(0)
-  timedOut  Boolean   @default(false)
+  timeMs    Int       @map("time_ms") @default(0)
+  timedOut  Boolean   @map("timed_out") @default(false)
 
   choice    Int?      // mcq
   order     Int[]     // order

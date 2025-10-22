@@ -404,8 +404,9 @@ export async function updateStreak(userId: string) {
   
   if (!profile) return
   
+  // Get today's date in UTC to avoid timezone issues
   const today = new Date()
-  const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000)
+  const todayUTC = new Date(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate())
   
   if (!profile.last_active) {
     // First session
@@ -413,20 +414,23 @@ export async function updateStreak(userId: string) {
       .from('profiles')
       .update({
         streak: 1,
-        last_active: today.toISOString()
+        last_active: todayUTC.toISOString()
       })
       .eq('user_id', userId)
   } else {
     const lastActiveDate = new Date(profile.last_active)
-    const daysDiff = Math.floor((today.getTime() - lastActiveDate.getTime()) / (24 * 60 * 60 * 1000))
+    const lastActiveUTC = new Date(lastActiveDate.getUTCFullYear(), lastActiveDate.getUTCMonth(), lastActiveDate.getUTCDate())
     
-    let newStreak = profile.streak
+    // Calculate days difference using UTC dates
+    const daysDiff = Math.floor((todayUTC.getTime() - lastActiveUTC.getTime()) / (24 * 60 * 60 * 1000))
+    
+    let newStreak = profile.streak || 0
     
     if (daysDiff === 1) {
-      // Consecutive day
+      // Consecutive day - increment streak
       newStreak += 1
     } else if (daysDiff > 1) {
-      // Gap in days - reset streak
+      // Gap in days - reset streak to 1
       newStreak = 1
     }
     // If daysDiff === 0, same day, keep current streak
@@ -435,7 +439,7 @@ export async function updateStreak(userId: string) {
       .from('profiles')
       .update({
         streak: newStreak,
-        last_active: today.toISOString()
+        last_active: todayUTC.toISOString()
       })
       .eq('user_id', userId)
   }

@@ -6,21 +6,21 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Timer } from "@/components/ui/timer"
 import { SessionCard } from "@/lib/session-engine"
 
 interface FitbCardProps {
   card: SessionCard
   onSubmit: (answer: any, feedback: any) => void
+  timedOut?: boolean
+  userInteracted?: boolean
 }
 
-export function FitbCard({ card, onSubmit }: FitbCardProps) {
+export function FitbCard({ card, onSubmit, timedOut = false, userInteracted = false }: FitbCardProps) {
   const [blanks, setBlanks] = useState<string[]>([])
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [feedback, setFeedback] = useState<any>(null)
   const [userGrade, setUserGrade] = useState<number | null>(null)
   const [timeMs, setTimeMs] = useState(0)
-  const [timedOut, setTimedOut] = useState(false)
   const [startTime] = useState(Date.now())
 
   // Initialize blanks array
@@ -30,8 +30,21 @@ export function FitbCard({ card, onSubmit }: FitbCardProps) {
     setFeedback(null)
     setUserGrade(null)
     setTimeMs(0)
-    setTimedOut(false)
   }, [card.id, card.prompt.blanks])
+
+  // Handle timeout from parent
+  useEffect(() => {
+    if (timedOut && !isSubmitted) {
+      const elapsed = Date.now() - startTime
+      setTimeMs(elapsed)
+      setIsSubmitted(true)
+      setFeedback({
+        correct: false,
+        timedOut: true,
+        rationale: "Time's up! Don't worry, you can try again."
+      })
+    }
+  }, [timedOut, isSubmitted, startTime])
 
   const updateBlank = (index: number, value: string) => {
     const newBlanks = [...blanks]
@@ -59,24 +72,8 @@ export function FitbCard({ card, onSubmit }: FitbCardProps) {
     })
   }
 
-  const handleTimeout = () => {
-    const elapsed = Date.now() - startTime
-    setTimeMs(elapsed)
-    setTimedOut(true)
-    setIsSubmitted(true)
-    setFeedback({
-      correct: false,
-      timedOut: true,
-      rationale: "Time's up! Don't worry, you can try again."
-    })
-  }
-
-  const handleUserInteraction = () => {
-    // User interacted, so timeout will be treated as grade 3 instead of 5
-  }
-
   const handleGradeClick = (grade: number) => {
-    const finalGrade = timedOut && !userGrade ? 3 : grade // Downgrade timeout to 3 if user interacted
+    const finalGrade = timedOut && !userInteracted ? 5 : (timedOut && userInteracted ? 3 : grade)
     setUserGrade(finalGrade)
     
     onSubmit({
@@ -96,17 +93,6 @@ export function FitbCard({ card, onSubmit }: FitbCardProps) {
       <CardHeader>
         <div className="flex justify-between items-start mb-2">
           {/* <CardTitle className="text-xl text-foreground">{card.pattern}</CardTitle> */}
-          <div className="flex items-center gap-2">
-            <Badge variant="outline" className="text-xs">
-              {card.difficulty}
-            </Badge>
-            <Timer
-              cardType="fitb"
-              estSeconds={card.estSeconds}
-              onTimeout={handleTimeout}
-              onUserInteraction={handleUserInteraction}
-            />
-          </div>
         </div>
       </CardHeader>
       

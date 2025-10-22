@@ -6,22 +6,22 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
-import { Timer } from "@/components/ui/timer"
 import { COPY } from "@/content/copy"
 import { SessionCard } from "@/lib/session-engine"
 
 interface PatternIdCardProps {
   card: SessionCard
   onSubmit: (answer: any, feedback: any) => void
+  timedOut?: boolean
+  userInteracted?: boolean
 }
 
-export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
+export function PatternIdCard({ card, onSubmit, timedOut = false, userInteracted = false }: PatternIdCardProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [feedback, setFeedback] = useState<any>(null)
   const [userGrade, setUserGrade] = useState<number | null>(null)
   const [timeMs, setTimeMs] = useState(0)
-  const [timedOut, setTimedOut] = useState(false)
   const [startTime] = useState(Date.now())
 
   // Reset state when card changes
@@ -31,8 +31,21 @@ export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
     setFeedback(null)
     setUserGrade(null)
     setTimeMs(0)
-    setTimedOut(false)
   }, [card.id])
+
+  // Handle timeout from parent
+  useEffect(() => {
+    if (timedOut && !isSubmitted) {
+      const elapsed = Date.now() - startTime
+      setTimeMs(elapsed)
+      setIsSubmitted(true)
+      setFeedback({
+        correct: false,
+        timedOut: true,
+        rationale: "Time's up! Don't worry, you can try again."
+      })
+    }
+  }, [timedOut, isSubmitted, startTime])
 
   const handleSubmit = async () => {
     if (selectedAnswer === null) return
@@ -50,24 +63,8 @@ export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
     })
   }
 
-  const handleTimeout = () => {
-    const elapsed = Date.now() - startTime
-    setTimeMs(elapsed)
-    setTimedOut(true)
-    setIsSubmitted(true)
-    setFeedback({
-      correct: false,
-      timedOut: true,
-      rationale: "Time's up! Don't worry, you can try again."
-    })
-  }
-
-  const handleUserInteraction = () => {
-    // User interacted, so timeout will be treated as grade 3 instead of 5
-  }
-
   const handleGradeClick = (grade: number) => {
-    const finalGrade = timedOut && !userGrade ? 3 : grade // Downgrade timeout to 3 if user interacted
+    const finalGrade = timedOut && !userInteracted ? 5 : (timedOut && userInteracted ? 3 : grade)
     setUserGrade(finalGrade)
     
     onSubmit({
@@ -86,17 +83,6 @@ export function PatternIdCard({ card, onSubmit }: PatternIdCardProps) {
       <CardHeader>
         <div className="flex justify-between items-start mb-2">
           {/* <CardTitle className="text-xl text-foreground">{card.pattern}</CardTitle> */}
-          <div className="flex items-center gap-2">
-            <Badge variant="outline" className="text-xs">
-              {card.difficulty}
-            </Badge>
-            <Timer
-              cardType="mcq"
-              estSeconds={card.estSeconds}
-              onTimeout={handleTimeout}
-              onUserInteraction={handleUserInteraction}
-            />
-          </div>
         </div>
         <p className="text-muted-foreground text-base">{card.prompt.stem}</p>
       </CardHeader>

@@ -23,6 +23,9 @@ export default function SessionPage() {
   const [completedCardIds, setCompletedCardIds] = useState<string[]>([])
   const [isAddingCards, setIsAddingCards] = useState(false)
   const [selectedPattern, setSelectedPattern] = useState<string>('two-pointers')
+  const [streak, setStreak] = useState<number>(0)
+  const [timedOut, setTimedOut] = useState(false)
+  const [userInteracted, setUserInteracted] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -42,8 +45,9 @@ export default function SessionPage() {
       
       const response = await fetch(`/api/session/cards?${params.toString()}`)
       if (response.ok) {
-        const sessionCards = await response.json()
-        setCards(sessionCards)
+        const data = await response.json()
+        setCards(data.cards)
+        setStreak(data.streak)
         setCurrentCardIndex(0)
         setSessionComplete(false)
       } else {
@@ -67,6 +71,14 @@ export default function SessionPage() {
     }
   }
 
+  const handleTimeout = () => {
+    setTimedOut(true)
+  }
+
+  const handleUserInteraction = () => {
+    setUserInteracted(true)
+  }
+
   const handleCardSubmit = async (answer: any, feedback: any) => {
     const currentCard = cards[currentCardIndex]
     try {
@@ -85,6 +97,10 @@ export default function SessionPage() {
       if (response.ok) {
         // Add to completed cards
         setCompletedCardIds(prev => [...prev, currentCard.id])
+        
+        // Reset timer state for next card
+        setTimedOut(false)
+        setUserInteracted(false)
         
         // Move to next card or complete session
         if (currentCardIndex < cards.length - 1) {
@@ -185,11 +201,17 @@ export default function SessionPage() {
   return (
     <div className="h-full bg-background overflow-hidden">
 
-      <div className="relative z-10 h-full max-h-screen flex flex-col container mx-auto px-4 py-8 gap-4 overflow-hidden">
+      <div className="relative z-10 h-full max-h-screen flex flex-col container mx-auto px-4 py-4 gap-4 border-t border-border overflow-hidden">
         <SessionHeader 
           currentIndex={currentCardIndex + 1}
           totalCards={cards.length}
+          streak={streak}
+          cardType={currentCard.type}
+          estSeconds={currentCard.estSeconds}
+          onTimeout={handleTimeout}
+          onUserInteraction={handleUserInteraction}
         />
+
 
         <div className="max-w-2xl w-full h-fit">
           {currentCard.type === 'mcq' ? (
@@ -197,24 +219,32 @@ export default function SessionPage() {
               key={currentCard.id}
               card={currentCard}
               onSubmit={handleCardSubmit}
+              timedOut={timedOut}
+              userInteracted={userInteracted}
             />
           ) : currentCard.type === 'plan' ? (
             <PlanCard
               key={currentCard.id}
               card={currentCard}
               onSubmit={handleCardSubmit}
+              timedOut={timedOut}
+              userInteracted={userInteracted}
             />
           ) : currentCard.type === 'order' ? (
             <OrderCard
               key={currentCard.id}
               card={currentCard}
               onSubmit={handleCardSubmit}
+              timedOut={timedOut}
+              userInteracted={userInteracted}
             />
           ) : currentCard.type === 'fitb' ? (
             <FitbCard
               key={currentCard.id}
               card={currentCard}
               onSubmit={handleCardSubmit}
+              timedOut={timedOut}
+              userInteracted={userInteracted}
             />
           ) : currentCard.type === 'insight' ? (
             <InsightCard

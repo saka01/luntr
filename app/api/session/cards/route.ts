@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getSessionCards } from '@/lib/session-engine'
-import { currentUserId } from '@/lib/auth-guard'
+import { currentUserId, requireProfile } from '@/lib/auth-guard'
 
 export async function GET(request: Request) {
   try {
@@ -12,8 +12,12 @@ export async function GET(request: Request) {
     const pattern = searchParams.get('pattern') || 'two-pointers' // Default to two pointers
     
     const cards = await getSessionCards(userId, size, excludeIds, pattern)
+    const profile = await requireProfile()
     
-    return NextResponse.json(cards)
+    return NextResponse.json({
+      cards,
+      streak: profile.streak
+    })
   } catch (error) {
     console.error('Error getting session cards:', error)
     return NextResponse.json({ error: 'Failed to get session cards' }, { status: 500 })

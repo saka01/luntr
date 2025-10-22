@@ -4,12 +4,18 @@ import { Logo } from "./logo"
 import { ThemeToggle } from "./theme-toggle"
 import { auth } from "@/lib/auth"
 import { User } from "@supabase/supabase-js"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 export const Header = () => {
   const router = useRouter()
+  const pathname = usePathname()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [user, setUser] = useState<User | null>(null)
+
+  // Hide header on session page
+  if (pathname === '/session') {
+    return null
+  }
 
   useEffect(() => {
     const handleScroll = () => {
