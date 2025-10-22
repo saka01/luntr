@@ -78,11 +78,8 @@ export function PatternIdCard({ card, onSubmit, timedOut = false, userInteracted
 
   return (
     <Card className="bg-card/50 backdrop-blur-xl border-border">
-      <CardHeader>
-        <div className="flex justify-between items-start mb-2">
-          {/* <CardTitle className="text-xl text-foreground">{card.pattern}</CardTitle> */}
-        </div>
-        <p className="text-muted-foreground text-base">{card.prompt.stem}</p>
+      <CardHeader className="w-full">
+        <p className="text-muted-foreground text-base font-bold">{card.prompt.stem}</p>
       </CardHeader>
       
       <CardContent className="space-y-6">

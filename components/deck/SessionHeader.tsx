@@ -14,6 +14,7 @@ interface SessionHeaderProps {
   estSeconds?: number
   onTimeout?: () => void
   onUserInteraction?: () => void
+  cardId?: string
 }
 
 export function SessionHeader({ 
@@ -23,32 +24,40 @@ export function SessionHeader({
   cardType,
   estSeconds,
   onTimeout,
-  onUserInteraction
+  onUserInteraction,
+  cardId
 }: SessionHeaderProps) {
   const [timeLeft, setTimeLeft] = useState(0)
   const [isActive, setIsActive] = useState(false)
   const [hasInteracted, setHasInteracted] = useState(false)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const timerStartedRef = useRef(false)
 
   const totalTime = estSeconds ?? (cardType ? defaultEstSeconds(cardType) : 0)
   const progress = totalTime > 0 ? (timeLeft / totalTime) * 100 : 0
 
-  // Timer effect
+  // Timer effect - only run when cardId changes
   useEffect(() => {
-    if (!cardType || cardType === 'insight' || totalTime === 0) {
+    if (!cardType || cardType === 'insight' || totalTime === 0 || !cardId) {
       return
     }
+
+    // Clear any existing timers
+    if (intervalRef.current) clearInterval(intervalRef.current)
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
 
     setTimeLeft(totalTime)
     setIsActive(true)
     setHasInteracted(false)
+    timerStartedRef.current = true
 
     // Start countdown
     intervalRef.current = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 1) {
           setIsActive(false)
+          if (intervalRef.current) clearInterval(intervalRef.current)
           return 0
         }
         return prev - 1
@@ -58,6 +67,7 @@ export function SessionHeader({
     // Set timeout callback
     timeoutRef.current = setTimeout(() => {
       setIsActive(false)
+      if (intervalRef.current) clearInterval(intervalRef.current)
       onTimeout?.()
     }, totalTime * 1000)
 
@@ -65,12 +75,28 @@ export function SessionHeader({
       if (intervalRef.current) clearInterval(intervalRef.current)
       if (timeoutRef.current) clearTimeout(timeoutRef.current)
     }
-  }, [totalTime, cardType, onTimeout])
+  }, [cardId]) // Only depend on cardId
+
+  // Handle totalTime and cardType changes without restarting timer
+  useEffect(() => {
+    if (!timerStartedRef.current) return
+    
+    const newTotalTime = estSeconds ?? (cardType ? defaultEstSeconds(cardType) : 0)
+    if (newTotalTime !== totalTime && newTotalTime > 0) {
+      // Update the timeout if totalTime changed
+      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+      timeoutRef.current = setTimeout(() => {
+        setIsActive(false)
+        if (intervalRef.current) clearInterval(intervalRef.current)
+        onTimeout?.()
+      }, newTotalTime * 1000)
+    }
+  }, [totalTime, cardType, estSeconds, onTimeout])
 
   // Track user interaction
   useEffect(() => {
     const handleInteraction = () => {
-      if (!hasInteracted) {
+      if (!hasInteracted && isActive) {
         setHasInteracted(true)
         onUserInteraction?.()
       }

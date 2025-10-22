@@ -210,6 +210,7 @@ export default function SessionPage() {
           estSeconds={currentCard.estSeconds}
           onTimeout={handleTimeout}
           onUserInteraction={handleUserInteraction}
+          cardId={currentCard.id}
         />
 
 
