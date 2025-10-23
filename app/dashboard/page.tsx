@@ -193,8 +193,8 @@ export default function AppPage() {
           {/* Due Cards Card */}
           <Card className="bg-card/50 backdrop-blur-xl border-border">
             <CardHeader>
-              <CardTitle className="text-foreground text-md font-bold">Two Pointers</CardTitle>
-              <CardDescription className="text-muted-foreground italic" style={{ fontSize: '12px' }}>Trained on Blind 75 Neetcode Problems</CardDescription>
+              <CardTitle className="text-foreground text-md font-bold">Two Pointers <span className="text-secondary" style={{ fontSize: '12px' }}>(1000+ Questions)</span></CardTitle>
+              <CardDescription className="text-muted-foreground italic" style={{ fontSize: '12px' }}>Trained on Blind 75 Neetcode Problems for interview prep</CardDescription>
             </CardHeader>
             <CardContent>
               <Link href="/patterns">
