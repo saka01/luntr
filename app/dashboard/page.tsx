@@ -209,7 +209,7 @@ export default function AppPage() {
             </CardContent>
           </Card>
 
-          {/* Mastery Card */}
+          {/* Mastery Card
           <Card className="bg-card/50 backdrop-blur-xl border-border">
             <CardHeader>
               <CardTitle className="text-foreground">{COPY.dashboard.mastery(mastery)}</CardTitle>
@@ -221,7 +221,7 @@ export default function AppPage() {
                 <div className="text-sm text-muted-foreground">Based on your recent attempts</div>
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
 
           {/* Coming Soon Card */}
           <Card className="bg-card/50 backdrop-blur-xl border-border md:col-span-2 lg:col-span-1">
