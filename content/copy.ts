@@ -2,7 +2,7 @@ export const COPY = {
   appName: "Pattern Gym",
   badges: { 
     pattern: (p: string) => `Pattern: ${p}`, 
-    comingSoon: "More patterns coming soon" 
+    comingSoon: "More practice cards coming soon" 
   },
   nav: { 
     dashboard: "Dashboard", 

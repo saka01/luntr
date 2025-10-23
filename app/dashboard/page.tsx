@@ -167,9 +167,9 @@ export default function AppPage() {
       <div className="relative z-10 container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex flex-col justify-center items-center mb-8">
-          <Badge variant="outline" className="text-lg px-4 py-2">
+          <span className="text-lg px-4 py-2">
             {COPY.dashboard.streak(profile.streak)}
-          </Badge>
+          </span>
           <div>
             <h1 className="text-3xl font-bold text-foreground">{COPY.dashboard.greeting}</h1>
             <p className="text-muted-foreground">Ready to practice your patterns?</p>
@@ -193,17 +193,15 @@ export default function AppPage() {
           {/* Due Cards Card */}
           <Card className="bg-card/50 backdrop-blur-xl border-border">
             <CardHeader>
-              <CardTitle className="text-foreground">{COPY.dashboard.dueToday(dueCount)}</CardTitle>
-              <CardDescription>
-                {dueCount > 0 ? 'Time to practice your Sliding Window skills' : 'All caught up! Great job!'}
-              </CardDescription>
+              <CardTitle className="text-foreground text-md font-bold">Two Pointers</CardTitle>
+              <CardDescription className="text-muted-foreground italic" style={{ fontSize: '12px' }}>Trained on Blind 75 Neetcode Problems</CardDescription>
             </CardHeader>
             <CardContent>
               <Link href="/patterns">
                 <Button 
                   className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors"
                 >
-                  {dueCount > 0 ? COPY.dashboard.startSession : 'Start Practice Session'}
+                  Start Practice Session
                 </Button>
               </Link>
             </CardContent>
@@ -227,16 +225,23 @@ export default function AppPage() {
           <Card className="bg-card/50 backdrop-blur-xl border-border md:col-span-2 lg:col-span-1">
             <CardHeader>
               <CardTitle className="text-foreground">{COPY.badges.comingSoon}</CardTitle>
-              <CardDescription>More patterns in development</CardDescription>
+              <CardDescription>Neetcode 150, Google, Apple, etc.</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3">
+              <div className="">
                 <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground font-medium">Two Pointers</span>
+                  <span className="text-muted-foreground font-medium">Sliding Window</span>
                   <Badge variant="outline" className="text-xs opacity-50">
                     Soon
                   </Badge>
                 </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground font-medium">Apple Interview Questions</span>
+                  <Badge variant="outline" className="text-xs opacity-50">
+                    Soon
+                  </Badge>
+                </div>
+              </div>
                 <div className="flex justify-between items-center">
                   <span className="text-muted-foreground font-medium">Binary Search</span>
                   <Badge variant="outline" className="text-xs opacity-50">
@@ -244,12 +249,25 @@ export default function AppPage() {
                   </Badge>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground font-medium">Hashing</span>
+                  <span className="text-muted-foreground font-medium">Google Interview Questions</span>
                   <Badge variant="outline" className="text-xs opacity-50">
                     Soon
                   </Badge>
                 </div>
-              </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground font-medium">Arrays & Hashing</span>
+                  <Badge variant="outline" className="text-xs opacity-50">
+                    Soon
+                  </Badge>
+                </div>
+              <div className="">
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground font-medium">Microsoft Interview Questions</span>
+                  <Badge variant="outline" className="text-xs opacity-50">
+                    Soon
+                  </Badge>
+                </div>
+                </div>
             </CardContent>
           </Card>
         </motion.div>
