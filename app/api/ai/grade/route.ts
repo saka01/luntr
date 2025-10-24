@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { generateMCQRationale, gradePlan } from '@/lib/gemini'
+import { generateMCQRationale, evaluatePlan } from '@/lib/gemini'
 import { checkPlanKeywords, getMCQFallbackRationale } from '@/lib/feedback'
 import { ACTIVE_PATTERN } from '@/config/activePattern'
 
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     if (mode === 'plan') {
       // Plan grading
       try {
-        const result = await gradePlan(problemSummary, userPlan, checklist)
+        const result = await evaluatePlan(checklist, userPlan)
         return NextResponse.json(result)
       } catch (error) {
         console.error('Gemini plan grading error:', error)
