@@ -8,5 +8,4 @@ export * from './utils';
 export * from '../srs/schedule';
 
 // Session exports
-export * from '../session/buildSession';
-export * from '../session/submitAttempt';
+export * from '../session/supabaseSubmitWithTimeout';

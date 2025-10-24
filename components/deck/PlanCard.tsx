@@ -55,23 +55,58 @@ export function PlanCard({ card, onSubmit, timedOut = false, userInteracted = fa
     setTimeMs(elapsed)
     setIsSubmitted(true)
 
-    // Evaluate locally using the plan evaluation logic
-    const norm = (s: string) => s.trim().toLowerCase()
-    const lines = userPlan.split('\n').map(norm).filter(Boolean)
-    const covered = card.answer.checklist.map((item: string) => {
-      const terms = norm(item).split(/\s+/).slice(0, 3).join(' ')
-      return lines.some(l => l.includes(terms))
-    })
-    const coverage = covered.filter(Boolean).length / card.answer.checklist.length
-    const missing = card.answer.checklist.filter((_: any, i: number) => !covered[i])
-    const correct = coverage >= 0.7
+    try {
+      // Call Gemini evaluation API
+      const response = await fetch('/api/ai/evaluate-plan', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          checklist: card.answer.checklist,
+          userPlan: userPlan
+        }),
+      })
 
-    setFeedback({
-      correct,
-      coverage,
-      missing,
-      rationale: card.answer.rationale
-    })
+      if (response.ok) {
+        const result = await response.json()
+        setFeedback({
+          correct: result.correct,
+          coverage: result.coverage,
+          matched: result.matched,
+          missing: result.missing,
+          explanation: result.explanation,
+          rationale: card.answer.rationale,
+          method: result.method
+        })
+      } else {
+        throw new Error('API call failed')
+      }
+    } catch (error) {
+      console.error('Error evaluating plan:', error)
+      
+      // Fallback to local evaluation
+      const norm = (s: string) => s.trim().toLowerCase()
+      const lines = userPlan.split('\n').map(norm).filter(Boolean)
+      const covered = card.answer.checklist.map((item: string) => {
+        const terms = norm(item).split(/\s+/).slice(0, 3).join(' ')
+        return lines.some(l => l.includes(terms))
+      })
+      const coverage = covered.filter(Boolean).length / card.answer.checklist.length
+      const missing = card.answer.checklist.filter((_: any, i: number) => !covered[i])
+      const matched = card.answer.checklist.filter((_: any, i: number) => covered[i])
+      const correct = coverage >= 0.7
+
+      setFeedback({
+        correct,
+        coverage,
+        matched,
+        missing,
+        explanation: 'Good effort! Keep practicing.',
+        rationale: card.answer.rationale,
+        method: 'fallback'
+      })
+    }
   }
 
   const handleGradeClick = (grade: number) => {
@@ -140,36 +175,25 @@ export function PlanCard({ card, onSubmit, timedOut = false, userInteracted = fa
         ) : (
           <>
             <div className={`p-4 rounded-lg ${
-              feedback.correct ? 'bg-green-500/10 border border-green-500/20' : 'bg-red-500/10 border border-red-500/20'
+              feedback?.correct ? 'bg-green-500/10 border border-green-500/20' : 'bg-red-500/10 border border-red-500/20'
             }`}>
               <div className="flex items-center space-x-2 mb-2">
                 <span className={`font-medium ${
-                  feedback.correct ? 'text-green-400' : 'text-red-400'
+                  feedback?.correct ? 'text-green-400' : 'text-red-400'
                 }`}>
-                  {feedback.correct ? 'Great plan!' : feedback.timedOut ? 'Time\'s up!' : 'Good attempt, but missing some steps'}
+                  {feedback?.correct ? 'Great plan!' : feedback?.timedOut ? 'Time\'s up!' : 'Good attempt, but missing some steps'}
                 </span>
               </div>
               
-              {feedback.coverage !== undefined && (
+              {feedback?.explanation && (
                 <div className="mb-3">
-                  <p className="text-sm text-muted-foreground mb-2">
-                    Coverage: {Math.round(feedback.coverage * 100)}% ({Math.round(feedback.coverage * card.answer.checklist.length)}/{card.answer.checklist.length} steps covered)
+                  <p className="text-sm text-muted-foreground">
+                    {feedback.explanation}
                   </p>
-                  
-                  {feedback.missing && feedback.missing.length > 0 && (
-                    <div className="p-3 bg-yellow-500/5 border border-yellow-500/10 rounded-md">
-                      <p className="text-sm text-yellow-300 font-medium mb-1">Missing steps:</p>
-                      <ul className="text-sm text-yellow-200 space-y-1">
-                        {feedback.missing.map((step: string, index: number) => (
-                          <li key={index}>• {step}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
                 </div>
               )}
               
-              <p className="text-sm text-muted-foreground">{feedback.rationale}</p>
+              <p className="text-sm text-muted-foreground">{feedback?.rationale}</p>
             </div>
 
             {timedOut ? (

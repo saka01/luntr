@@ -46,7 +46,15 @@ Explain why this pattern applies in one sentence.`
   }
 }
 
-export async function gradePlan(problemSummary: string, userPlan: string, checklist: string[]): Promise<{ score_0_5: number; brief_feedback: string }> {
+export async function evaluatePlan(
+  checklist: string[], 
+  userPlan: string
+): Promise<{ 
+  matched: string[]; 
+  missing: string[]; 
+  coverage: number;
+  explanation: string;
+}> {
   try {
     const genAI = getGeminiClient()
     const model = genAI.getGenerativeModel({ 
@@ -56,36 +64,41 @@ export async function gradePlan(problemSummary: string, userPlan: string, checkl
       }
     })
     
-    const prompt = `You are grading a 3–6 step DSA plan (no code). Score from 0–5 and give a brief action hint if steps miss key checklist items. Be terse and concrete.
-Return JSON only.
+    const prompt = `You evaluate algorithm plans for coding problems.
+Given REQUIRED_STEPS and USER_PLAN, return JSON:
+{
+  "matched": ["step1", "step2", ...],
+  "missing": ["step3", ...],
+  "coverage": 0.75,
+  "explanation": "Simple explanation of what they did well and what to improve"
+}
 
-Problem: ${problemSummary}
-Canonical checklist: ${checklist.join('; ')}
-User plan: "${userPlan}"
-Output JSON: {"score_0_5": <int>, "brief_feedback": "<<=40 words>"}`
+Rules:
+- Match by meaning, not exact words
+- Do not invent steps not in REQUIRED_STEPS
+- coverage = matched.length / REQUIRED_STEPS.length, rounded to two decimals
+- explanation should be encouraging and simple, avoid technical jargon
+- No extra fields
+
+REQUIRED_STEPS: ${checklist.join('; ')}
+USER_PLAN: "${userPlan}"`
 
     const result = await model.generateContent(prompt)
     const response = await result.response
     const text = response.text()
     
-    // Parse JSON response
-    const jsonMatch = text.match(/\{[\s\S]*\}/)
-    if (!jsonMatch) {
-      throw new Error('No JSON found in response')
-    }
+    // Parse JSON response directly since responseMimeType is set to application/json
+    const parsed = JSON.parse(text)
     
-    const parsed = JSON.parse(jsonMatch[0])
+    // Validate response structure
+    const matched = Array.isArray(parsed.matched) ? parsed.matched : []
+    const missing = Array.isArray(parsed.missing) ? parsed.missing : []
+    const coverage = typeof parsed.coverage === 'number' ? parsed.coverage : 0
+    const explanation = typeof parsed.explanation === 'string' ? parsed.explanation : 'Good effort! Keep practicing.'
     
-    // Validate and clamp score
-    const score = Math.max(0, Math.min(5, Math.round(parsed.score_0_5 || 0)))
-    
-    // Ensure feedback is <= 40 words
-    const words = parsed.brief_feedback?.trim().split(/\s+/) || []
-    const feedback = words.length > 40 ? words.slice(0, 40).join(' ') + '...' : parsed.brief_feedback || 'Good attempt.'
-    
-    return { score_0_5: score, brief_feedback: feedback }
+    return { matched, missing, coverage, explanation }
   } catch (error) {
-    console.error('Gemini plan grading error:', error)
+    console.error('Gemini plan evaluation error:', error)
     throw error
   }
 }

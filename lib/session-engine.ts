@@ -310,6 +310,7 @@ export async function submitCardAttempt(
     order?: number[];
     text?: string;
     blanks?: string[];
+    choiceIndexes?: number[];
   }
 ) {
   const supabase = await getSupabaseClient()
@@ -329,6 +330,7 @@ export async function submitCardAttempt(
     if (attemptData.order !== undefined) attemptRecord.order = attemptData.order;
     if (attemptData.text !== undefined) attemptRecord.text = attemptData.text;
     if (attemptData.blanks !== undefined) attemptRecord.blanks = attemptData.blanks;
+    if (attemptData.choiceIndexes !== undefined) attemptRecord.choiceIndexes = attemptData.choiceIndexes;
   }
 
   await supabase

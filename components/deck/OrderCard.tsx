@@ -76,6 +76,15 @@ export function OrderCard({ card, onSubmit, timedOut = false, userInteracted = f
     }
   }
 
+  const moveStep = (fromIndex: number, toIndex: number) => {
+    if (toIndex < 0 || toIndex >= steps.length) return
+    
+    const newSteps = Array.from(steps)
+    const [movedItem] = newSteps.splice(fromIndex, 1)
+    newSteps.splice(toIndex, 0, movedItem)
+    setSteps(newSteps)
+  }
+
   const handleSubmit = async () => {
     const elapsed = Date.now() - startTime
     setTimeMs(elapsed)
@@ -171,6 +180,34 @@ export function OrderCard({ card, onSubmit, timedOut = false, userInteracted = f
                                 select-none cursor-grab active:cursor-grabbing
                               `}
                             >
+                              {/* Arrow controls */}
+                              <div className="flex flex-col gap-1 flex-shrink-0">
+                                <Button 
+                                  size="sm" 
+                                  variant="ghost"
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    moveStep(index, index - 1)
+                                  }}
+                                  disabled={index === 0}
+                                  className="h-6 w-6 p-0 text-xs hover:bg-primary/20"
+                                >
+                                  ↑
+                                </Button>
+                                <Button 
+                                  size="sm" 
+                                  variant="ghost"
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    moveStep(index, index + 1)
+                                  }}
+                                  disabled={index === steps.length - 1}
+                                  className="h-6 w-6 p-0 text-xs hover:bg-primary/20"
+                                >
+                                  ↓
+                                </Button>
+                              </div>
+                              
                               <div className="w-8 h-8 bg-primary/20 text-primary rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0">
                                 {index + 1}
                               </div>

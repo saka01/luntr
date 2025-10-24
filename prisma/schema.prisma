@@ -17,6 +17,7 @@ model User {
   profile       Profile?
   progress      UserProgress[]
   attempts      Attempt[]
+  studySessions StudySession[]
 }
 
 model Profile {
@@ -52,6 +53,8 @@ model Card {
   estSeconds Int?           @map("est_seconds")
   progress   UserProgress[]
   attempts   Attempt[]
+
+  @@index([pattern, type])
 }
 
 enum CardType {
@@ -81,6 +84,7 @@ model UserProgress {
   card         Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
 
   @@unique([userId, cardId])
+  @@index([userId, nextDue])
 }
 
 model Attempt {
@@ -99,10 +103,27 @@ model Attempt {
   text      String?   // plan or concatenated fitb
   blanks    String[]  // fitb multi
   correct   Boolean?  // computed where applicable
+  choiceIndexes Int[]  // NEW: for FITB option indexes
 
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   card      Card      @relation(fields: [cardId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
+}
+
+model StudySession {
+  id              String   @id @default(cuid())
+  userId          String
+  pattern         String
+  startedAt       DateTime @default(now())
+  endedAt         DateTime?
+  sizePlanned     Int      @default(10)
+  sizeCompleted   Int      @default(0)
+  servedCardIds   Json     // Array of card IDs served in this session
+  accuracy        Float?   // Calculated accuracy percentage
+  avgResponseMs   Float?   // Average response time in milliseconds
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, startedAt])
 }
 
