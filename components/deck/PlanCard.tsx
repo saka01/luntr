@@ -149,11 +149,11 @@ export function PlanCard({ card, onSubmit, timedOut = false, userInteracted = fa
           <>
             <div className="space-y-2">
               <Label htmlFor="plan" className="text-foreground font-medium">
-                Write your coding approach (2-5 steps):
+                Write your approach:
               </Label>
               <Textarea
                 id="plan"
-                placeholder="1. Analyze the problem...&#10;2. Choose data structure...&#10;3. Implement solution..."
+                placeholder="Explain your approach..."
                 value={userPlan}
                 onChange={(e) => setUserPlan(e.target.value)}
                 className="min-h-[120px] bg-input/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20 text-base"
