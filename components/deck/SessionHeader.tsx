@@ -15,6 +15,7 @@ interface SessionHeaderProps {
   onTimeout?: () => void
   onUserInteraction?: () => void
   cardId?: string
+  isSubmitted?: boolean
 }
 
 export function SessionHeader({ 
@@ -25,7 +26,8 @@ export function SessionHeader({
   estSeconds,
   onTimeout,
   onUserInteraction,
-  cardId
+  cardId,
+  isSubmitted = false
 }: SessionHeaderProps) {
   const [timeLeft, setTimeLeft] = useState(0)
   const [isActive, setIsActive] = useState(false)
@@ -76,6 +78,15 @@ export function SessionHeader({
       if (timeoutRef.current) clearTimeout(timeoutRef.current)
     }
   }, [cardId]) // Only depend on cardId
+
+  // Stop timer when submitted
+  useEffect(() => {
+    if (isSubmitted) {
+      setIsActive(false)
+      if (intervalRef.current) clearInterval(intervalRef.current)
+      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    }
+  }, [isSubmitted])
 
   // Handle totalTime and cardType changes without restarting timer
   useEffect(() => {
