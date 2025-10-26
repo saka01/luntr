@@ -67,7 +67,7 @@ export function InsightCard({ card, onSubmit }: InsightCardProps) {
                   📝
                 </div>
                 <div>
-                  <h4 className="font-medium text-green-400 mb-2">Example</h4>
+                  <h4 className="font-medium text-green-600 dark:text-green-400 mb-2">Example</h4>
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     {card.prompt.example}
                   </p>

@@ -196,7 +196,7 @@ export function PlanCard({ card, onSubmit, timedOut = false, userInteracted = fa
             }`}>
               <div className="flex items-center space-x-2 mb-2">
                 <span className={`font-medium ${
-                  feedback?.correct ? 'text-green-400' : 'text-red-400'
+                  feedback?.correct ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
                 }`}>
                   {feedback?.correct ? 'Great plan!' : feedback?.timedOut ? 'Time\'s up!' : 'Good attempt, but missing some steps'}
                 </span>

@@ -277,12 +277,10 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
           </>
         ) : feedback ? (
           <>
-            <div className={`p-4 rounded-lg ${
-              feedback.correct ? 'bg-green-500/10 border border-green-500/20' : 'bg-red-500/10 border border-red-500/20'
-            }`}>
+            <div className={`rounded-lg`}>
               <div className="flex items-center space-x-2 mb-2">
                 <span className={`font-medium ${
-                  feedback.correct ? 'text-green-400' : 'text-red-400'
+                  feedback.correct ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
                 }`}>
                   {feedback.correct ? 'All correct!' : feedback.timedOut ? 'Time\'s up!' : 'Some answers need work'}
                 </span>
@@ -301,7 +299,7 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
                         Blank {index + 1}:
                       </span>
                       <span className={`text-sm ${
-                        feedback.perBlank?.[index] ? 'text-green-300' : 'text-red-300'
+                        feedback.perBlank?.[index] ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'
                       }`}>
                         "{answer || 'empty'}"
                       </span>

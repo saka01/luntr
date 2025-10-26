@@ -128,12 +128,10 @@ export function PatternIdCard({ card, onSubmit, timedOut = false, userInteracted
           </>
         ) : (
           <>
-            <div className={`p-4 rounded-lg ${
-              feedback.correct ? 'bg-green-500/10 border border-green-500/20' : 'bg-red-500/10 border border-red-500/20'
-            }`}>
+            <div className={`rounded-lg`}>
               <div className="flex items-center space-x-2 mb-2">
                 <span className={`font-medium ${
-                  feedback.correct ? 'text-green-400' : 'text-red-400'
+                  feedback.correct ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
                 }`}>
                   {feedback.correct ? COPY.feedback.correct : feedback.timedOut ? 'Time\'s up!' : COPY.feedback.incorrect}
                 </span>
@@ -147,12 +145,12 @@ export function PatternIdCard({ card, onSubmit, timedOut = false, userInteracted
                       : 'bg-red-500/5 border-red-500/10'
                   }`}>
                     <p className={`text-sm font-medium mb-1 ${
-                      feedback.correct ? 'text-green-300' : 'text-red-300'
+                      feedback.correct ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'
                     }`}>
                       Your answer:
                     </p>
                     <p className={`text-sm ${
-                      feedback.correct ? 'text-green-200' : 'text-red-200'
+                      feedback.correct ? 'text-green-800 dark:text-green-200' : 'text-red-800 dark:text-red-200'
                     }`}>
                       {card.prompt.options[selectedAnswer]}
                     </p>
@@ -161,8 +159,8 @@ export function PatternIdCard({ card, onSubmit, timedOut = false, userInteracted
                   {/* Correct answer - only show when wrong */}
                   {!feedback.correct && (
                     <div className="p-3 bg-green-500/5 border border-green-500/10 rounded-md mb-3">
-                      <p className="text-sm text-green-300 font-medium mb-1">Correct answer:</p>
-                      <p className="text-sm text-green-200">{card.prompt.options[feedback.correctIndex]}</p>
+                      <p className="text-sm text-green-700 dark:text-green-300 font-medium mb-1">Correct answer:</p>
+                      <p className="text-sm text-green-800 dark:text-green-200">{card.prompt.options[feedback.correctIndex]}</p>
                     </div>
                   )}
                 </div>
