@@ -106,7 +106,7 @@ export function PatternIdCard({ card, onSubmit, timedOut = false, userInteracted
   return (
     <Card className="bg-card/50 backdrop-blur-xl border-border">
       <CardHeader className="w-full">
-        <p className="text-muted-foreground text-lg font-bold text-center">{card.prompt.stem}</p>
+        <p className="text-muted-foreground text-base font-bold text-center">{card.prompt.stem}</p>
       </CardHeader>
       
       <CardContent className="space-y-6">
@@ -192,7 +192,7 @@ export function PatternIdCard({ card, onSubmit, timedOut = false, userInteracted
                 </Button>
               </div>
             ) : (
-              <div className="space-y-4 border-t border-border border-muted-foreground/50 pt-4">
+              <div className="space-y-4 pt-4">
                 <div>
                   <p className="text-sm text-muted-foreground mb-3 text-center italic">How did that feel?</p>
                   <div className="grid grid-cols-3 gap-3">
