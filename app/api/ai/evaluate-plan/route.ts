@@ -41,7 +41,7 @@ function setCachedResult(key: string, result: any): void {
 
 export async function POST(request: NextRequest) {
   try {
-    const { checklist, userPlan } = await request.json()
+    const { checklist, userPlan, pattern, question } = await request.json()
     
     // Only userPlan is required, checklist is optional
     if (!userPlan || typeof userPlan !== 'string') {
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Use Gemini evaluation
-    const result = await evaluatePlan(checklist, userPlan)
+    const result = await evaluatePlan(checklist, userPlan, pattern, question)
     const correct = result.coverage >= 0.7
     
     const response = {

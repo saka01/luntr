@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     if (mode === 'plan') {
       // Plan grading
       try {
-        const result = await evaluatePlan(checklist, userPlan)
+        const result = await evaluatePlan(checklist, userPlan, pattern, problemSummary)
         return NextResponse.json(result)
       } catch (error) {
         console.error('Gemini plan grading error:', error)

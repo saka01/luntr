@@ -65,7 +65,9 @@ export function PlanCard({ card, onSubmit, timedOut = false, userInteracted = fa
         },
         body: JSON.stringify({
           checklist: card.answer.checklist,
-          userPlan: userPlan
+          userPlan: userPlan,
+          pattern: card.pattern,
+          question: card.prompt.stem
         }),
       })
 

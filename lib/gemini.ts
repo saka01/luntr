@@ -53,7 +53,9 @@ Explain why this pattern applies in one sentence, speaking directly to them.`
 
 export async function evaluatePlan(
   checklist: string[] | undefined, 
-  userPlan: string
+  userPlan: string,
+  pattern?: string,
+  question?: string
 ): Promise<{ 
   matched: string[]; 
   missing: string[]; 
@@ -67,6 +69,9 @@ export async function evaluatePlan(
       ? `REQUIRED STEPS: ${checklist.join('; ')}`
       : ''
     
+    const patternText = pattern ? `PATTERN: ${pattern}` : ''
+    const questionText = question ? `QUESTION: ${question}` : ''
+    
     const prompt = `Evaluate this coding plan and return JSON.
 
 {
@@ -76,6 +81,8 @@ export async function evaluatePlan(
   "explanation": "Keep this under 50 words. One sentence of encouragement."
 }
 
+${patternText}
+${questionText}
 ${checklistText}
 USER PLAN: "${userPlan}"
 
