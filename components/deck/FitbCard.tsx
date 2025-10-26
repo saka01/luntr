@@ -27,15 +27,16 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
 
   // Initialize userAnswers array
   useEffect(() => {
-    setUserAnswers(new Array(card.prompt.blanks).fill(''))
-    setChoiceIndexes(new Array(card.prompt.blanks).fill(-1))
+    const numBlanks = card.prompt?.blanks || 1
+    setUserAnswers(new Array(numBlanks).fill(''))
+    setChoiceIndexes(new Array(numBlanks).fill(-1))
     setIsSubmitted(false)
     setFeedback(null)
     setUserGrade(null)
     setTimeMs(0)
     setIsTimedOut(false)
     setSelectedBlankIndex(null)
-  }, [card.id, card.prompt.blanks])
+  }, [card.id, card.prompt?.blanks])
 
   const handleAnswerChange = (blankIndex: number, value: string) => {
     if (isSubmitted) return
@@ -51,7 +52,7 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
     const newAnswers = [...userAnswers]
     const newChoiceIndexes = [...choiceIndexes]
     
-    if (card.prompt.options) {
+    if (card.prompt?.options && card.prompt.options[optionIndex]) {
       newAnswers[blankIndex] = card.prompt.options[optionIndex]
       newChoiceIndexes[blankIndex] = optionIndex
       setUserAnswers(newAnswers)
@@ -61,14 +62,15 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
   }
 
   const handleBlankClick = (blankIndex: number) => {
-    if (isSubmitted || !card.prompt.options) return
+    if (isSubmitted || !card.prompt?.options) return
     setSelectedBlankIndex(blankIndex)
   }
 
   const handleReset = () => {
     if (isSubmitted) return
-    setUserAnswers(new Array(card.prompt.blanks).fill(''))
-    setChoiceIndexes(new Array(card.prompt.blanks).fill(-1))
+    const numBlanks = card.prompt?.blanks || 1
+    setUserAnswers(new Array(numBlanks).fill(''))
+    setChoiceIndexes(new Array(numBlanks).fill(-1))
     setSelectedBlankIndex(null)
   }
 
@@ -81,7 +83,9 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
     const perBlank = userAnswers.map((answer, blankIndex) => {
       if (!answer.trim()) return false
       
-      const acceptedSolutions = card.answer.solutions[blankIndex] || []
+      // Guard against undefined/null solutions
+      const solutions = card.answer?.solutions || []
+      const acceptedSolutions = Array.isArray(solutions) && solutions[blankIndex] ? solutions[blankIndex] : []
       return acceptedSolutions.some((solution: string) => 
         solution.toLowerCase().trim() === answer.toLowerCase().trim()
       )
@@ -92,7 +96,7 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
       correct,
       perBlank,
       userAnswers,
-      rationale: card.answer.rationale
+      rationale: card.answer?.rationale || 'Well done!'
     })
   }
 
@@ -119,7 +123,7 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
     onSubmit({
       type: 'fitb',
       blanks: userAnswers,
-      choiceIndexes: card.prompt.options ? choiceIndexes : undefined,
+      choiceIndexes: card.prompt?.options ? choiceIndexes : undefined,
       timeMs,
       timedOut: isTimedOut,
       grade: finalGrade
@@ -127,7 +131,7 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
   }
 
   // Split the stem by blanks markers (assuming format like "The ___ is ___")
-  const stemParts = card.prompt.stem.split('___')
+  const stemParts = (card.prompt?.stem || '').split('___')
 
   return (
     <Card className="bg-card/50 backdrop-blur-xl border-border">
@@ -209,7 +213,7 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
 
             <Button 
               onClick={handleSubmit}
-              disabled={userAnswers.some(answer => !answer.trim())}
+              disabled={userAnswers.some(answer => !answer || !answer.trim())}
               className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors"
               >
               Submit Answers
@@ -226,7 +230,7 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
                 </Button>
               </div>
               {/* Show clickable options if available */}
-              {card.prompt.options && (
+              {card.prompt?.options && card.prompt.options.length > 0 && (
                 <div className="space-y-3">
                   <div className="text-sm text-muted-foreground text-center">
                     {selectedBlankIndex !== null 
@@ -246,7 +250,7 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
                             // Use selected blank or find first empty blank
                             const targetBlankIndex = selectedBlankIndex !== null 
                               ? selectedBlankIndex 
-                              : userAnswers.findIndex(answer => !answer.trim())
+                              : userAnswers.findIndex(answer => !answer?.trim())
                             
                             if (targetBlankIndex !== -1) {
                               handleOptionSelect(targetBlankIndex, optionIndex)
@@ -271,7 +275,7 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
                 </div>
               )}
           </>
-        ) : (
+        ) : feedback ? (
           <>
             <div className={`p-4 rounded-lg ${
               feedback.correct ? 'bg-green-500/10 border border-green-500/20' : 'bg-red-500/10 border border-red-500/20'
@@ -288,7 +292,7 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
               <div className="space-y-2 mb-3">
                 {userAnswers.map((answer, index) => (
                   <div key={index} className={`p-2 rounded border ${
-                    feedback.perBlank[index] 
+                    feedback.perBlank?.[index] 
                       ? 'bg-green-500/5 border-green-500/10' 
                       : 'bg-red-500/5 border-red-500/10'
                   }`}>
@@ -297,13 +301,13 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
                         Blank {index + 1}:
                       </span>
                       <span className={`text-sm ${
-                        feedback.perBlank[index] ? 'text-green-300' : 'text-red-300'
+                        feedback.perBlank?.[index] ? 'text-green-300' : 'text-red-300'
                       }`}>
                         "{answer || 'empty'}"
                       </span>
-                      {!feedback.perBlank[index] && answer && (
+                      {!feedback.perBlank?.[index] && answer && (
                         <span className="text-xs text-muted-foreground">
-                          (Accepted: {card.answer.solutions[index]?.join(', ') || 'none'})
+                          (Accepted: {card.answer?.solutions?.[index]?.join(', ') || 'none'})
                         </span>
                       )}
                     </div>
@@ -311,7 +315,7 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
                 ))}
               </div>
               
-              <p className="text-sm text-muted-foreground">{feedback.rationale}</p>
+              <p className="text-sm text-muted-foreground">{feedback.rationale || ''}</p>
             </div>
 
             <div className="space-y-4">
@@ -346,6 +350,10 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
               </div>
             </div>
           </>
+        ) : (
+          <div className="p-4 rounded-lg bg-muted/10 border border-border">
+            <p className="text-sm text-muted-foreground text-center">Submitting your answer...</p>
+          </div>
         )}
       </CardContent>
     </Card>

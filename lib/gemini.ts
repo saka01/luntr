@@ -52,7 +52,7 @@ Explain why this pattern applies in one sentence, speaking directly to them.`
 }
 
 export async function evaluatePlan(
-  checklist: string[], 
+  checklist: string[] | undefined, 
   userPlan: string
 ): Promise<{ 
   matched: string[]; 
@@ -63,19 +63,23 @@ export async function evaluatePlan(
   try {
     const genAI = getGeminiClient()
     
-    const prompt = `You are a coding tutor helping someone improve their problem-solving approach. Evaluate their coding plan and return JSON. Speak to them directly as their mentor.
+    const checklistText = Array.isArray(checklist) && checklist.length > 0 
+      ? `REQUIRED STEPS: ${checklist.join('; ')}`
+      : ''
+    
+    const prompt = `Evaluate this coding plan and return JSON.
 
 {
-  "matched": ["steps they got right"],
-  "missing": ["steps they missed"],
+  "matched": ["steps they completed"],
+  "missing": ["only the very next step they need to take"],
   "coverage": 0.8,
-  "explanation": "Brief feedback on their approach"
+  "explanation": "Keep this under 50 words. One sentence of encouragement."
 }
 
-REQUIRED STEPS: ${checklist.join('; ')}
+${checklistText}
 USER PLAN: "${userPlan}"
 
-Match by meaning, not exact words. Give helpful, encouraging feedback as if you're speaking directly to them.`
+IMPORTANT: In "missing", list ONLY the first/most important next step, NOT all missing steps. Keep "explanation" concise.`
 
     const response = await genAI.models.generateContent({
       model: 'gemini-2.5-flash',
@@ -88,37 +92,17 @@ Match by meaning, not exact words. Give helpful, encouraging feedback as if you'
     const text = response.text
     
     console.log('Text:', text)
+  
     
-    if (!text || text.trim() === '') {
-      console.log('Empty response, retrying...')
-      // Retry once with a simpler prompt
-      const simplePrompt = `Return JSON: {"matched":[], "missing":[], "coverage":0.5, "explanation":"Great job thinking through your approach! Keep practicing your problem-solving skills!"}`
-      const retryResponse = await genAI.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: simplePrompt,
-        config: {
-          responseMimeType: 'application/json'
-        }
-      })
-      const retryText = retryResponse.text
-      
-      if (!retryText || retryText.trim() === '') {
-        throw new Error('Gemini returned empty response after retry')
-      }
-      
-      const parsed = JSON.parse(retryText)
-      return {
-        matched: Array.isArray(parsed.matched) ? parsed.matched : [],
-        missing: Array.isArray(parsed.missing) ? parsed.missing : [],
-        coverage: typeof parsed.coverage === 'number' ? parsed.coverage : 0.5,
-        explanation: typeof parsed.explanation === 'string' ? parsed.explanation : 'Great effort! Keep practicing!'
-      }
-    }
+    const parsed = JSON.parse(text || '{}')
     
-    const parsed = JSON.parse(text)
+    // Only take the first missing step
+    const missingSteps = Array.isArray(parsed.missing) ? parsed.missing : []
+    const firstMissingStep = missingSteps.length > 0 ? [missingSteps[0]] : []
+    
     return {
       matched: Array.isArray(parsed.matched) ? parsed.matched : [],
-      missing: Array.isArray(parsed.missing) ? parsed.missing : [],
+      missing: firstMissingStep,
       coverage: typeof parsed.coverage === 'number' ? parsed.coverage : 0.5,
       explanation: typeof parsed.explanation === 'string' ? parsed.explanation : 'Great effort! Keep practicing!'
     }
@@ -127,11 +111,12 @@ Match by meaning, not exact words. Give helpful, encouraging feedback as if you'
     console.error('Error details:', error instanceof Error ? error.message : 'Unknown error')
     console.error('Full error:', error)
     // Fallback to basic evaluation
+    const fallbackMissing = Array.isArray(checklist) && checklist.length > 0 ? [checklist[0]] : []
     return {
       matched: [],
-      missing: checklist,
+      missing: fallbackMissing,
       coverage: 0.3,
-      explanation: "I had trouble analyzing your plan, but don't worry, keep practicing your problem-solving approach!"
+      explanation: "Keep thinking through the problem step by step!"
     }
   }
 }

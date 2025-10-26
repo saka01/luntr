@@ -5,8 +5,10 @@ import { evaluatePlan } from '@/lib/gemini'
 const planCache = new Map<string, any>()
 const CACHE_TTL = 5 * 60 * 1000 // 5 minutes
 
-function getCacheKey(checklist: string[], userPlan: string): string {
-  const normalizedChecklist = checklist.map(item => item.trim().toLowerCase()).sort().join('|')
+function getCacheKey(checklist: string[] | undefined, userPlan: string): string {
+  const normalizedChecklist = Array.isArray(checklist) && checklist.length > 0
+    ? checklist.map(item => item.trim().toLowerCase()).sort().join('|')
+    : ''
   const normalizedPlan = userPlan.trim().toLowerCase()
   return `${normalizedChecklist}::${normalizedPlan}`
 }
@@ -41,7 +43,8 @@ export async function POST(request: NextRequest) {
   try {
     const { checklist, userPlan } = await request.json()
     
-    if (!checklist || !Array.isArray(checklist) || !userPlan || typeof userPlan !== 'string') {
+    // Only userPlan is required, checklist is optional
+    if (!userPlan || typeof userPlan !== 'string') {
       return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
     }
 

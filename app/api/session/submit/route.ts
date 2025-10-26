@@ -12,13 +12,16 @@ export async function POST(request: NextRequest) {
     const userGrade = answer.grade || 3 // Default to 3 if not provided
     const timeMs = answer.timeMs || 0
     const timedOut = answer.timedOut || false
-    const attemptData = {
+    const attemptData: any = {
       type: answer.type,
-      choice: answer.choice,
-      order: answer.order,
-      text: answer.text,
-      blanks: answer.blanks
     }
+    
+    // Add type-specific fields only if they exist
+    if (answer.choice !== undefined) attemptData.choice = answer.choice
+    if (answer.order !== undefined) attemptData.order = answer.order
+    if (answer.text !== undefined) attemptData.text = answer.text
+    if (answer.blanks !== undefined) attemptData.blanks = answer.blanks
+    if (answer.choiceIndexes !== undefined) attemptData.choiceIndexes = answer.choiceIndexes
     
     // Submit the attempt with timeout policy
     const result = await submitAttemptWithTimeout({

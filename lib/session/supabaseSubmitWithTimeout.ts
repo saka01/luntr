@@ -96,11 +96,14 @@ export async function submitAttemptWithTimeout(params: {
     attemptRecord.text = payload.text;
   }
   if (payload.type === 'fitb' && payload.blanks !== undefined) {
-    attemptRecord.text = payload.blanks.join('|');
+    attemptRecord.text = Array.isArray(payload.blanks) && payload.blanks.length > 0 
+      ? payload.blanks.join('|') 
+      : '';
     attemptRecord.blanks = payload.blanks;
-    if (payload.choiceIndexes !== undefined) {
-      attemptRecord.choiceIndexes = payload.choiceIndexes;
-    }
+    // Note: choiceIndexes column doesn't exist in database yet, skipping insert
+    // if (payload.choiceIndexes !== undefined && Array.isArray(payload.choiceIndexes)) {
+    //   attemptRecord.choiceIndexes = payload.choiceIndexes;
+    // }
   }
 
   if (correct !== null) {

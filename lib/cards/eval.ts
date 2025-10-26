@@ -23,15 +23,20 @@ export function evalOrder(answer: OrderAnswer, order: number[]) {
 }
 
 export function evalFitb(answer: FitbAnswer, userAnswers: string[]) {
+  // Guard against undefined/invalid inputs
+  if (!Array.isArray(userAnswers) || !Array.isArray(answer.solutions)) {
+    return { correct: false, perBlank: [], feedback: { error: 'Invalid input data' } };
+  }
+  
   if (userAnswers.length !== answer.solutions.length) 
     return { correct: false, perBlank: [] };
   
   const perBlank = userAnswers.map((userAnswer, i) => {
-    if (!userAnswer.trim()) return false;
+    if (!userAnswer || !userAnswer.trim()) return false;
     
-    const acceptedSolutions = answer.solutions[i] || [];
+    const acceptedSolutions = Array.isArray(answer.solutions[i]) ? answer.solutions[i] : [];
     return acceptedSolutions.some(solution => 
-      solution.toLowerCase().trim() === userAnswer.toLowerCase().trim()
+      solution && solution.toLowerCase().trim() === userAnswer.toLowerCase().trim()
     );
   });
   
