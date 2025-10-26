@@ -25,8 +25,12 @@ export async function POST(request: NextRequest) {
     }
     const { level, dailyMinutes, primaryLanguage, learningGoal, timezone } = await request.json()
     
+    // Get first name from user metadata
+    const firstName = (user.user_metadata?.name as string) || ''
+    
     console.log('Onboarding data:', { 
       userId: user.id, 
+      firstName,
       level, 
       dailyMinutes, 
       primaryLanguage, 
@@ -39,6 +43,7 @@ export async function POST(request: NextRequest) {
       .from('profiles')
       .upsert({
         user_id: user.id,
+        first_name: firstName,
         level,
         daily_minutes: dailyMinutes,
         primary_language: primaryLanguage,
