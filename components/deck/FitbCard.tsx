@@ -204,6 +204,27 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
                 ))}
               </div>
 
+
+            </div>
+
+            <Button 
+              onClick={handleSubmit}
+              disabled={userAnswers.some(answer => !answer.trim())}
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors"
+              >
+              Submit Answers
+            </Button>
+              {/* Reset button */}
+              <div className="flex justify-center">
+                <Button
+                  onClick={handleReset}
+                  variant="outline"
+                  size="sm"
+                  className="text-muted-foreground hover:text-foreground"
+                  >
+                  Reset
+                </Button>
+              </div>
               {/* Show clickable options if available */}
               {card.prompt.options && (
                 <div className="space-y-3">
@@ -249,27 +270,6 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
                   </div>
                 </div>
               )}
-
-            </div>
-
-            <Button 
-              onClick={handleSubmit}
-              disabled={userAnswers.some(answer => !answer.trim())}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors"
-            >
-              Submit Answers
-            </Button>
-              {/* Reset button */}
-              <div className="flex justify-center">
-                <Button
-                  onClick={handleReset}
-                  variant="outline"
-                  size="sm"
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  Reset
-                </Button>
-              </div>
           </>
         ) : (
           <>
