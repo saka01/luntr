@@ -51,6 +51,69 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled
 }
 
+// Smart shuffle to prevent consecutive cards of the same type
+function smartShuffleForDistribution(cards: SessionCard[]): SessionCard[] {
+  if (cards.length <= 2) return shuffleArray(cards)
+  
+  // Group cards by type
+  const typeGroups = new Map<string, SessionCard[]>()
+  cards.forEach(card => {
+    if (!typeGroups.has(card.type)) {
+      typeGroups.set(card.type, [])
+    }
+    typeGroups.get(card.type)!.push(card)
+  })
+  
+  // Shuffle each group
+  typeGroups.forEach((group, type) => {
+    typeGroups.set(type, shuffleArray(group))
+  })
+  
+  // Interleave cards from different types to avoid repetition
+  const result: SessionCard[] = []
+  const types = Array.from(typeGroups.keys())
+  const positions = new Map<string, number>()
+  types.forEach(type => positions.set(type, 0))
+  
+  let totalCards = cards.length
+  let lastType: string | null = null
+  let consecutiveSameType = 0
+  
+  while (result.length < totalCards) {
+    // Find available types (types that still have cards)
+    const availableTypes = types.filter(type => 
+      (positions.get(type) || 0) < typeGroups.get(type)!.length
+    )
+    
+    if (availableTypes.length === 0) break
+    
+    // Prefer types different from the last one
+    const differentTypes = availableTypes.filter(t => t !== lastType)
+    const candidates = differentTypes.length > 0 ? differentTypes : availableTypes
+    
+    // Pick a random type from candidates
+    const selectedType = candidates[Math.floor(Math.random() * candidates.length)]
+    
+    // Get the next card of this type
+    const pos = positions.get(selectedType) || 0
+    const card = typeGroups.get(selectedType)![pos]
+    
+    positions.set(selectedType, pos + 1)
+    result.push(card)
+    
+    // Track consecutive same types
+    if (selectedType === lastType) {
+      consecutiveSameType++
+    } else {
+      consecutiveSameType = 0
+    }
+    
+    lastType = selectedType
+  }
+  
+  return result
+}
+
 export async function getSessionCards(userId: string, size: number = 10, excludeCardIds: string[] = [], pattern: string = 'two-pointers'): Promise<SessionCard[]> {
   try {
     const supabase = await getSupabaseClient()
@@ -145,8 +208,7 @@ export async function getSessionCards(userId: string, size: number = 10, exclude
   
   const { data: recentMissesData } = await recentMissesQuery
   
-  const recentMisses = (recentMissesData?.map((item: any) => item.cards) || [])
-    .filter(card => !excludeCardIds.includes(card.id))
+  const recentMisses = recentMissesData?.map((item: any) => item.cards) || []
   
   // Get new cards (no progress entry)
   // First get all card IDs that user has progress for
@@ -161,8 +223,8 @@ export async function getSessionCards(userId: string, size: number = 10, exclude
   let newCardsQuery = supabase
     .from('cards')
     .select('*')
-    .order('difficulty', { ascending: true })
-    .limit(size * 2) // Get more cards to allow for randomization
+    .order('random()') // Use random ordering for better variety
+    .limit(size * 3) // Get more cards to allow for randomization
   
   // Add pattern filter if not "all"
   if (patternFilter) {
@@ -241,13 +303,16 @@ export async function getSessionCards(userId: string, size: number = 10, exclude
     const shuffledAdditionalSeenCards = shuffleArray(additionalSeenCards)
     uniqueCards = [...uniqueCards, ...shuffledAdditionalSeenCards]
     
+    // Update the seen Set to prevent duplicates from future additions
+    shuffledAdditionalSeenCards.forEach(card => seen.add(card.id))
+    
     // If still not enough cards, get any remaining cards (even if user has seen them recently)
     if (uniqueCards.length < size) {
       let anyCardsQuery = supabase
         .from('cards')
         .select('*')
-        .order('difficulty', { ascending: true })
-        .limit(size - uniqueCards.length)
+        .order('random()') // Use random ordering for better variety
+        .limit((size - uniqueCards.length) * 2) // Get more to allow for better distribution
       
       if (patternFilter) {
         anyCardsQuery = anyCardsQuery.eq('pattern', patternFilter)
@@ -265,15 +330,19 @@ export async function getSessionCards(userId: string, size: number = 10, exclude
       
       // Shuffle any remaining cards and add them
       const shuffledAnyCards = shuffleArray(anyCards)
-      uniqueCards = [...uniqueCards, ...shuffledAnyCards].slice(0, size)
+      
+      // Deduplicate one more time to ensure no duplicates
+      const deduplicatedRemaining = shuffledAnyCards.filter(card => !seen.has(card.id))
+      deduplicatedRemaining.forEach(card => seen.add(card.id))
+      uniqueCards = [...uniqueCards, ...deduplicatedRemaining].slice(0, size)
     }
   }
   
   // Final slice to ensure we don't exceed requested size
   uniqueCards = uniqueCards.slice(0, size)
   
-  // Final shuffle to randomize session order
-  uniqueCards = shuffleArray(uniqueCards)
+  // Smart shuffle to prevent consecutive cards of the same type
+  uniqueCards = smartShuffleForDistribution(uniqueCards)
   
   // Log warning if we couldn't provide the full requested amount
   if (uniqueCards.length < size) {
