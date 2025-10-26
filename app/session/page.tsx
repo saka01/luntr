@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -38,8 +38,19 @@ export default function SessionPage() {
     const urlParams = new URLSearchParams(window.location.search)
     const pattern = urlParams.get('pattern') || 'two-pointers'
     setSelectedPattern(pattern)
-    loadSessionCards()
   }, [])
+
+  // Get the effective pattern to use (dev settings or URL)
+  const effectivePattern = useMemo(() => {
+    return process.env.NODE_ENV === 'development' && devSettings.enabled && devSettings.patternFilter 
+      ? devSettings.patternFilter 
+      : selectedPattern
+  }, [devSettings.enabled, devSettings.patternFilter, selectedPattern])
+
+  // Load cards when component mounts or when pattern changes
+  useEffect(() => {
+    loadSessionCards()
+  }, [effectivePattern])
 
   // Filter cards based on dev settings (only in development)
   useEffect(() => {
@@ -55,15 +66,14 @@ export default function SessionPage() {
       filtered = filtered.filter(card => card.type === devSettings.cardTypeFilter)
     }
 
-    // Filter by pattern - only if pattern filter is not empty
-    if (devSettings.patternFilter && devSettings.patternFilter.trim() !== '') {
-      // Normalize both the filter and card pattern for comparison
-      const normalizedFilter = devSettings.patternFilter.toLowerCase().replace(/-/g, ' ')
-      filtered = filtered.filter(card => {
-        const normalizedPattern = card.pattern.toLowerCase().replace(/-/g, ' ')
-        return normalizedPattern.includes(normalizedFilter) || normalizedFilter.includes(normalizedPattern)
-      })
-    }
+    // Filter by pattern - only if pattern filter is not empty (this is already handled by API fetch)
+    // if (devSettings.patternFilter && devSettings.patternFilter.trim() !== '') {
+    //   const normalizedFilter = devSettings.patternFilter.toLowerCase().replace(/-/g, ' ')
+    //   filtered = filtered.filter(card => {
+    //     const normalizedPattern = card.pattern.toLowerCase().replace(/-/g, ' ')
+    //     return normalizedPattern.includes(normalizedFilter) || normalizedFilter.includes(normalizedPattern)
+    //   })
+    // }
 
     // Filter by difficulty
     if (devSettings.difficultyFilter !== 'all') {
@@ -81,16 +91,22 @@ export default function SessionPage() {
     if (currentCardIndex >= filtered.length) {
       setCurrentCardIndex(0)
     }
-  }, [cards, devSettings, currentCardIndex])
+  }, [cards, devSettings])
 
   const loadSessionCards = async (size?: number, excludeIds?: string[]) => {
     try {
+      setIsLoading(true)
       const params = new URLSearchParams()
       if (size) params.append('size', size.toString())
       if (excludeIds && excludeIds.length > 0) params.append('excludeIds', excludeIds.join(','))
       // Map pattern to the correct format for the API
-      const apiPattern = selectedPattern === 'two-pointers' ? 'two-pointers' : selectedPattern
+      const apiPattern = effectivePattern === 'two-pointers' ? 'two-pointers' : effectivePattern
       params.append('pattern', apiPattern)
+      
+      // Add dev mode flag if enabled
+      if (process.env.NODE_ENV === 'development' && devSettings.enabled) {
+        params.append('devMode', 'true')
+      }
       
       const response = await fetch(`/api/session/cards?${params.toString()}`)
       if (response.ok) {
@@ -116,8 +132,13 @@ export default function SessionPage() {
       params.append('size', sessionSize.toString())
       params.append('excludeIds', completedCardIds.join(','))
       // Map pattern to the correct format for the API
-      const apiPattern = selectedPattern === 'two-pointers' ? 'two-pointers' : selectedPattern
+      const apiPattern = effectivePattern === 'two-pointers' ? 'two-pointers' : effectivePattern
       params.append('pattern', apiPattern)
+      
+      // Add dev mode flag if enabled
+      if (process.env.NODE_ENV === 'development' && devSettings.enabled) {
+        params.append('devMode', 'true')
+      }
       
       const response = await fetch(`/api/session/cards?${params.toString()}`)
       if (response.ok) {

@@ -41,52 +41,6 @@ export function InsightCard({ card, onSubmit }: InsightCardProps) {
       </CardHeader>
       
       <CardContent className="space-y-6">
-        <div className="space-y-4">
-          {/* Insight content */}
-          <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/20">
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                {/* <div className="w-6 h-6 text-blue-500 rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0 mt-0.5">
-                  💡
-                </div> */}
-                <div>
-                  {/* <h4 className="font-medium text-blue-400 mb-2">Key Insight</h4> */}
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {card.answer.rationale}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Example if provided */}
-          {card.prompt.example && (
-            <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/20">
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0 mt-0.5">
-                  📝
-                </div>
-                <div>
-                  <h4 className="font-medium text-green-600 dark:text-green-400 mb-2">Example</h4>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {card.prompt.example}
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Tags if provided */}
-          {card.tags && (
-            <div className="flex flex-wrap gap-2">
-              {JSON.parse(card.tags).map((tag: string, index: number) => (
-                <Badge key={index} variant="secondary" className="text-xs">
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          )}
-        </div>
 
         <div className="flex justify-center">
           <Button 

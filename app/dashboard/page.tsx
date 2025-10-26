@@ -143,33 +143,7 @@ export default function AppPage() {
         }}
       />
       
-      {/* Small floating dots */}
-      <motion.div 
-        className="absolute top-32 right-32 w-4 h-4 bg-primary/20 rounded-full"
-        animate={{ 
-          y: [0, -30, 0],
-          opacity: [0.2, 0.6, 0.2]
-        }}
-        transition={{ 
-          duration: 4,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 0.5
-        }}
-      />
-      <motion.div 
-        className="absolute top-48 left-48 w-2 h-2 bg-primary/30 rounded-full"
-        animate={{ 
-          y: [0, -25, 0],
-          opacity: [0.3, 0.7, 0.3]
-        }}
-        transition={{ 
-          duration: 3.5,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 1.2
-        }}
-      />
+
 
       <div className="relative z-10 container mx-auto px-4 py-8">
         {/* Header */}
