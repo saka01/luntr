@@ -98,20 +98,20 @@ export function PatternIdCard({ card, onSubmit, timedOut = false, userInteracted
       <CardContent className="space-y-6">
         {!isSubmitted ? (
           <>
-            <div className="space-y-3">
+            <div className="space-y-2">
               {card.prompt.options.map((option: string, index: number) => (
                 <button
                   key={index}
                   onClick={() => setSelectedAnswer(index)}
                   className={`
-                    w-full p-4 rounded-xl border-2 transition-all duration-200 text-left
+                    w-full p-3 rounded-xl border-2 transition-all duration-200 text-left
                     ${selectedAnswer === index
                       ? 'border-primary bg-primary/10 text-primary shadow-md scale-[1.02]'
                       : 'border-border bg-card hover:border-primary/50 hover:bg-primary/5 text-foreground hover:shadow-sm'
                     }
                   `}
                 >
-                  <span className="text-base font-medium leading-relaxed">
+                  <span className="text-sm font-medium leading-relaxed">
                     {option}
                   </span>
                 </button>

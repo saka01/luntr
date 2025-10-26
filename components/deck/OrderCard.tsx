@@ -148,7 +148,7 @@ export function OrderCard({ card, onSubmit, timedOut = false, userInteracted = f
       <CardHeader>
         <div className="flex justify-between items-start mb-2">
         </div>
-        <p className="text-muted-foreground">{card.prompt.stem}</p>
+        <p className="text-muted-foreground text-base font-bold">{card.prompt.stem}</p>
       </CardHeader>
       
       <CardContent className="space-y-6">

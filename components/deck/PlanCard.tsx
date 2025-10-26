@@ -149,7 +149,7 @@ export function PlanCard({ card, onSubmit, timedOut = false, userInteracted = fa
         <div className="flex justify-between items-end mb-2">
           {/* <CardTitle className="text-xl text-foreground">{card.pattern}</CardTitle> */}
         </div>
-        <p className="text-muted-foreground">{card.prompt.stem}</p>
+        <p className="text-muted-foreground text-base font-bold">{card.prompt.stem}</p>
       </CardHeader>
       
       <CardContent className="space-y-6">
