@@ -18,14 +18,21 @@ export default function AppPage() {
   const [weakestPatterns, setWeakestPatterns] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  
+  const supabase = supabaseUrl && supabaseAnonKey 
+    ? createBrowserClient(supabaseUrl, supabaseAnonKey)
+    : null
 
   useEffect(() => {
     const loadData = async () => {
       try {
+        if (!supabase) {
+          router.push('/login')
+          return
+        }
+        
         // Check auth
         const { data: { user }, error } = await supabase.auth.getUser()
         if (error || !user) {

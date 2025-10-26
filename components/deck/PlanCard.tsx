@@ -9,7 +9,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { COPY } from "@/content/copy"
 import { SessionCard } from "@/lib/session-engine"
-
 interface PlanCardProps {
   card: SessionCard
   onSubmit: (answer: any, feedback: any) => void
@@ -20,6 +19,7 @@ interface PlanCardProps {
 export function PlanCard({ card, onSubmit, timedOut = false, userInteracted = false }: PlanCardProps) {
   const [userPlan, setUserPlan] = useState("")
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isThinking, setIsThinking] = useState(false)
   const [feedback, setFeedback] = useState<any>(null)
   const [userGrade, setUserGrade] = useState<number | null>(null)
   const [timeMs, setTimeMs] = useState(0)
@@ -29,6 +29,7 @@ export function PlanCard({ card, onSubmit, timedOut = false, userInteracted = fa
   useEffect(() => {
     setUserPlan("")
     setIsSubmitted(false)
+    setIsThinking(false)
     setFeedback(null)
     setUserGrade(null)
     setTimeMs(0)
@@ -53,7 +54,7 @@ export function PlanCard({ card, onSubmit, timedOut = false, userInteracted = fa
 
     const elapsed = Date.now() - startTime
     setTimeMs(elapsed)
-    setIsSubmitted(true)
+    setIsThinking(true)
 
     try {
       // Call Gemini evaluation API
@@ -68,8 +69,11 @@ export function PlanCard({ card, onSubmit, timedOut = false, userInteracted = fa
         }),
       })
 
+      const result = await response.json()
+      
       if (response.ok) {
-        const result = await response.json()
+        setIsThinking(false)
+        setIsSubmitted(true)
         setFeedback({
           correct: result.correct,
           coverage: result.coverage,
@@ -80,31 +84,32 @@ export function PlanCard({ card, onSubmit, timedOut = false, userInteracted = fa
           method: result.method
         })
       } else {
-        throw new Error('API call failed')
+        // Handle error response from API
+        console.error('API call failed:', response.status, result)
+        setIsThinking(false)
+        setIsSubmitted(true)
+        setFeedback({
+          correct: false,
+          coverage: 0,
+          matched: [],
+          missing: card.answer.checklist,
+          explanation: result.explanation || 'Sorry, there was an error evaluating your plan. Please try again.',
+          rationale: card.answer.rationale,
+          method: 'error'
+        })
       }
     } catch (error) {
       console.error('Error evaluating plan:', error)
-      
-      // Fallback to local evaluation
-      const norm = (s: string) => s.trim().toLowerCase()
-      const lines = userPlan.split('\n').map(norm).filter(Boolean)
-      const covered = card.answer.checklist.map((item: string) => {
-        const terms = norm(item).split(/\s+/).slice(0, 3).join(' ')
-        return lines.some(l => l.includes(terms))
-      })
-      const coverage = covered.filter(Boolean).length / card.answer.checklist.length
-      const missing = card.answer.checklist.filter((_: any, i: number) => !covered[i])
-      const matched = card.answer.checklist.filter((_: any, i: number) => covered[i])
-      const correct = coverage >= 0.7
-
+      setIsThinking(false)
+      setIsSubmitted(true)
       setFeedback({
-        correct,
-        coverage,
-        matched,
-        missing,
-        explanation: 'Good effort! Keep practicing.',
+        correct: false,
+        coverage: 0,
+        matched: [],
+        missing: card.answer.checklist,
+        explanation: 'Sorry, there was an error evaluating your plan. Please try again.',
         rationale: card.answer.rationale,
-        method: 'fallback'
+        method: 'error'
       })
     }
   }
@@ -135,6 +140,7 @@ export function PlanCard({ card, onSubmit, timedOut = false, userInteracted = fa
     }, feedback)
   }
 
+
   return (
     <Card className="bg-card/50 backdrop-blur-xl border-border">
       <CardHeader>
@@ -145,12 +151,20 @@ export function PlanCard({ card, onSubmit, timedOut = false, userInteracted = fa
       </CardHeader>
       
       <CardContent className="space-y-6">
-        {!isSubmitted ? (
+        {isThinking ? (
+          <div className="flex flex-col items-center justify-center py-8 space-y-4">
+            <div className="flex space-x-1">
+              <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+              <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+              <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+            </div>
+            <p className="text-muted-foreground text-sm">Thinking...</p>
+          </div>
+        ) : !isSubmitted ? (
           <>
             <div className="space-y-2">
-              <Label htmlFor="plan" className="text-foreground font-medium">
-                Write your approach:
-              </Label>
+   
+              
               <Textarea
                 id="plan"
                 placeholder="Explain your approach..."
@@ -159,6 +173,7 @@ export function PlanCard({ card, onSubmit, timedOut = false, userInteracted = fa
                 className="min-h-[120px] bg-input/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20 text-base"
                 maxLength={400}
               />
+              
               <p className="text-xs text-muted-foreground">
                 {userPlan.length}/400 characters
               </p>
@@ -167,7 +182,7 @@ export function PlanCard({ card, onSubmit, timedOut = false, userInteracted = fa
             <Button 
               onClick={handleSubmit}
               disabled={!userPlan.trim()}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors disabled:opacity-50"
             >
               Submit Plan
             </Button>
@@ -193,7 +208,6 @@ export function PlanCard({ card, onSubmit, timedOut = false, userInteracted = fa
                 </div>
               )}
               
-              <p className="text-sm text-muted-foreground">{feedback?.rationale}</p>
             </div>
 
             {timedOut ? (

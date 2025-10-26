@@ -15,9 +15,11 @@ import { SessionFooter } from "@/components/deck/SessionFooter"
 import { SessionCard } from "@/lib/session-engine"
 import { motion } from "framer-motion"
 import { SessionLoadingScreen } from "../../components/session-loading-screen"
+import { useDevSettings } from "../../lib/dev-settings-context"
 
 export default function SessionPage() {
   const [cards, setCards] = useState<SessionCard[]>([])
+  const [filteredCards, setFilteredCards] = useState<SessionCard[]>([])
   const [currentCardIndex, setCurrentCardIndex] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [sessionComplete, setSessionComplete] = useState(false)
@@ -28,6 +30,7 @@ export default function SessionPage() {
   const [streak, setStreak] = useState<number>(0)
   const [timedOut, setTimedOut] = useState(false)
   const [userInteracted, setUserInteracted] = useState(false)
+  const { settings: devSettings } = useDevSettings()
   const router = useRouter()
 
   useEffect(() => {
@@ -38,12 +41,56 @@ export default function SessionPage() {
     loadSessionCards()
   }, [])
 
+  // Filter cards based on dev settings (only in development)
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'production' || !devSettings.enabled) {
+      setFilteredCards(cards)
+      return
+    }
+
+    let filtered = [...cards]
+
+    // Filter by card type
+    if (devSettings.cardTypeFilter !== 'all') {
+      filtered = filtered.filter(card => card.type === devSettings.cardTypeFilter)
+    }
+
+    // Filter by pattern - only if pattern filter is not empty
+    if (devSettings.patternFilter && devSettings.patternFilter.trim() !== '') {
+      // Normalize both the filter and card pattern for comparison
+      const normalizedFilter = devSettings.patternFilter.toLowerCase().replace(/-/g, ' ')
+      filtered = filtered.filter(card => {
+        const normalizedPattern = card.pattern.toLowerCase().replace(/-/g, ' ')
+        return normalizedPattern.includes(normalizedFilter) || normalizedFilter.includes(normalizedPattern)
+      })
+    }
+
+    // Filter by difficulty
+    if (devSettings.difficultyFilter !== 'all') {
+      filtered = filtered.filter(card => card.difficulty === devSettings.difficultyFilter)
+    }
+
+    // Limit session size - only if we have cards to limit
+    if (devSettings.sessionSize && devSettings.sessionSize > 0 && filtered.length > devSettings.sessionSize) {
+      filtered = filtered.slice(0, devSettings.sessionSize)
+    }
+
+    setFilteredCards(filtered)
+    
+    // Reset current card index if it's beyond the filtered cards length
+    if (currentCardIndex >= filtered.length) {
+      setCurrentCardIndex(0)
+    }
+  }, [cards, devSettings, currentCardIndex])
+
   const loadSessionCards = async (size?: number, excludeIds?: string[]) => {
     try {
       const params = new URLSearchParams()
       if (size) params.append('size', size.toString())
       if (excludeIds && excludeIds.length > 0) params.append('excludeIds', excludeIds.join(','))
-      params.append('pattern', selectedPattern)
+      // Map pattern to the correct format for the API
+      const apiPattern = selectedPattern === 'two-pointers' ? 'two-pointers' : selectedPattern
+      params.append('pattern', apiPattern)
       
       const response = await fetch(`/api/session/cards?${params.toString()}`)
       if (response.ok) {
@@ -65,7 +112,23 @@ export default function SessionPage() {
   const handleAddMoreCards = async () => {
     setIsAddingCards(true)
     try {
-      await loadSessionCards(sessionSize, completedCardIds)
+      const params = new URLSearchParams()
+      params.append('size', sessionSize.toString())
+      params.append('excludeIds', completedCardIds.join(','))
+      // Map pattern to the correct format for the API
+      const apiPattern = selectedPattern === 'two-pointers' ? 'two-pointers' : selectedPattern
+      params.append('pattern', apiPattern)
+      
+      const response = await fetch(`/api/session/cards?${params.toString()}`)
+      if (response.ok) {
+        const data = await response.json()
+        // Append new cards to existing ones instead of replacing
+        setCards(prevCards => [...prevCards, ...data.cards])
+        setStreak(data.streak)
+        setSessionComplete(false)
+      } else {
+        console.error('Failed to load more cards')
+      }
     } catch (error) {
       console.error('Error adding more cards:', error)
     } finally {
@@ -82,7 +145,7 @@ export default function SessionPage() {
   }
 
   const handleCardSubmit = async (answer: any, feedback: any) => {
-    const currentCard = cards[currentCardIndex]
+    const currentCard = filteredCards[currentCardIndex]
     try {
       const response = await fetch('/api/session/submit', {
         method: 'POST',
@@ -105,7 +168,7 @@ export default function SessionPage() {
         setUserInteracted(false)
         
         // Move to next card or complete session
-        if (currentCardIndex < cards.length - 1) {
+        if (currentCardIndex < filteredCards.length - 1) {
           setCurrentCardIndex(currentCardIndex + 1)
         } else {
           setSessionComplete(true)
@@ -159,7 +222,7 @@ export default function SessionPage() {
     )
   }
 
-  if (cards.length === 0) {
+  if (filteredCards.length === 0) {
     return (
       <div className="h-screen bg-background flex items-center justify-center p-4">
         <Card className="w-full max-w-md bg-card/50 backdrop-blur-xl border-border">
@@ -192,7 +255,7 @@ export default function SessionPage() {
     )
   }
 
-  const currentCard = cards[currentCardIndex]
+  const currentCard = filteredCards[currentCardIndex]
 
   return (
     <div className="h-full bg-background overflow-hidden">
@@ -200,10 +263,10 @@ export default function SessionPage() {
       <div className="relative z-10 h-full max-h-screen flex flex-col container mx-auto px-4 py-4 gap-4 overflow-hidden">
         <SessionHeader 
           currentIndex={currentCardIndex + 1}
-          totalCards={cards.length}
+          totalCards={filteredCards.length}
           streak={streak}
           cardType={currentCard.type}
-          estSeconds={currentCard.estSeconds}
+          estSeconds={process.env.NODE_ENV === 'development' && devSettings.skipTimers ? 0 : currentCard.estSeconds}
           onTimeout={handleTimeout}
           onUserInteraction={handleUserInteraction}
           cardId={currentCard.id}
@@ -258,8 +321,26 @@ export default function SessionPage() {
           ) : null}
         </motion.div>
 
+        {/* Debug Info - only in development */}
+        {process.env.NODE_ENV === 'development' && devSettings.enabled && devSettings.showCardDebugInfo && (
+          <div className="mt-4 p-4 bg-muted/50 rounded-lg border border-border">
+            <h4 className="font-medium text-sm mb-2">Card Debug Info:</h4>
+            <div className="text-xs space-y-1 text-muted-foreground">
+              <div>ID: {currentCard.id}</div>
+              <div>Type: {currentCard.type}</div>
+              <div>Pattern: {currentCard.pattern}</div>
+              <div>Difficulty: {currentCard.difficulty}</div>
+              <div>Subtype: {currentCard.subtype || 'none'}</div>
+              <div>Tags: {currentCard.tags || 'none'}</div>
+              <div>Est. Seconds: {currentCard.estSeconds || 'none'}</div>
+              <div>Current Index: {currentCardIndex + 1} / {filteredCards.length}</div>
+              <div>Total Cards: {cards.length} (filtered: {filteredCards.length})</div>
+            </div>
+          </div>
+        )}
 
       </div>
+
     </div>
   )
 }

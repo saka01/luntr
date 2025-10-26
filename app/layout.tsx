@@ -5,6 +5,8 @@ import { GeistMono } from "geist/font/mono"
 import "./globals.css"
 import { Header } from "@/components/header"
 import { ThemeProvider } from "@/components/theme-provider"
+import { DevSettingsProvider } from "@/lib/dev-settings-context"
+import { DevSettings } from "@/components/dev-settings"
 
 export const metadata: Metadata = {
   title: "Tallo | Pattern Gym for Coding Practice",
@@ -66,8 +68,11 @@ html {
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
-          {children}
+          <DevSettingsProvider>
+            <Header />
+            {children}
+            {process.env.NODE_ENV === 'development' && <DevSettings />}
+          </DevSettingsProvider>
         </ThemeProvider>
       </body>
     </html>

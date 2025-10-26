@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Timer } from "@/components/ui/timer"
 import { Input } from "@/components/ui/input"
 import { SessionCard } from "@/lib/session-engine"
 
@@ -24,6 +23,7 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
   const [timeMs, setTimeMs] = useState(0)
   const [isTimedOut, setIsTimedOut] = useState(false)
   const [startTime] = useState(Date.now())
+  const [selectedBlankIndex, setSelectedBlankIndex] = useState<number | null>(null)
 
   // Initialize userAnswers array
   useEffect(() => {
@@ -34,6 +34,7 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
     setUserGrade(null)
     setTimeMs(0)
     setIsTimedOut(false)
+    setSelectedBlankIndex(null)
   }, [card.id, card.prompt.blanks])
 
   const handleAnswerChange = (blankIndex: number, value: string) => {
@@ -55,13 +56,20 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
       newChoiceIndexes[blankIndex] = optionIndex
       setUserAnswers(newAnswers)
       setChoiceIndexes(newChoiceIndexes)
+      setSelectedBlankIndex(null) // Clear selection after filling
     }
+  }
+
+  const handleBlankClick = (blankIndex: number) => {
+    if (isSubmitted || !card.prompt.options) return
+    setSelectedBlankIndex(blankIndex)
   }
 
   const handleReset = () => {
     if (isSubmitted) return
     setUserAnswers(new Array(card.prompt.blanks).fill(''))
     setChoiceIndexes(new Array(card.prompt.blanks).fill(-1))
+    setSelectedBlankIndex(null)
   }
 
   const handleSubmit = async () => {
@@ -123,94 +131,134 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
 
   return (
     <Card className="bg-card/50 backdrop-blur-xl border-border">
-      <CardHeader>
-        <div className="flex justify-between items-start mb-2">
-          <div className="flex items-center gap-2">
-            <Badge variant="outline" className="text-xs">
-              {card.difficulty}
-            </Badge>
-            <Timer
-              cardType="fitb"
-              estSeconds={card.estSeconds}
-              onTimeout={handleTimeout}
-              onUserInteraction={handleUserInteraction}
-            />
-          </div>
-        </div>
-      </CardHeader>
-      
       <CardContent className="space-y-6">
         {!isSubmitted ? (
           <>
             <div className="space-y-4">
-              <div className="text-foreground font-medium">
+              {/* <div className="text-foreground font-medium">
                 Fill in the blanks with your answers:
-              </div>
+              </div> */}
               
-              {/* Render the stem with input fields or option chips */}
-              <div className="space-y-3">
+              {/* Render the stem with truly inline blanks */}
+              <div className="text-foreground leading-relaxed">
                 {stemParts.map((part: string, index: number) => (
-                  <div key={index} className="flex items-center gap-2 flex-wrap">
-                    <span className="text-foreground">{part}</span>
+                  <span key={index}>
+                    <span>{part}</span>
                     {index < stemParts.length - 1 && (
-                      <div className="flex items-center gap-2">
+                      <>
                         {card.prompt.options ? (
-                          // Show selected option or placeholder
-                          <div className="min-w-[120px] h-10 px-3 py-2 border border-border rounded-md bg-card flex items-center justify-center">
-                            <span className={`text-sm font-medium ${
-                              userAnswers[index] ? 'text-foreground' : 'text-muted-foreground'
-                            }`}>
-                              {userAnswers[index] || `Blank ${index + 1}`}
-                            </span>
-                          </div>
+                          // Custom inline blank that looks like text
+                          <span
+                            onClick={() => handleBlankClick(index)}
+                            className={`inline-block cursor-pointer border-b-2 border-dashed transition-all duration-200 ${
+                              selectedBlankIndex === index
+                                ? 'border-primary bg-primary/5'
+                                : userAnswers[index]
+                                ? 'border-primary bg-primary/5'
+                                : 'border-muted-foreground hover:border-primary/50'
+                            }`}
+                            style={{
+                              minWidth: userAnswers[index] ? 'auto' : '40px',
+                              padding: '0 2px',
+                              margin: '0 2px',
+                              height: '1.2em',
+                              display: 'inline-block',
+                              verticalAlign: 'baseline'
+                            }}
+                          >
+                            {userAnswers[index] || ''}
+                          </span>
                         ) : (
-                          <Input
-                            value={userAnswers[index] || ''}
-                            onChange={(e) => handleAnswerChange(index, e.target.value)}
-                            placeholder={`Blank ${index + 1}`}
-                            className="min-w-[120px] h-10 text-sm font-medium"
-                            disabled={isSubmitted}
-                          />
+                          // Custom inline input that behaves like text
+                          <span
+                            className="inline-block border-b-2 border-dashed border-muted-foreground hover:border-primary/50 transition-colors"
+                            style={{
+                              minWidth: '40px',
+                              padding: '0 2px',
+                              margin: '0 2px',
+                              height: '1.2em',
+                              display: 'inline-block',
+                              verticalAlign: 'baseline'
+                            }}
+                          >
+                            <input
+                              type="text"
+                              value={userAnswers[index] || ''}
+                              onChange={(e) => handleAnswerChange(index, e.target.value)}
+                              placeholder="___"
+                              className="w-full bg-transparent border-none outline-none text-foreground text-inherit font-inherit"
+                              style={{
+                                padding: 0,
+                                margin: 0,
+                                height: '100%',
+                                fontSize: 'inherit',
+                                fontFamily: 'inherit'
+                              }}
+                              disabled={isSubmitted}
+                            />
+                          </span>
                         )}
-                      </div>
+                      </>
                     )}
-                  </div>
+                  </span>
                 ))}
               </div>
 
-              {/* Show option chips if options are available */}
+              {/* Show clickable options if available */}
               {card.prompt.options && (
                 <div className="space-y-3">
-                  <div className="text-sm text-muted-foreground">
-                    Click on an option to fill the blanks:
+                  <div className="text-sm text-muted-foreground text-center">
+                    {selectedBlankIndex !== null 
+                      ? `Click an option to fill blank ${selectedBlankIndex + 1}:`
+                      : "Click on a blank first, then click an option to fill it:"
+                    }
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    {card.prompt.options.map((option: string, optionIndex: number) => (
-                      <button
-                        key={optionIndex}
-                        onClick={() => {
-                          // Find the first empty blank or allow cycling through blanks
-                          const emptyBlankIndex = userAnswers.findIndex(answer => !answer.trim())
-                          if (emptyBlankIndex !== -1) {
-                            handleOptionSelect(emptyBlankIndex, optionIndex)
-                          }
-                        }}
-                        className={`
-                          px-3 py-2 rounded-lg border transition-all duration-200 text-sm font-medium
-                          ${userAnswers.includes(option)
-                            ? 'bg-primary/10 border-primary text-primary cursor-not-allowed opacity-50'
-                            : 'bg-card border-border hover:border-primary/50 hover:bg-primary/5 text-foreground cursor-pointer'
-                          }
-                        `}
-                        disabled={isSubmitted || userAnswers.includes(option)}
-                      >
-                        {option}
-                      </button>
-                    ))}
+                  <div className="flex flex-wrap gap-3 justify-center">
+                    {card.prompt.options.map((option: string, optionIndex: number) => {
+                      const isUsed = userAnswers.includes(option)
+                      const rotation = Math.random() * 6 - 3 // Random rotation between -3 and 3 degrees
+                      
+                      return (
+                        <button
+                          key={optionIndex}
+                          onClick={() => {
+                            // Use selected blank or find first empty blank
+                            const targetBlankIndex = selectedBlankIndex !== null 
+                              ? selectedBlankIndex 
+                              : userAnswers.findIndex(answer => !answer.trim())
+                            
+                            if (targetBlankIndex !== -1) {
+                              handleOptionSelect(targetBlankIndex, optionIndex)
+                            }
+                          }}
+                          style={{ transform: `rotate(${rotation}deg)` }}
+                          className={`
+                            px-4 py-2 rounded-lg border transition-all duration-200 text-sm font-medium
+                            hover:scale-105 active:scale-95
+                            ${isUsed
+                              ? 'bg-primary/10 border-primary text-primary cursor-not-allowed opacity-50'
+                              : 'bg-card border-border hover:border-primary/50 hover:bg-primary/5 text-foreground cursor-pointer hover:shadow-sm'
+                            }
+                          `}
+                          disabled={isSubmitted || isUsed}
+                        >
+                          {option}
+                        </button>
+                      )
+                    })}
                   </div>
                 </div>
               )}
 
+            </div>
+
+            <Button 
+              onClick={handleSubmit}
+              disabled={userAnswers.some(answer => !answer.trim())}
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors"
+            >
+              Submit Answers
+            </Button>
               {/* Reset button */}
               <div className="flex justify-center">
                 <Button
@@ -222,15 +270,6 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
                   Reset
                 </Button>
               </div>
-            </div>
-
-            <Button 
-              onClick={handleSubmit}
-              disabled={userAnswers.some(answer => !answer.trim())}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-xl transition-colors"
-            >
-              Submit Answers
-            </Button>
           </>
         ) : (
           <>
