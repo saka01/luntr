@@ -53,13 +53,20 @@ export function OrderCard({ card, onSubmit, timedOut = false, userInteracted = f
       const elapsed = Date.now() - startTime
       setTimeMs(elapsed)
       setIsSubmitted(true)
+      
+      // Check if current order is correct
+      const currentOrder = steps.map(step => step.index)
+      const wasCorrect = JSON.stringify(currentOrder) === JSON.stringify(card.answer.order)
+      
       setFeedback({
-        correct: false,
+        correct: wasCorrect,
         timedOut: true,
-        rationale: "Time's up! Don't worry, you can try again."
+        rationale: wasCorrect
+          ? "You had the right order though."
+          : "Don't worry, you can try again."
       })
     }
-  }, [timedOut, isSubmitted, startTime])
+  }, [timedOut, isSubmitted, startTime, steps, card.answer.order])
 
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return
@@ -128,8 +135,18 @@ export function OrderCard({ card, onSubmit, timedOut = false, userInteracted = f
   }
 
   const handleNext = () => {
-    // Automatically set grade to "Too confusing" (5) for timeouts
-    const finalGrade = timedOut ? 5 : 3 // Default to "Just right" if somehow called without timeout
+    // Set grade based on whether they got it right before timing out
+    let finalGrade: number
+    if (timedOut) {
+      // Check if current order is correct
+      const currentOrder = steps.map(step => step.index)
+      const wasCorrect = JSON.stringify(currentOrder) === JSON.stringify(card.answer.order)
+      // If they timed out but got the order right, grade it as "Just right" (3)
+      // If they timed out and got it wrong, grade as "Too confusing" (5)
+      finalGrade = wasCorrect ? 3 : 5
+    } else {
+      finalGrade = 3 // Default to "Just right" if somehow called without timeout
+    }
     setUserGrade(finalGrade)
     
     const currentOrder = steps.map(step => step.index)

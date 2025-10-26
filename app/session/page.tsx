@@ -81,8 +81,12 @@ export default function SessionPage() {
     }
 
     // Limit session size - only if we have cards to limit
+    // But don't apply this during "add more cards" flow - let the API handle the sizing
     if (devSettings.sessionSize && devSettings.sessionSize > 0 && filtered.length > devSettings.sessionSize) {
-      filtered = filtered.slice(0, devSettings.sessionSize)
+      // Only limit if we're on initial load (cards.length <= original request size)
+      if (cards.length <= 20) { // Only limit on initial 10-20 card loads
+        filtered = filtered.slice(0, devSettings.sessionSize)
+      }
     }
 
     setFilteredCards(filtered)
@@ -96,8 +100,9 @@ export default function SessionPage() {
   const loadSessionCards = async (size?: number, excludeIds?: string[]) => {
     try {
       setIsLoading(true)
+      const requestSize = size || 10
       const params = new URLSearchParams()
-      if (size) params.append('size', size.toString())
+      params.append('size', requestSize.toString())
       if (excludeIds && excludeIds.length > 0) params.append('excludeIds', excludeIds.join(','))
       // Map pattern to the correct format for the API
       const apiPattern = effectivePattern === 'two-pointers' ? 'two-pointers' : effectivePattern
@@ -111,6 +116,13 @@ export default function SessionPage() {
       const response = await fetch(`/api/session/cards?${params.toString()}`)
       if (response.ok) {
         const data = await response.json()
+        console.log(`Loaded ${data.cards.length} cards from API (requested ${requestSize})`)
+        console.log('Card types:', data.cards.map((c: any) => c.type))
+        
+        if (data.cards.length < requestSize) {
+          console.warn(`⚠️ API returned ${data.cards.length} cards but ${requestSize} were requested`)
+        }
+        
         setCards(data.cards)
         setStreak(data.streak)
         setCurrentCardIndex(0)
@@ -128,9 +140,12 @@ export default function SessionPage() {
   const handleAddMoreCards = async () => {
     setIsAddingCards(true)
     try {
+      // Get all card IDs that have been shown (not just completed)
+      const allShownCardIds = cards.map(c => c.id)
+      
       const params = new URLSearchParams()
-      params.append('size', sessionSize.toString())
-      params.append('excludeIds', completedCardIds.join(','))
+      params.append('size', '10')
+      params.append('excludeIds', allShownCardIds.join(','))
       // Map pattern to the correct format for the API
       const apiPattern = effectivePattern === 'two-pointers' ? 'two-pointers' : effectivePattern
       params.append('pattern', apiPattern)
@@ -143,6 +158,8 @@ export default function SessionPage() {
       const response = await fetch(`/api/session/cards?${params.toString()}`)
       if (response.ok) {
         const data = await response.json()
+        console.log(`Added ${data.cards.length} more cards (requested 10)`)
+        console.log('New card types:', data.cards.map((c: any) => c.type))
         // Append new cards to existing ones instead of replacing
         setCards(prevCards => [...prevCards, ...data.cards])
         setStreak(data.streak)

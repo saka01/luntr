@@ -108,7 +108,7 @@ export function FitbCard({ card, onSubmit, userInteracted = false, timedOut = fa
     setFeedback({
       correct: false,
       timedOut: true,
-      rationale: "Time's up! Don't worry, you can try again."
+      rationale: "Don't worry, you can try again."
     })
   }
 

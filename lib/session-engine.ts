@@ -134,11 +134,16 @@ export async function getSessionCards(userId: string, size: number = 10, exclude
       patternFilter = pattern
     }
     
-    // Get cards due for review - order by next_due to prioritize most overdue cards
-    let dueCardsQuery = supabase
+    // NEW PRIORITY-BASED SPACED REPETITION ALGORITHM
+    
+    // 1. Get ALL due cards with their EF and reps for priority scoring
+    let dueProgressQuery = supabase
       .from('user_progress')
       .select(`
         card_id,
+        next_due,
+        ef,
+        reps,
         cards!inner (
           id,
           slug,
@@ -154,117 +159,27 @@ export async function getSessionCards(userId: string, size: number = 10, exclude
       `)
       .eq('user_id', userId)
       .lte('next_due', now)
-      .order('next_due', { ascending: true }) // Most overdue first
-      .limit(Math.ceil(size * 0.6))
+      .order('next_due', { ascending: true })
+      .limit(100)
   
-  // Add pattern filter if not "all"
-  if (patternFilter) {
-    dueCardsQuery = dueCardsQuery.eq('cards.pattern', patternFilter)
-  }
+    if (patternFilter) {
+      dueProgressQuery = dueProgressQuery.eq('cards.pattern', patternFilter)
+    }
   
-  // Only add the not.in filter if there are excluded card IDs
-  if (normalizedExcludeIds.length > 0) {
-    dueCardsQuery = dueCardsQuery.not('card_id', 'in', toInList(normalizedExcludeIds))
-  }
+    if (normalizedExcludeIds.length > 0) {
+      normalizedExcludeIds.forEach(excludeId => {
+        dueProgressQuery = dueProgressQuery.neq('card_id', excludeId)
+      })
+    }
   
-  const { data: dueCardsData } = await dueCardsQuery
-  
-  const dueCards = dueCardsData?.map((item: any) => item.cards) || []
-  
-  // Get recent misses (last 48 hours) - order by most recent attempts first
-  const since = new Date(Date.now() - 48 * 3600 * 1000).toISOString()
-  let recentMissesQuery = supabase
-    .from('attempts')
-    .select(`
-      card_id,
-      cards!inner (
-        id,
-        slug,
-        pattern,
-        type,
-        difficulty,
-        prompt,
-        answer,
-        subtype,
-        tags,
-        est_seconds
-      )
-    `)
-    .eq('user_id', userId)
-    .gte('created_at', since)
-    .or('grade.eq.5,timed_out.eq.true')
-    .order('created_at', { ascending: false }) // Most recent misses first
-    .limit(Math.ceil(size * 0.2))
-  
-  // Add pattern filter if not "all"
-  if (patternFilter) {
-    recentMissesQuery = recentMissesQuery.eq('cards.pattern', patternFilter)
-  }
-  
-  // Only add the not.in filter if there are excluded card IDs
-  if (normalizedExcludeIds.length > 0) {
-    recentMissesQuery = recentMissesQuery.not('card_id', 'in', toInList(normalizedExcludeIds))
-  }
-  
-  const { data: recentMissesData } = await recentMissesQuery
-  
-  const recentMisses = recentMissesData?.map((item: any) => item.cards) || []
-  
-  // Get new cards (no progress entry)
-  // First get all card IDs that user has progress for
-  const { data: userCardIds } = await supabase
-    .from('user_progress')
-    .select('card_id')
-    .eq('user_id', userId)
-  
-  const userCardIdSet = new Set(userCardIds?.map(p => p.card_id) || [])
-  
-  // Get new cards (no progress entry) - randomize selection for better distribution
-  let newCardsQuery = supabase
-    .from('cards')
-    .select('*')
-    .order('random()') // Use random ordering for better variety
-    .limit(size * 3) // Get more cards to allow for randomization
-  
-  // Add pattern filter if not "all"
-  if (patternFilter) {
-    newCardsQuery = newCardsQuery.eq('pattern', patternFilter)
-  }
-  
-  // Only add the not.in filter if there are excluded card IDs
-  if (normalizedExcludeIds.length > 0) {
-    newCardsQuery = newCardsQuery.not('id', 'in', toInList(normalizedExcludeIds))
-  }
-  
-  const { data: newCardsData } = await newCardsQuery
-  
-  // Filter out cards that user already has progress for and excluded cards
-  const newCards = (newCardsData || []).filter(card => 
-    !userCardIdSet.has(card.id) && !normalizedExcludeIds.includes(card.id)
-  )
-  
-  // Shuffle each category for better distribution
-  const shuffledDueCards = shuffleArray(dueCards)
-  const shuffledRecentMisses = shuffleArray(recentMisses)
-  const shuffledNewCards = shuffleArray(newCards)
-  
-  // Combine and deduplicate while preserving randomization
-  const allCards = [...shuffledDueCards, ...shuffledRecentMisses, ...shuffledNewCards]
-  const seen = new Set<string>()
-  let uniqueCards = allCards.filter(card => {
-    if (seen.has(card.id)) return false
-    seen.add(card.id)
-    return true
-  })
-  
-  // Shuffle the final selection to ensure random distribution
-  uniqueCards = shuffleArray(uniqueCards)
-  
-  // Always try to fill the session to the requested size
-  if (uniqueCards.length < size) {
-    // Get previously seen cards that aren't due yet to fill the session
-    let seenCardsQuery = supabase
-      .from('user_progress')
+    const { data: dueProgressData } = await dueProgressQuery
+    
+    console.log(`Due cards: ${dueProgressData?.length || 0}`)
+    
+    // 2. Get recent misses (last 72 hours) - these get highest priority
+    const since = new Date(Date.now() - 72 * 3600 * 1000).toISOString()
+    let recentMissesQuery = supabase
+      .from('attempts')
       .select(`
         card_id,
         cards!inner (
@@ -281,73 +196,189 @@ export async function getSessionCards(userId: string, size: number = 10, exclude
         )
       `)
       .eq('user_id', userId)
-      .gt('next_due', now)
-      .order('next_due', { ascending: true })
-      .limit((size - uniqueCards.length) * 2) // Get more to allow randomization
-    
-    // Add pattern filter if not "all"
+      .gte('created_at', since)
+      .or('grade.eq.5,timed_out.eq.true')
+      .order('created_at', { ascending: false })
+      .limit(50)
+  
     if (patternFilter) {
-      seenCardsQuery = seenCardsQuery.eq('cards.pattern', patternFilter)
+      recentMissesQuery = recentMissesQuery.eq('cards.pattern', patternFilter)
     }
-    
-    // Only add the not.in filter if there are excluded card IDs
+  
     if (normalizedExcludeIds.length > 0) {
-      seenCardsQuery = seenCardsQuery.not('card_id', 'in', toInList(normalizedExcludeIds))
+      normalizedExcludeIds.forEach(excludeId => {
+        recentMissesQuery = recentMissesQuery.neq('card_id', excludeId)
+      })
+    }
+  
+    const { data: recentMissesData } = await recentMissesQuery
+    
+    console.log(`Recent misses: ${recentMissesData?.length || 0}`)
+    
+    // 3. Get new cards candidates
+    const { data: userCardIds } = await supabase
+      .from('user_progress')
+      .select('card_id')
+      .eq('user_id', userId)
+  
+    const userCardIdSet = new Set(userCardIds?.map(p => p.card_id) || [])
+  
+    let newCardsQuery = supabase
+      .from('cards')
+      .select('*')
+      .order('random()')
+      .limit(200) // Increased to ensure we have variety
+  
+    if (patternFilter) {
+      newCardsQuery = newCardsQuery.eq('pattern', patternFilter)
+    }
+  
+    if (normalizedExcludeIds.length > 0) {
+      // Filter out excluded cards by using filter with not in
+      normalizedExcludeIds.forEach(excludeId => {
+        newCardsQuery = newCardsQuery.neq('id', excludeId)
+      })
+    }
+  
+    const { data: newCardsData } = await newCardsQuery
+    
+    console.log(`New cards from DB: ${newCardsData?.length || 0}`)
+    console.log(`User has progress on: ${userCardIdSet.size} cards`)
+    console.log(`Excluding: ${normalizedExcludeIds.length} cards`)
+    
+    const newCards = (newCardsData || []).filter(card => 
+      !userCardIdSet.has(card.id) && !normalizedExcludeIds.includes(card.id)
+    )
+    
+    console.log(`After filtering: ${newCards.length} new cards`)
+    
+    // 4. Calculate priority scores for each card
+    const scoredCards: Array<{ card: any; priority: number; isNew: boolean }> = []
+    
+    // Score due cards by urgency and ease factor
+    if (dueProgressData) {
+      for (const item of dueProgressData) {
+        const daysOverdue = Math.floor((new Date(now).getTime() - new Date(item.next_due).getTime()) / (1000 * 60 * 60 * 24))
+        const urgencyBonus = daysOverdue > 7 ? 1.5 : 1.0
+        const ef = item.ef || 2.5
+        const reps = item.reps || 0
+        // Lower EF means harder to remember, so higher priority
+        // More overdue = higher priority
+        const priority = (1 / ef) * urgencyBonus * 100
+        scoredCards.push({ 
+          card: item.cards, 
+          priority,
+          isNew: false
+        })
+      }
     }
     
-    const { data: seenCardsData } = await seenCardsQuery
-    const seenCards = seenCardsData?.map((item: any) => item.cards) || []
+    // Recent misses get very high priority (200)
+    if (recentMissesData) {
+      for (const item of recentMissesData) {
+        scoredCards.push({ 
+          card: item.cards, 
+          priority: 200,
+          isNew: false
+        })
+      }
+    }
     
-    // Add seen cards that aren't already in uniqueCards, then shuffle
-    const additionalSeenCards = seenCards.filter(card => !seen.has(card.id))
-    const shuffledAdditionalSeenCards = shuffleArray(additionalSeenCards)
-    uniqueCards = [...uniqueCards, ...shuffledAdditionalSeenCards]
+    // New cards get low priority (50) and limited count
+    for (const card of newCards) {
+      scoredCards.push({ 
+        card, 
+        priority: 50,
+        isNew: true
+      })
+    }
     
-    // Update the seen Set to prevent duplicates from future additions
-    shuffledAdditionalSeenCards.forEach(card => seen.add(card.id))
+    // 5. Sort by priority (highest first)
+    scoredCards.sort((a, b) => b.priority - a.priority)
     
-    // If still not enough cards, get any remaining cards (even if user has seen them recently)
-    if (uniqueCards.length < size) {
-      let anyCardsQuery = supabase
-        .from('cards')
-        .select('*')
-        .order('random()') // Use random ordering for better variety
-        .limit((size - uniqueCards.length) * 2) // Get more to allow for better distribution
+    // 6. Select cards with caps on new cards (prefer non-new cards, allow new cards if needed to fill)
+    let newCardCount = 0
+    const selected: any[] = []
+    const seen = new Set<string>()
+    
+    for (const { card, priority, isNew } of scoredCards) {
+      if (selected.length >= size) break
+      if (seen.has(card.id)) continue
+      if (normalizedExcludeIds.includes(card.id)) continue
+      
+      // For new cards: prefer to add only 2, but allow more if needed to reach size
+      // For non-new cards: always add if we have space
+      const canAddNewCard = isNew ? (newCardCount < 2) : true
+      
+      if (canAddNewCard) {
+        selected.push(card)
+        seen.add(card.id)
+        if (isNew) newCardCount++
+      } else if (isNew && newCardCount >= 2 && selected.length < size) {
+        // We have 2 new cards already but not enough total cards - allow more new cards
+        selected.push(card)
+        seen.add(card.id)
+        newCardCount++
+      }
+    }
+    
+    // 7. Fill remaining slots if needed
+    if (selected.length < size) {
+      let fillQuery = supabase
+        .from('user_progress')
+        .select(`
+          card_id,
+          cards!inner (
+            id,
+            slug,
+            pattern,
+            type,
+            difficulty,
+            prompt,
+            answer,
+            subtype,
+            tags,
+            est_seconds
+          )
+        `)
+        .eq('user_id', userId)
+        .gt('next_due', now)
+        .order('next_due', { ascending: true })
+        .limit(size - selected.length)
       
       if (patternFilter) {
-        anyCardsQuery = anyCardsQuery.eq('pattern', patternFilter)
+        fillQuery = fillQuery.eq('cards.pattern', patternFilter)
       }
       
-      if (uniqueCards.length > 0) {
-        anyCardsQuery = anyCardsQuery.not('id', 'in', toInList(uniqueCards.map(c => c.id)))
-      }
       if (normalizedExcludeIds.length > 0) {
-        anyCardsQuery = anyCardsQuery.not('id', 'in', toInList(normalizedExcludeIds))
+        normalizedExcludeIds.forEach(excludeId => {
+          fillQuery = fillQuery.neq('card_id', excludeId)
+        })
       }
       
-      const { data: anyCardsData } = await anyCardsQuery
-      const anyCards = anyCardsData || []
+      const { data: fillCardsData } = await fillQuery
+      const fillCards = fillCardsData?.map((item: any) => item.cards) || []
       
-      // Shuffle any remaining cards and add them
-      const shuffledAnyCards = shuffleArray(anyCards)
-      
-      // Deduplicate one more time to ensure no duplicates
-      const deduplicatedRemaining = shuffledAnyCards.filter(card => !seen.has(card.id))
-      deduplicatedRemaining.forEach(card => seen.add(card.id))
-      uniqueCards = [...uniqueCards, ...deduplicatedRemaining].slice(0, size)
+      for (const card of fillCards) {
+        if (selected.length >= size) break
+        if (!seen.has(card.id)) {
+          selected.push(card)
+          seen.add(card.id)
+        }
+      }
     }
-  }
-  
-  // Final slice to ensure we don't exceed requested size
-  uniqueCards = uniqueCards.slice(0, size)
-  
-  // Smart shuffle to prevent consecutive cards of the same type
-  uniqueCards = smartShuffleForDistribution(uniqueCards)
-  
-  // Log warning if we couldn't provide the full requested amount
-  if (uniqueCards.length < size) {
-    console.warn(`getSessionCards: Only ${uniqueCards.length} cards available (requested ${size}). User: ${userId}, Pattern: ${pattern}`)
-  }
+    
+    // Smart shuffle to prevent consecutive cards of the same type
+    const uniqueCards = smartShuffleForDistribution(selected)
+    
+    // Log details for debugging
+    console.log(`getSessionCards: Found ${uniqueCards.length} cards (requested ${size}). Pattern: ${pattern}`)
+    console.log(`Card types: ${uniqueCards.map(c => c.type).join(', ')}`)
+    
+    // Log warning if needed
+    if (uniqueCards.length < size) {
+      console.warn(`⚠️ Only ${uniqueCards.length} cards available (requested ${size}). User: ${userId}, Pattern: ${pattern}`)
+    }
   
     return uniqueCards.map(card => ({
       id: card.id,
@@ -359,7 +390,7 @@ export async function getSessionCards(userId: string, size: number = 10, exclude
       answer: card.answer,
       subtype: card.subtype,
       tags: card.tags,
-      estSeconds: card.est_seconds
+      estSeconds: (card as any).est_seconds
     }))
   } catch (error) {
     console.error('Error in getSessionCards:', error)
@@ -477,13 +508,13 @@ function calculateNextIntervalNew(grade: number, params: { ef: number; reps: num
     newReps = reps + 1;
     if (newReps === 1) newIntervalDays = 1;
     else if (newReps === 2) newIntervalDays = 3;
-    else newIntervalDays = Math.max(1, Math.round(intervalDays * ef));
+    else newIntervalDays = Math.min(365, Math.max(1, Math.round(intervalDays * ef)));
   } else { // Too Easy (grade 1)
     newReps = reps + 1;
     newEf = ef + 0.1;
     if (newReps === 1) newIntervalDays = 3;
     else if (newReps === 2) newIntervalDays = 6;
-    else newIntervalDays = Math.max(1, Math.round(intervalDays * ef * 1.3));
+    else newIntervalDays = Math.min(365, Math.max(1, Math.round(intervalDays * ef * 1.3)));
   }
 
   return {

@@ -37,13 +37,19 @@ export function PatternIdCard({ card, onSubmit, timedOut = false, userInteracted
       const elapsed = Date.now() - startTime
       setTimeMs(elapsed)
       setIsSubmitted(true)
+      
+      // Check if user had selected an answer before timing out
+      const wasCorrect = selectedAnswer !== null && selectedAnswer === card.answer.correctIndex
+      
       setFeedback({
-        correct: false,
+        correct: wasCorrect,
         timedOut: true,
-        rationale: "Time's up! Don't worry, you can try again."
+        rationale: wasCorrect 
+          ? "You had the right answer though."
+          : "Don't worry, you can try again."
       })
     }
-  }, [timedOut, isSubmitted, startTime])
+  }, [timedOut, isSubmitted, startTime, selectedAnswer, card.answer.correctIndex])
 
   const handleSubmit = async () => {
     if (selectedAnswer === null) return
@@ -74,8 +80,16 @@ export function PatternIdCard({ card, onSubmit, timedOut = false, userInteracted
   }
 
   const handleNext = () => {
-    // Automatically set grade to "Too confusing" (5) for timeouts
-    const finalGrade = timedOut ? 5 : 3 // Default to "Just right" if somehow called without timeout
+    // Set grade based on whether they got it right before timing out
+    let finalGrade: number
+    if (timedOut) {
+      // If they timed out but got the answer right, grade it as "Just right" (3)
+      // If they timed out and got it wrong or no selection, grade as "Too confusing" (5)
+      const wasCorrect = feedback?.correct || false
+      finalGrade = wasCorrect ? 3 : 5
+    } else {
+      finalGrade = 3 // Default to "Just right" if somehow called without timeout
+    }
     setUserGrade(finalGrade)
     
     onSubmit({
@@ -92,7 +106,7 @@ export function PatternIdCard({ card, onSubmit, timedOut = false, userInteracted
   return (
     <Card className="bg-card/50 backdrop-blur-xl border-border">
       <CardHeader className="w-full">
-        <p className="text-muted-foreground text-base font-bold">{card.prompt.stem}</p>
+        <p className="text-muted-foreground text-lg font-bold text-center">{card.prompt.stem}</p>
       </CardHeader>
       
       <CardContent className="space-y-6">
@@ -104,7 +118,7 @@ export function PatternIdCard({ card, onSubmit, timedOut = false, userInteracted
                   key={index}
                   onClick={() => setSelectedAnswer(index)}
                   className={`
-                    w-full p-3 rounded-xl border-2 transition-all duration-200 text-left
+                    w-full p-3 rounded-xl border-1 transition-all duration-200 text-left
                     ${selectedAnswer === index
                       ? 'border-primary bg-primary/10 text-primary shadow-md scale-[1.02]'
                       : 'border-border bg-card hover:border-primary/50 hover:bg-primary/5 text-foreground hover:shadow-sm'
@@ -178,14 +192,14 @@ export function PatternIdCard({ card, onSubmit, timedOut = false, userInteracted
                 </Button>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-4 border-t border-border border-muted-foreground/50 pt-4">
                 <div>
-                  <p className="text-sm text-muted-foreground mb-3 text-center">How did that feel?</p>
+                  <p className="text-sm text-muted-foreground mb-3 text-center italic">How did that feel?</p>
                   <div className="grid grid-cols-3 gap-3">
                     {[
                       { value: 1, label: "Too easy" },
                       { value: 3, label: "Just right" },
-                      { value: 5, label: "Too confusing" }
+                      { value: 5, label: "Too hard" }
                     ].map((grade) => (
                       <button
                         key={grade.value}

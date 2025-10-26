@@ -22,13 +22,13 @@ export function schedule(progress: Progress, uiGrade: UiGrade): Progress {
     reps += 1;
     if (reps === 1) intervalDays = 1;
     else if (reps === 2) intervalDays = 3;
-    else intervalDays = Math.max(1, Math.round(intervalDays * ef));
+    else intervalDays = Math.min(365, Math.max(1, Math.round(intervalDays * ef)));
   } else { // Too Easy
     reps += 1;
     ef = ef + 0.1;
     if (reps === 1) intervalDays = 3;
     else if (reps === 2) intervalDays = 6;
-    else intervalDays = Math.max(1, Math.round(intervalDays * ef * 1.3));
+    else intervalDays = Math.min(365, Math.max(1, Math.round(intervalDays * ef * 1.3)));
   }
 
   return {

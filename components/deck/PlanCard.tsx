@@ -41,13 +41,19 @@ export function PlanCard({ card, onSubmit, timedOut = false, userInteracted = fa
       const elapsed = Date.now() - startTime
       setTimeMs(elapsed)
       setIsSubmitted(true)
+      
+      // Check if user had entered a plan before timing out
+      const hadInput = userPlan && userPlan.trim().length > 0
+      
       setFeedback({
         correct: false,
         timedOut: true,
-        rationale: "Time's up! Don't worry, you can try again."
+        rationale: hadInput
+          ? "You had started a plan - finish thinking and try submitting next time."
+          : "Don't worry, you can try again."
       })
     }
-  }, [timedOut, isSubmitted, startTime])
+  }, [timedOut, isSubmitted, startTime, userPlan])
 
   const handleSubmit = async () => {
     if (!userPlan.trim()) return
@@ -129,8 +135,16 @@ export function PlanCard({ card, onSubmit, timedOut = false, userInteracted = fa
   }
 
   const handleNext = () => {
-    // Automatically set grade to "Too confusing" (5) for timeouts
-    const finalGrade = timedOut ? 5 : 3 // Default to "Just right" if somehow called without timeout
+    // Set grade based on whether they had input before timing out
+    let finalGrade: number
+    if (timedOut) {
+      // If they timed out but had entered a plan, grade as "Just right" (3)
+      // If they timed out with no input, grade as "Too confusing" (5)
+      const hadInput = userPlan && userPlan.trim().length > 0
+      finalGrade = hadInput ? 3 : 5
+    } else {
+      finalGrade = 3 // Default to "Just right" if somehow called without timeout
+    }
     setUserGrade(finalGrade)
     
     onSubmit({
@@ -149,7 +163,7 @@ export function PlanCard({ card, onSubmit, timedOut = false, userInteracted = fa
         <div className="flex justify-between items-end mb-2">
           {/* <CardTitle className="text-xl text-foreground">{card.pattern}</CardTitle> */}
         </div>
-        <p className="text-muted-foreground text-base font-bold">{card.prompt.stem}</p>
+        <p className="text-muted-foreground text-lg font-bold">{card.prompt.stem}</p>
       </CardHeader>
       
       <CardContent className="space-y-6">
