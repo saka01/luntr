@@ -148,6 +148,15 @@ export async function submitAttemptWithTimeout(params: {
     progress = newProgress;
   }
 
+  // Fetch user timezone for proper scheduling
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('timezone')
+    .eq('user_id', userId)
+    .single();
+
+  const userTimezone = profile?.timezone || 'America/Toronto';
+
   const updated = schedule({
     id: progress.id,
     ef: progress.ef,
@@ -155,12 +164,7 @@ export async function submitAttemptWithTimeout(params: {
     intervalDays: progress.interval_days,
     nextDue: new Date(progress.next_due),
     lastGrade: progress.last_grade
-  }, finalGrade as 1 | 3 | 5);
-
-  // Handle recent-miss priority: if grade=5, force nextDue to "today"
-  if (finalGrade === 5) {
-    updated.nextDue = new Date(); // Show again today
-  }
+  }, finalGrade as 1 | 3 | 5, userTimezone);
 
   const { error: updateError } = await supabase
     .from('user_progress')

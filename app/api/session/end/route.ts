@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createSupabaseSessionEngine } from '@/lib/session/supabaseSessionEngine';
 import { currentUserId } from '@/lib/auth-guard';
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
 
 async function getSupabaseClient() {
+  const { cookies } = await import('next/headers');
+  const { createServerClient } = await import('@supabase/ssr');
   const cookieStore = await cookies();
   
   return createServerClient(
@@ -36,26 +35,56 @@ export async function POST(request: NextRequest) {
     
     const supabase = await getSupabaseClient();
     
-    // Get the session to determine pattern
-    const { data: session, error } = await supabase
+    // Load session
+    const { data: session, error: loadError } = await supabase
       .from('study_sessions')
       .select('*')
       .eq('id', sessionId)
       .eq('user_id', userId)
       .single();
     
-    if (error || !session) {
+    if (loadError || !session) {
       return NextResponse.json({ error: 'Session not found' }, { status: 404 });
     }
     
-    const sessionEngine = createSupabaseSessionEngine(userId, session.pattern);
-    // Set the session ID for the engine
-    (sessionEngine as any).sessionId = sessionId;
-    (sessionEngine as any).servedCardIds = new Set(session.served_card_ids || []);
+    // Calculate session metrics
+    const servedCardIds = session.served_card_ids || [];
+    const { data: attempts } = await supabase
+      .from('attempts')
+      .select('*')
+      .eq('user_id', userId)
+      .in('card_id', servedCardIds)
+      .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
     
-    const sessionData = await sessionEngine.endSession();
+    const accuracy = attempts?.length ? 
+      attempts.filter(a => a.grade <= 3).length / attempts.length : 
+      0;
     
-    return NextResponse.json({ session: sessionData });
+    const avgResponseMs = attempts?.length ?
+      attempts.reduce((sum, a) => sum + a.time_ms, 0) / attempts.length :
+      0;
+    
+    // End session
+    const { data: endedSession, error: endError } = await supabase
+      .from('study_sessions')
+      .update({
+        ended_at: new Date().toISOString(),
+        size_completed: servedCardIds.length,
+        served_card_ids: servedCardIds,
+        accuracy,
+        avg_response_ms: avgResponseMs
+      })
+      .eq('id', sessionId)
+      .select()
+      .single();
+    
+    if (endError) throw endError;
+    
+    return NextResponse.json({
+      accuracy,
+      cardsCompleted: servedCardIds.length,
+      timeSpent: avgResponseMs * servedCardIds.length
+    });
   } catch (error) {
     console.error('Error ending session:', error);
     return NextResponse.json({ error: 'Failed to end session' }, { status: 500 });

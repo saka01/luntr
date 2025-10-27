@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createSupabaseSessionEngine } from '@/lib/session/supabaseSessionEngine';
+import { UnifiedSessionEngine } from '@/lib/session/unifiedSessionEngine';
 import { currentUserId } from '@/lib/auth-guard';
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
 
 async function getSupabaseClient() {
+  const { cookies } = await import('next/headers');
+  const { createServerClient } = await import('@supabase/ssr');
   const cookieStore = await cookies();
   
   return createServerClient(
@@ -32,11 +32,11 @@ async function getSupabaseClient() {
 export async function POST(request: NextRequest) {
   try {
     const userId = await currentUserId();
-    const { sessionId, size } = await request.json();
+    const { sessionId, size = 10 } = await request.json();
     
     const supabase = await getSupabaseClient();
     
-    // Get the session to determine pattern
+    // Load session
     const { data: session, error } = await supabase
       .from('study_sessions')
       .select('*')
@@ -48,14 +48,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Session not found' }, { status: 404 });
     }
     
-    const sessionEngine = createSupabaseSessionEngine(userId, session.pattern);
-    // Set the session ID for the engine
-    (sessionEngine as any).sessionId = sessionId;
-    (sessionEngine as any).servedCardIds = new Set(session.served_card_ids || []);
+    // Create engine and restore state
+    const engine = new UnifiedSessionEngine(userId, session.pattern);
+    (engine as any).sessionId = session.id;
+    (engine as any).servedCardIds = new Set(session.served_card_ids || []);
+    (engine as any).newCardsServed = session.new_card_count || 0;
     
-    const cards = await sessionEngine.addMoreCards(size || 10);
+    // Add more cards
+    const cards = await engine.addMoreCards(size);
     
-    return NextResponse.json({ cards });
+    return NextResponse.json({
+      cards,
+      count: cards.length,
+      requested: size
+    });
   } catch (error) {
     console.error('Error adding more cards:', error);
     return NextResponse.json({ error: 'Failed to add more cards' }, { status: 500 });

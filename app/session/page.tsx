@@ -30,6 +30,7 @@ export default function SessionPage() {
   const [streak, setStreak] = useState<number>(0)
   const [timedOut, setTimedOut] = useState(false)
   const [userInteracted, setUserInteracted] = useState(false)
+  const [sessionId, setSessionId] = useState<string | null>(null)
   const { settings: devSettings } = useDevSettings()
   const router = useRouter()
 
@@ -47,9 +48,9 @@ export default function SessionPage() {
       : selectedPattern
   }, [devSettings.enabled, devSettings.patternFilter, selectedPattern])
 
-  // Load cards when component mounts or when pattern changes
+  // Start session when component mounts or when pattern changes
   useEffect(() => {
-    loadSessionCards()
+    startNewSession()
   }, [effectivePattern])
 
   // Filter cards based on dev settings (only in development)
@@ -97,72 +98,60 @@ export default function SessionPage() {
     }
   }, [cards, devSettings])
 
-  const loadSessionCards = async (size?: number, excludeIds?: string[]) => {
+  const startNewSession = async () => {
+    setIsLoading(true)
     try {
-      setIsLoading(true)
-      const requestSize = size || 10
-      const params = new URLSearchParams()
-      params.append('size', requestSize.toString())
-      if (excludeIds && excludeIds.length > 0) params.append('excludeIds', excludeIds.join(','))
       // Map pattern to the correct format for the API
       const apiPattern = effectivePattern === 'two-pointers' ? 'two-pointers' : effectivePattern
-      params.append('pattern', apiPattern)
       
-      // Add dev mode flag if enabled
-      if (process.env.NODE_ENV === 'development' && devSettings.enabled) {
-        params.append('devMode', 'true')
-      }
+      const response = await fetch('/api/session/start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pattern: apiPattern, size: 10 })
+      })
       
-      const response = await fetch(`/api/session/cards?${params.toString()}`)
       if (response.ok) {
         const data = await response.json()
-        console.log(`Loaded ${data.cards.length} cards from API (requested ${requestSize})`)
+        console.log(`Started session with ${data.cards.length} cards`)
         console.log('Card types:', data.cards.map((c: any) => c.type))
         
-        if (data.cards.length < requestSize) {
-          console.warn(`⚠️ API returned ${data.cards.length} cards but ${requestSize} were requested`)
-        }
-        
+        setSessionId(data.sessionId)
         setCards(data.cards)
         setStreak(data.streak)
         setCurrentCardIndex(0)
         setSessionComplete(false)
       } else {
-        console.error('Failed to load session cards')
+        console.error('Failed to start session')
       }
     } catch (error) {
-      console.error('Error loading session cards:', error)
+      console.error('Error starting session:', error)
     } finally {
       setIsLoading(false)
     }
   }
 
   const handleAddMoreCards = async () => {
+    if (!sessionId) {
+      console.error('No session ID available')
+      return
+    }
+    
     setIsAddingCards(true)
     try {
-      // Get all card IDs that have been shown (not just completed)
-      const allShownCardIds = cards.map(c => c.id)
+      const response = await fetch('/api/session/add-more', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId, size: 10 })
+      })
       
-      const params = new URLSearchParams()
-      params.append('size', '10')
-      params.append('excludeIds', allShownCardIds.join(','))
-      // Map pattern to the correct format for the API
-      const apiPattern = effectivePattern === 'two-pointers' ? 'two-pointers' : effectivePattern
-      params.append('pattern', apiPattern)
-      
-      // Add dev mode flag if enabled
-      if (process.env.NODE_ENV === 'development' && devSettings.enabled) {
-        params.append('devMode', 'true')
-      }
-      
-      const response = await fetch(`/api/session/cards?${params.toString()}`)
       if (response.ok) {
         const data = await response.json()
-        console.log(`Added ${data.cards.length} more cards (requested 10)`)
+        
+        console.log(`Added ${data.count} cards (requested ${data.requested})`)
         console.log('New card types:', data.cards.map((c: any) => c.type))
-        // Append new cards to existing ones instead of replacing
+        
+        // Append new cards to existing ones
         setCards(prevCards => [...prevCards, ...data.cards])
-        setStreak(data.streak)
         setSessionComplete(false)
       } else {
         console.error('Failed to load more cards')
@@ -220,8 +209,29 @@ export default function SessionPage() {
   }
 
   const handleBackToDashboard = () => {
+    // End session before leaving
+    if (sessionId) {
+      fetch('/api/session/end', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId })
+      }).catch(console.error);
+    }
     router.push('/dashboard')
   }
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (sessionId) {
+        fetch('/api/session/end', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId })
+        }).catch(console.error);
+      }
+    };
+  }, [sessionId])
 
   if (isLoading) {
     return <SessionLoadingScreen />
